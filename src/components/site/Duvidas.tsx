@@ -21,7 +21,7 @@ export function Duvidas() {
   return (
     <section id="duvidas" data-theme="light" aria-labelledby="duvidas-titulo" className="sa-secao">
       <div className="sa-container">
-        <h2 id="duvidas-titulo" className="titulo-1 sa-texto">
+        <h2 id="duvidas-titulo" className="titulo-1 sa-texto sa-revela">
           {duvidas.titulo}
         </h2>
         <Accordion type="single" collapsible defaultValue="duvida-0" className="sa-faqs mt-12">

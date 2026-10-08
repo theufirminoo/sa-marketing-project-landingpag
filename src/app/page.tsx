@@ -3,6 +3,7 @@ import { BarraFixa } from "@/components/site/BarraFixa";
 import { ComoComeca } from "@/components/site/ComoComeca";
 import { CtaFinal } from "@/components/site/CtaFinal";
 import { Duvidas } from "@/components/site/Duvidas";
+import { FaixaEtapas } from "@/components/site/FaixaEtapas";
 import { FaixaTestes } from "@/components/site/FaixaTestes";
 import { Footer } from "@/components/site/Footer";
 import { Frentes } from "@/components/site/Frentes";
@@ -31,6 +32,7 @@ export default function Home() {
       />
       <main id="conteudo" tabIndex={-1}>
         <Hero />
+        <FaixaEtapas />
         <Metodo />
         <Frentes />
         <ComoComeca />

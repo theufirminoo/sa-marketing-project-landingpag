@@ -12,7 +12,7 @@ valor provisório ou pendência que trava o lançamento.
 - [ ] 2. CNPJ e razão social reais. Hoje: `SA Marketing, CNPJ 00.000.000/0001-00` (fictício). Trocar em `src/content/provisorios.ts`.
 - [ ] 3. Logo em SVG. Hoje o cabeçalho e o rodapé mostram "SA Marketing" em texto. Salvar em `public/logo-sa.svg` e apontar `logoSvg` em `src/content/provisorios.ts`. Os ícones (favicon e Apple) mostram "SA" provisório e também devem trocar.
 - [ ] 4. Fotos dos três sócios, em 4:5. Hoje: silhueta em SVG. Salvar em `public/socios/` e preencher `fotosSocios` em `src/content/provisorios.ts`.
-- [ ] 5. Vídeo vertical real para o hero. Hoje: clipe provisório gerado com `ffmpeg` (ver "Origem do vídeo provisório" abaixo). Trocar `videoHero` em `src/content/provisorios.ts`. Ao trocar, conferir de novo o LCP no computador: um pôster com conteúdo real pode passar a ser o maior elemento da tela.
+- [ ] 5. Vídeo vertical real para o hero e vídeos reais para os fundos (hero, Frentes, Quem faz: bastidor, gravação, cliente; mp4 e webm sem áudio, até 2,5 MB cada, caminhos em `fundos` no `src/content/site.ts`). Hoje são animações abstratas geradas com `ffmpeg` (ver "Origem dos vídeos provisórios" abaixo). Trocar `videoHero` em `src/content/provisorios.ts`. Ao trocar, conferir de novo o LCP no computador: um pôster com conteúdo real pode passar a ser o maior elemento da tela.
 - [ ] 6. Texto final da política de privacidade. Hoje: texto provisório curto em `/privacidade`. Trocar em `src/content/site.ts` (`privacidade`) e pôr `politicaProvisoria = false`.
 - [ ] 7. Confirmação do domínio: samarketing.co.br ou samarketing.com.br. Hoje: `https://samarketing.co.br` em `NEXT_PUBLIC_SITE_URL`.
 - [ ] 8. Significado de CCO: Chief Commercial Officer ou Chief Creative Officer. Hoje: Chief Commercial Officer, Diretor comercial.
@@ -27,7 +27,7 @@ valor provisório ou pendência que trava o lançamento.
 - [ ] 14. Sobrenomes dos sócios, se a SA quiser mostrá-los.
 - [ ] 15. Primeiros cases, depoimentos e números reais, para ligar as seções ocultas (`cases`, `depoimentos` e `numeros` em `src/content/site.ts`).
 
-## Origem do vídeo provisório
+## Origem dos vídeos provisórios
 
 Os bancos de vídeo livres (Pexels, Pixabay e Coverr) estavam bloqueados pela
 rede do ambiente de desenvolvimento. Seguindo o plano B do prompt, o clipe
@@ -47,3 +47,8 @@ ffmpeg -f lavfi -i "color=c=0x1A1A1A:s=720x1280:d=6:r=30" \
   -map "[v]" -an -c:v libx264 -preset slow -crf 30 -pix_fmt yuv420p -movflags +faststart public/video/hero-provisorio.mp4
 ffmpeg -i public/video/hero-provisorio.mp4 -frames:v 1 -q:v 6 public/video/hero-provisorio.jpg
 ```
+
+Vídeos de fundo (`public/video/fundo/`) e o novo vídeo vertical do hero
+também foram gerados com `ffmpeg`, a partir dos filtros `gradients` e `life`,
+nas cores da marca, sem nenhuma imagem de terceiros. Cada um tem versão WebM
+(VP9) e MP4 (H.264).

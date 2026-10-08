@@ -1,14 +1,16 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { comum, frentes, secaoFrentes } from "@/content/site";
+import { comum, frentes, fundos, secaoFrentes } from "@/content/site";
 import { urlWhatsapp } from "@/lib/whatsapp";
 import { BotaoDiagnostico } from "./BotaoDiagnostico";
+import { VideoFundo } from "./VideoFundo";
 
 /** Quatro linhas de largura total. Sem ícone e sem número: não são sequência. */
 export function Frentes() {
   return (
     <section id="frentes" data-theme="dark" aria-labelledby="frentes-titulo" className="sa-grao sa-secao">
+      <VideoFundo src={fundos.frentes} className="sa-video-fundo--suave" rotulos={fundos.rotulos} />
       <div className="sa-container">
-        <div className="sa-texto">
+        <div className="sa-texto sa-revela">
           <h2 id="frentes-titulo" className="titulo-1">
             {secaoFrentes.titulo}
           </h2>

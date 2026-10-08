@@ -1,4 +1,5 @@
 import { metodo, nomeDaFrente } from "@/content/site";
+import { Funil } from "./Funil";
 import { MetodoMarcador } from "./MetodoMarcador";
 
 /** A ordem é informação: o número de cada etapa vem do contador da lista. */
@@ -12,11 +13,12 @@ export function Metodo() {
               {metodo.titulo}
             </h2>
             <p className="lead mt-6 text-text-muted">{metodo.abertura}</p>
+            <Funil etapas={metodo.etapas.map((e) => e.nome)} />
           </div>
         </div>
         <ol className="sa-etapas mt-12 lg:col-span-6 lg:col-start-7 lg:mt-0" data-metodo="">
           {metodo.etapas.map((etapa) => (
-            <li key={etapa.id} className="sa-etapa" data-etapa={etapa.id}>
+            <li key={etapa.id} className="sa-etapa sa-revela" data-etapa={etapa.id}>
               <h3 className="titulo-2">{etapa.nome}</h3>
               <div>
                 <p className="corpo">{etapa.acontece}</p>

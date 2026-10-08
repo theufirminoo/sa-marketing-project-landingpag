@@ -75,6 +75,7 @@ export function HeroVideo({ video, etiqueta }: Props) {
         onPlay={() => setTocando(true)}
         onPause={() => setTocando(false)}
       >
+        <source src={video.src.replace(/\.mp4$/, ".webm")} type="video/webm" />
         <source src={video.src} type="video/mp4" />
       </video>
       <button

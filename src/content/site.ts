@@ -108,10 +108,26 @@ export const hero = {
   pergunta: "O que mais trava suas vendas hoje?",
   video: {
     ...videoHero,
-    descricao: "Vídeo provisório em tons de cinza, no lugar do vídeo da SA.",
+    descricao: "Vídeo provisório de luz âmbar em movimento, no lugar do vídeo da SA.",
     pausar: "Pausar o vídeo",
     tocar: "Tocar o vídeo",
   },
+} as const;
+
+/* ------------------------------------------------------------------ */
+/* Movimento: vídeos de fundo e faixa das etapas                        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Vídeos abstratos provisórios, gerados com ffmpeg nas cores da marca.
+ * Troque pelos vídeos reais da SA (bastidor, gravação, cliente) quando
+ * chegarem: mesmo formato, mp4 sem áudio, até 2,5 MB.
+ */
+export const fundos = {
+  rotulos: { pausar: "Pausar a animação de fundo", tocar: "Tocar a animação de fundo" },
+  hero: "/video/fundo/hero-fundo.mp4",
+  frentes: "/video/fundo/luz-ambar.mp4",
+  quemFaz: "/video/fundo/textura-rede.mp4",
 } as const;
 
 /* ------------------------------------------------------------------ */

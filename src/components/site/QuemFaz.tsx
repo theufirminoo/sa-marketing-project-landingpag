@@ -1,7 +1,8 @@
 import Image from "next/image";
 
-import { quemFaz, type Pessoa } from "@/content/site";
+import { fundos, quemFaz, type Pessoa } from "@/content/site";
 import { Provisorio } from "./Provisorio";
+import { VideoFundo } from "./VideoFundo";
 
 /** Silhueta provisória de cabeça e ombros, a mesma para os três. */
 function Silhueta({ nome }: { nome: string }) {
@@ -44,8 +45,9 @@ function Retrato({ pessoa }: { pessoa: Pessoa }) {
 export function QuemFaz() {
   return (
     <section id="quem-faz" data-theme="dark" aria-labelledby="quem-faz-titulo" className="sa-grao sa-secao sa-cafe">
+      <VideoFundo src={fundos.quemFaz} className="sa-video-fundo--textura" rotulos={fundos.rotulos} />
       <div className="sa-container">
-        <div className="sa-texto">
+        <div className="sa-texto sa-revela">
           <h2 id="quem-faz-titulo" className="titulo-1 text-marca-giz">
             {quemFaz.titulo}
           </h2>
@@ -53,7 +55,7 @@ export function QuemFaz() {
         </div>
         <ul className="mt-12 grid list-none gap-12 p-0 md:grid-cols-3 md:gap-6">
           {quemFaz.pessoas.map((pessoa) => (
-            <li key={pessoa.id}>
+            <li key={pessoa.id} className="sa-revela">
               <Retrato pessoa={pessoa} />
             </li>
           ))}

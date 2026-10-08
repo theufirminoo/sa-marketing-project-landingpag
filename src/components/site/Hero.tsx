@@ -1,10 +1,11 @@
 import { Fragment, type CSSProperties } from "react";
 
-import { comum, hero, travas } from "@/content/site";
+import { comum, fundos, hero, travas } from "@/content/site";
 import { urlWhatsapp } from "@/lib/whatsapp";
 import { BotaoDiagnostico } from "./BotaoDiagnostico";
 import { HeroVideo } from "./HeroVideo";
 import { Provisorio } from "./Provisorio";
+import { VideoFundo } from "./VideoFundo";
 
 const indice = (i: number) => ({ "--i": i }) as CSSProperties;
 
@@ -20,8 +21,11 @@ export function Hero() {
       id="inicio"
       data-theme="dark"
       aria-labelledby="hero-titulo"
-      className="sa-grao pt-[calc(var(--header-h)+var(--space-6))] pb-16 lg:pt-[calc(var(--header-h)+var(--space-16))] lg:pb-32"
+      className="sa-grao overflow-hidden pt-[calc(var(--header-h)+var(--space-6))] pb-16 lg:pt-[calc(var(--header-h)+var(--space-16))] lg:pb-32"
     >
+      <div className="sa-brilho" aria-hidden="true" />
+      <VideoFundo src={fundos.hero} className="sa-video-fundo--hero" rotulos={fundos.rotulos} />
+      <div className="sa-veu" aria-hidden="true" />
       <div className="sa-container lg:grid lg:grid-cols-12 lg:gap-x-6">
         <div className="lg:col-span-7">
           {/* Um bloco de texto só: o Chrome conta o h1 inteiro como candidato a LCP. */}
