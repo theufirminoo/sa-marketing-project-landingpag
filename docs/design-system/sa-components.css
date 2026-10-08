@@ -1,0 +1,253 @@
+/* SA Marketing — estilos de componente. Carrega depois de tokens.css; todo valor vem de um token. */
+
+/* Base */
+.sa-root {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+.sa-root *, .sa-root *::before, .sa-root *::after { box-sizing: border-box; }
+
+/* A largura da fonte não cabe em tokens.json; fica aqui, por estilo. */
+.display  { font-stretch: 78%; text-wrap: balance; }
+.titulo-1 { font-stretch: 84%; text-wrap: balance; }
+.titulo-2 { font-stretch: 90%; text-wrap: balance; }
+.titulo-3, .lead, .corpo, .pequeno, .rotulo { font-stretch: 100%; }
+.sa-muted { color: var(--text-muted); }
+.sa-num { font-variant-numeric: tabular-nums; }
+
+/* Foco: um anel só, igual em todo controle */
+.sa-btn:focus-visible,
+.sa-chip:focus-visible,
+.sa-chip input:focus-visible + span,
+.sa-input:focus-visible,
+.sa-frente > summary:focus-visible,
+.sa-faq > summary:focus-visible,
+.sa-link:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* Botão: retângulo de canto 4 px. É ação. */
+.sa-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: var(--alvo-toque);
+  padding: 0 var(--space-6);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--on-accent);
+  font: 600 16px/1 var(--font-sans);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--dur-rapida) var(--ease-saida),
+              border-color var(--dur-rapida) var(--ease-saida),
+              transform var(--dur-rapida) var(--ease-saida);
+}
+.sa-btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.sa-btn:active { background: var(--accent-pressed); border-color: var(--accent-pressed); transform: translateY(1px); }
+.sa-btn[disabled], .sa-btn[aria-disabled="true"] {
+  background: var(--surface-hover); border-color: var(--surface-hover);
+  color: var(--text-muted); cursor: not-allowed; transform: none;
+}
+.sa-btn--secundario { background: transparent; border-color: var(--border-control); color: var(--text); }
+.sa-btn--secundario:hover { background: var(--surface-hover); border-color: var(--text); }
+.sa-btn--secundario:active { background: var(--surface); border-color: var(--text); }
+/* Sobre o fundo âmbar do CTA final */
+.sa-btn--preto { background: var(--marca-preto); border-color: var(--marca-preto); color: var(--marca-giz); }
+.sa-btn--preto:hover { background: var(--cafe); border-color: var(--cafe); }
+.sa-btn--preto:active { background: var(--marca-preto); border-color: var(--marca-preto); }
+.sa-btn--preto:focus-visible { outline-color: var(--marca-preto); }
+.sa-btn--bloco { width: 100%; }
+
+.sa-link {
+  color: var(--text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px;
+  transition: color var(--dur-rapida) var(--ease-saida);
+}
+.sa-link:hover { color: var(--accent-text); text-decoration-thickness: 2px; }
+
+/* Opção: pílula. É escolha. */
+.sa-chips { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; padding: 0; border: 0; }
+.sa-chip { position: relative; display: inline-flex; cursor: pointer; }
+.sa-chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.sa-chip span {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  min-height: var(--alvo-toque);
+  padding: 0 20px;
+  border: 1px solid var(--border-control);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text);
+  font: 500 16px/1.2 var(--font-sans);
+  transition: background-color var(--dur-rapida) var(--ease-saida),
+              border-color var(--dur-rapida) var(--ease-saida),
+              color var(--dur-rapida) var(--ease-saida);
+}
+.sa-chip:hover span { background: var(--surface-hover); border-color: var(--text); }
+.sa-chip input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+/* A seleção não depende só da cor: ganha um visto. */
+.sa-chip input:checked + span::before {
+  content: ""; width: 14px; height: 8px; margin-top: -4px;
+  border-left: 2px solid var(--on-accent); border-bottom: 2px solid var(--on-accent);
+  transform: rotate(-45deg);
+}
+.sa-chip input:disabled + span { color: var(--text-muted); border-color: var(--border); cursor: not-allowed; }
+/* Opção como botão: no hero e no CTA final, onde clicar já abre o diagnóstico. */
+button.sa-chip {
+  align-items: center; min-height: var(--alvo-toque); padding: 0 20px;
+  border: 1px solid var(--border-control); border-radius: var(--radius-pill);
+  background: transparent; color: var(--text);
+  font: 500 16px/1.2 var(--font-sans); text-align: left;
+  transition: background-color var(--dur-rapida) var(--ease-saida),
+              border-color var(--dur-rapida) var(--ease-saida),
+              color var(--dur-rapida) var(--ease-saida);
+}
+button.sa-chip:hover { background: var(--surface-hover); border-color: var(--text); }
+button.sa-chip:active { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+/* Sobre o fundo âmbar do CTA final */
+button.sa-chip--ambar { border-color: var(--marca-preto); color: var(--marca-preto); }
+button.sa-chip--ambar:hover, button.sa-chip--ambar:active { background: var(--marca-preto); border-color: var(--marca-preto); color: var(--marca-giz); }
+button.sa-chip--ambar:focus-visible { outline-color: var(--marca-preto); }
+
+/* Campo */
+.sa-campo { display: grid; gap: var(--space-2); max-width: 420px; }
+.sa-campo label { font: 500 13px/1.4 var(--font-sans); letter-spacing: 0.01em; color: var(--text); }
+.sa-input {
+  min-height: var(--alvo-toque); width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-control);
+  border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text);
+  font: 400 17px/1.4 var(--font-sans);
+  transition: border-color var(--dur-rapida) var(--ease-saida);
+}
+.sa-input::placeholder { color: var(--text-muted); }
+.sa-input:hover { border-color: var(--text); }
+.sa-input:focus-visible { border-color: var(--text); }
+.sa-input[aria-invalid="true"] { border-color: var(--danger); }
+.sa-ajuda { font: 400 14px/1.5 var(--font-sans); color: var(--text-muted); margin: 0; }
+.sa-erro { font: 500 14px/1.5 var(--font-sans); color: var(--danger); margin: 0; }
+
+/* Diagnóstico */
+.sa-diag {
+  display: grid; gap: var(--space-6);
+  max-width: 560px; padding: var(--space-6);
+  border-radius: var(--radius-md);
+  background: var(--surface); box-shadow: var(--shadow-dialog);
+}
+.sa-diag__topo { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+.sa-diag__trilha { flex: 1; height: 4px; border-radius: var(--radius-pill); background: var(--bg-sunken); overflow: hidden; }
+.sa-diag__barra { height: 100%; background: var(--accent); transition: width var(--dur-base) var(--ease-saida); }
+.sa-diag__acoes { display: flex; justify-content: space-between; gap: var(--space-3); }
+.sa-diag__resultado { padding: var(--space-4); border-radius: var(--radius-sm); background: var(--accent-tint); }
+
+/* Linha de frente: índice de quatro linhas que se abrem */
+.sa-frentes { border-bottom: 1px solid var(--border); }
+.sa-frente { border-top: 1px solid var(--border); }
+.sa-frente > summary {
+  display: grid; grid-template-columns: minmax(180px, 1fr) 2fr auto; align-items: baseline; gap: var(--space-6);
+  padding: var(--space-8) var(--space-4);
+  list-style: none; cursor: pointer;
+  transition: background-color var(--dur-lenta) var(--ease-saida), color var(--dur-lenta) var(--ease-saida);
+}
+.sa-frente > summary::-webkit-details-marker { display: none; }
+.sa-frente__nome { margin: 0; }
+.sa-frente__promessa { margin: 0; color: var(--text-muted); transition: color var(--dur-lenta) var(--ease-saida); }
+.sa-frente__sinal { position: relative; width: 20px; height: 20px; align-self: center; }
+.sa-frente__sinal::before, .sa-frente__sinal::after {
+  content: ""; position: absolute; left: 0; top: 9px; width: 20px; height: 2px; background: currentColor;
+  transition: transform var(--dur-base) var(--ease-saida);
+}
+.sa-frente__sinal::after { transform: rotate(90deg); }
+.sa-frente[open] .sa-frente__sinal::after { transform: rotate(0deg); }
+/* Hover: a linha inteira inverte. É o único hover grande da página. */
+.sa-frente > summary:hover { background: var(--text); color: var(--bg); }
+.sa-frente > summary:hover .sa-frente__promessa { color: var(--bg); }
+.sa-frente__corpo {
+  display: grid; grid-template-columns: minmax(180px, 1fr) 2fr; gap: var(--space-6);
+  padding: 0 var(--space-4) var(--space-8);
+}
+.sa-frente__lista { grid-column: 2; columns: 2; column-gap: var(--space-8); margin: 0; padding: 0; list-style: none; }
+.sa-frente__lista li { padding: var(--space-2) 0; border-top: 1px solid var(--border); break-inside: avoid; }
+.sa-frente__acao { grid-column: 2; }
+@media (max-width: 720px) {
+  .sa-frente > summary { grid-template-columns: 1fr auto; gap: var(--space-2) var(--space-4); padding: var(--space-6) 0; }
+  .sa-frente__promessa { grid-column: 1 / -1; grid-row: 2; }
+  .sa-frente__corpo { grid-template-columns: 1fr; padding: 0 0 var(--space-6); }
+  .sa-frente__lista, .sa-frente__acao { grid-column: 1; }
+  .sa-frente__lista { columns: 1; }
+}
+
+/* Etapa do método */
+.sa-etapas { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; counter-reset: etapa; }
+.sa-etapa {
+  display: grid; grid-template-columns: 48px minmax(140px, 1fr) 2fr; gap: var(--space-6);
+  padding: var(--space-6) 0; border-top: 1px solid var(--border);
+  counter-increment: etapa;
+}
+.sa-etapa::before {
+  content: counter(etapa);
+  display: grid; place-items: center; width: 32px; height: 32px;
+  border: 1px solid var(--border-control); border-radius: var(--radius-pill);
+  font: 500 14px/1 var(--font-sans); font-variant-numeric: tabular-nums; color: var(--text);
+  transition: background-color var(--dur-base) var(--ease-saida), border-color var(--dur-base) var(--ease-saida);
+}
+.sa-etapa[aria-current="step"]::before { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.sa-etapa__nome { margin: 0; }
+.sa-etapa__texto { margin: 0; }
+.sa-etapa__falha { margin: var(--space-2) 0 0; color: var(--text-muted); }
+.sa-etiquetas { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
+.sa-etiqueta {
+  padding: 4px 12px; border: 1px solid var(--border-control); border-radius: var(--radius-pill);
+  font: 500 13px/1.4 var(--font-sans); letter-spacing: 0.01em;
+}
+@media (max-width: 720px) {
+  .sa-etapa { grid-template-columns: 40px 1fr; gap: var(--space-2) var(--space-4); }
+  .sa-etapa > div:last-child { grid-column: 2; }
+}
+
+/* Dúvida */
+.sa-faqs { max-width: var(--container-texto); border-bottom: 1px solid var(--border); }
+.sa-faq { border-top: 1px solid var(--border); }
+.sa-faq > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-6);
+  min-height: 72px; padding: var(--space-4) 0;
+  list-style: none; cursor: pointer;
+  transition: color var(--dur-rapida) var(--ease-saida);
+}
+.sa-faq > summary::-webkit-details-marker { display: none; }
+.sa-faq > summary:hover { color: var(--accent-text); }
+.sa-faq__sinal { position: relative; flex: none; width: 16px; height: 16px; }
+.sa-faq__sinal::before, .sa-faq__sinal::after {
+  content: ""; position: absolute; left: 0; top: 7px; width: 16px; height: 2px; background: currentColor;
+  transition: transform var(--dur-base) var(--ease-saida);
+}
+.sa-faq__sinal::after { transform: rotate(90deg); }
+.sa-faq[open] .sa-faq__sinal::after { transform: rotate(0deg); }
+.sa-faq__resposta { margin: 0; padding: 0 var(--space-8) var(--space-6) 0; color: var(--text-muted); }
+
+/* Pessoa: sempre sobre café */
+.sa-pessoas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); padding: var(--space-8); background: var(--cafe); color: var(--marca-giz); }
+.sa-pessoa { display: grid; gap: var(--space-3); margin: 0; }
+.sa-pessoa__foto {
+  aspect-ratio: 4 / 5; width: 100%; overflow: hidden;
+  border-radius: var(--radius-sm); background: var(--marca-preto);
+  display: grid; place-items: center; color: var(--areia);
+}
+/* Silhueta provisória, até a foto real chegar */
+.sa-pessoa__foto svg { width: 82%; height: auto; align-self: end; fill: var(--areia); opacity: 0.55; }
+.sa-pessoa__foto img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-lenta) var(--ease-saida); }
+.sa-pessoa:hover .sa-pessoa__foto img { transform: scale(1.03); }
+.sa-pessoa__nome { margin: 0; }
+.sa-pessoa__cargo { margin: 0; }
+.sa-pessoa__papel { margin: 0; color: var(--areia); }
+@media (max-width: 720px) { .sa-pessoas { grid-template-columns: 1fr 1fr; padding: var(--space-4); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-root *, .sa-root *::before, .sa-root *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

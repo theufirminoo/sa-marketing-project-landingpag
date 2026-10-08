@@ -1,0 +1,1240 @@
+@import "tailwindcss";
+/* Fonte da verdade dos tokens: docs/design-system/sa-tokens.css. */
+@import "../../docs/design-system/sa-tokens.css" layer(base);
+
+/*
+ * Fontes de reserva locais, sem requisição: enquanto a Bricolage carrega, o
+ * texto usa Arial (ou Roboto, no Android) com size-adjust medido contra a
+ * Bricolage em cada largura. Assim o título não muda de quebra de linha na
+ * troca de fonte e não há deslocamento de layout. Medição: Chromium 141,
+ * razão de largura de uma amostra dos títulos da página.
+ */
+@font-face {
+  font-family: "SA Reserva 78";
+  src: local("Arial"), local("Liberation Sans");
+  size-adjust: 80.42%;
+  ascent-override: 115.64%;
+  descent-override: 33.57%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "SA Reserva 78 Roboto";
+  src: local("Roboto");
+  size-adjust: 74.63%;
+  ascent-override: 124.61%;
+  descent-override: 36.18%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "SA Reserva 84";
+  src: local("Arial"), local("Liberation Sans");
+  size-adjust: 86.60%;
+  ascent-override: 107.39%;
+  descent-override: 31.18%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "SA Reserva 84 Roboto";
+  src: local("Roboto");
+  size-adjust: 85.40%;
+  ascent-override: 108.90%;
+  descent-override: 31.62%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "SA Reserva 90";
+  src: local("Arial"), local("Liberation Sans");
+  size-adjust: 93.23%;
+  ascent-override: 99.75%;
+  descent-override: 28.96%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "SA Reserva 90 Roboto";
+  src: local("Roboto");
+  size-adjust: 93.83%;
+  ascent-override: 99.12%;
+  descent-override: 28.78%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "SA Reserva 100";
+  src: local("Arial"), local("Liberation Sans");
+  size-adjust: 105.43%;
+  ascent-override: 88.21%;
+  descent-override: 25.61%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "SA Reserva Roboto";
+  src: local("Roboto");
+  size-adjust: 105.10%;
+  ascent-override: 88.49%;
+  descent-override: 25.69%;
+  line-gap-override: 0%;
+}
+
+/* Só existem as cores, raios e sombras do design system. */
+@theme {
+  --color-*: initial;
+  --shadow-*: initial;
+  --radius-*: initial;
+  --breakpoint-sm: initial;
+  --breakpoint-2xl: initial;
+
+  /* Espelham --radius-sm, --radius-md e --radius-pill de sa-tokens.css. */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-pill: 999px;
+}
+
+@theme inline {
+  --font-sans: var(--font-bricolage), "SA Reserva 100", "SA Reserva Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-bg: var(--bg);
+  --color-bg-sunken: var(--bg-sunken);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-control: var(--border-control);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-pressed: var(--accent-pressed);
+  --color-on-accent: var(--on-accent);
+  --color-accent-text: var(--accent-text);
+  --color-accent-tint: var(--accent-tint);
+  --color-focus: var(--focus);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-cafe: var(--cafe);
+  --color-areia: var(--areia);
+  --color-marca-preto: var(--marca-preto);
+  --color-marca-giz: var(--marca-giz);
+  --color-marca-ambar: var(--marca-ambar);
+
+  /* Ponte do shadcn. Atenção: aqui `accent` é o âmbar, não o fundo de hover. */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  :root {
+    --font-sans: var(--font-bricolage), "SA Reserva 100", "SA Reserva Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+    /* Escalonamento das opções na entrada do hero, definido no prompt. */
+    --atraso-opcao: 40ms;
+    color-scheme: dark;
+  }
+
+  :root,
+  [data-theme] {
+    --background: var(--bg);
+    --foreground: var(--text);
+    --card: var(--surface);
+    --card-foreground: var(--text);
+    --popover: var(--surface);
+    --popover-foreground: var(--text);
+    --primary: var(--accent);
+    --primary-foreground: var(--on-accent);
+    --secondary: var(--surface-hover);
+    --secondary-foreground: var(--text);
+    --muted: var(--surface-hover);
+    --muted-foreground: var(--text-muted);
+    --accent-foreground: var(--text);
+    --destructive: var(--danger);
+    --input: var(--border-control);
+    --ring: var(--focus);
+    --radius: var(--radius-sm);
+  }
+
+  [data-theme="light"] {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: var(--header-h);
+  }
+
+  /* Toque sem atraso de zoom; o retorno visual vem dos estados :active. */
+  a,
+  button,
+  [role="radio"],
+  input,
+  label {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  [data-theme] {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  section[id] {
+    scroll-margin-top: var(--header-h);
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+
+  /* Um anel só, igual em todo controle. Nunca é removido. */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .sa-num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Títulos condensados com a reserva calibrada para a mesma largura. */
+  .display {
+    font-family: "Bricolage Grotesque", "SA Reserva 78", "SA Reserva 78 Roboto", var(--font-sans);
+  }
+  .titulo-1 {
+    font-family: "Bricolage Grotesque", "SA Reserva 84", "SA Reserva 84 Roboto", var(--font-sans);
+  }
+  .titulo-2 {
+    font-family: "Bricolage Grotesque", "SA Reserva 90", "SA Reserva 90 Roboto", var(--font-sans);
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------------- */
+  /* Grade e seção                                                     */
+  /* ---------------------------------------------------------------- */
+  .sa-container {
+    width: 100%;
+    max-width: calc(var(--container) + 2 * var(--space-4));
+    margin-inline: auto;
+    padding-inline: var(--space-4);
+  }
+  @media (min-width: 768px) {
+    .sa-container {
+      max-width: calc(var(--container) + 2 * var(--space-6));
+      padding-inline: var(--space-6);
+    }
+  }
+
+  .sa-secao {
+    padding-block: var(--space-16);
+  }
+  @media (min-width: 1024px) {
+    .sa-secao {
+      padding-block: var(--space-24);
+    }
+    .sa-secao--alta {
+      padding-block: var(--space-32);
+    }
+  }
+
+  .sa-texto {
+    max-width: var(--container-texto);
+  }
+  /* lead: no máximo 60 caracteres por linha; corpo: 72. */
+  .lead {
+    max-width: 60ch;
+  }
+  .corpo {
+    max-width: 72ch;
+  }
+
+  /* Grão fino e estático nos fundos escuros. */
+  .sa-grao {
+    position: relative;
+    isolation: isolate;
+  }
+  .sa-grao::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Botão: retângulo de canto 4 px. É ação.                           */
+  /* ---------------------------------------------------------------- */
+  .sa-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--alvo-toque);
+    padding: var(--space-3) var(--space-6);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 600 16px/1.2 var(--font-sans);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-rapida) var(--ease-saida),
+      border-color var(--dur-rapida) var(--ease-saida),
+      color var(--dur-rapida) var(--ease-saida),
+      transform var(--dur-rapida) var(--ease-saida);
+  }
+  @media (hover: hover) {
+    .sa-btn:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+  }
+  .sa-btn:active {
+    background: var(--accent-pressed);
+    border-color: var(--accent-pressed);
+    transform: translateY(1px);
+  }
+  .sa-btn:disabled,
+  .sa-btn[aria-disabled="true"] {
+    background: var(--surface-hover);
+    border-color: var(--surface-hover);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .sa-btn--secundario {
+    background: transparent;
+    border-color: var(--border-control);
+    color: var(--text);
+  }
+  @media (hover: hover) {
+    .sa-btn--secundario:hover {
+      background: var(--surface-hover);
+      border-color: var(--text);
+    }
+  }
+  .sa-btn--secundario:active {
+    background: var(--surface);
+    border-color: var(--text);
+  }
+
+  /* Sobre o fundo âmbar do CTA final. */
+  .sa-btn--preto {
+    background: var(--marca-preto);
+    border-color: var(--marca-preto);
+    color: var(--marca-giz);
+  }
+  @media (hover: hover) {
+    .sa-btn--preto:hover {
+      background: var(--cafe);
+      border-color: var(--cafe);
+    }
+  }
+  .sa-btn--preto:active {
+    background: var(--marca-preto);
+    border-color: var(--marca-preto);
+  }
+
+  .sa-btn--bloco {
+    width: 100%;
+  }
+
+  /* Ícone de canto, 48 px: fechar, tocar e pausar. */
+  .sa-btn-icone {
+    display: inline-grid;
+    place-items: center;
+    width: var(--alvo-toque);
+    height: var(--alvo-toque);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    transition:
+      background-color var(--dur-rapida) var(--ease-saida),
+      border-color var(--dur-rapida) var(--ease-saida);
+  }
+  @media (hover: hover) {
+    .sa-btn-icone:hover {
+      background: var(--surface-hover);
+      border-color: var(--text);
+    }
+  }
+  .sa-btn-icone:active {
+    background: var(--surface);
+  }
+
+  /* Link: sublinhado 1 px afastado 4 px. */
+  .sa-link {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    cursor: pointer;
+    transition: color var(--dur-rapida) var(--ease-saida);
+  }
+  @media (hover: hover) {
+    .sa-link:hover {
+      color: var(--accent-text);
+      text-decoration-thickness: 2px;
+    }
+  }
+  button.sa-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    min-height: var(--alvo-toque);
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Opção: pílula. É escolha.                                         */
+  /* ---------------------------------------------------------------- */
+  .sa-chips {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 768px) {
+    .sa-chips {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+  .sa-chips--coluna {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+  @media (min-width: 768px) {
+    .sa-chips--coluna {
+      flex-direction: column;
+    }
+  }
+
+  .sa-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    min-height: var(--alvo-toque);
+    padding: var(--space-3) 20px;
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--text);
+    font: 500 16px/1.2 var(--font-sans);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-rapida) var(--ease-saida),
+      border-color var(--dur-rapida) var(--ease-saida),
+      color var(--dur-rapida) var(--ease-saida);
+  }
+  @media (min-width: 768px) {
+    .sa-chips:not(.sa-chips--coluna) .sa-chip {
+      width: auto;
+    }
+  }
+  @media (hover: hover) {
+    .sa-chip:hover {
+      background: var(--surface-hover);
+      border-color: var(--text);
+    }
+  }
+  .sa-chip:active,
+  .sa-chip[data-state="checked"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+  .sa-chip:disabled {
+    border-color: var(--border);
+    color: var(--text-muted);
+    cursor: not-allowed;
+  }
+  .sa-chip__visto {
+    flex: none;
+  }
+
+  /* Sobre o fundo âmbar do CTA final. */
+  .sa-chip--ambar {
+    border-color: var(--marca-preto);
+    color: var(--marca-preto);
+  }
+  @media (hover: hover) {
+    .sa-chip--ambar:hover {
+      background: var(--marca-preto);
+      border-color: var(--marca-preto);
+      color: var(--marca-giz);
+    }
+  }
+  .sa-chip--ambar:active {
+    background: var(--marca-preto);
+    border-color: var(--marca-preto);
+    color: var(--marca-giz);
+  }
+  .sa-sobre-ambar :focus-visible {
+    outline-color: var(--marca-preto);
+  }
+
+  /* Etiqueta de frente: pílula, não clicável. */
+  .sa-etiquetas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sa-etiqueta {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-pill);
+  }
+
+  /* Só em desenvolvimento: marca o que é provisório. */
+  .sa-provisorio {
+    display: inline-block;
+    padding: 0 var(--space-2);
+    border: 1px dashed var(--border-control);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    background: var(--bg);
+    vertical-align: middle;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Campo                                                             */
+  /* ---------------------------------------------------------------- */
+  .sa-campo {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .sa-input {
+    width: 100%;
+    min-height: var(--alvo-toque);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    /* 17 px: o iOS não dá zoom no campo. */
+    font: 400 17px/1.4 var(--font-sans);
+    transition: border-color var(--dur-rapida) var(--ease-saida);
+  }
+  .sa-input::placeholder {
+    color: var(--text-muted);
+  }
+  @media (hover: hover) {
+    .sa-input:hover {
+      border-color: var(--text);
+    }
+  }
+  .sa-input:focus-visible {
+    border-color: var(--text);
+  }
+  .sa-input[aria-invalid="true"] {
+    border-color: var(--danger);
+  }
+  .sa-erro {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    color: var(--danger);
+    font-weight: 500;
+  }
+  .sa-erro svg {
+    flex: none;
+    margin-top: 1px;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Linha de frente: quatro linhas que se abrem                       */
+  /* ---------------------------------------------------------------- */
+  .sa-frentes {
+    border-bottom: 1px solid var(--border);
+  }
+  .sa-frente {
+    border-top: 1px solid var(--border);
+  }
+  .sa-frente__gatilho {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    width: 100%;
+    padding: var(--space-6) 0;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-lenta) var(--ease-saida),
+      color var(--dur-lenta) var(--ease-saida);
+  }
+  .sa-frente__promessa {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    color: var(--text-muted);
+    transition: color var(--dur-lenta) var(--ease-saida);
+  }
+  @media (min-width: 768px) {
+    .sa-frente__gatilho {
+      grid-template-columns: minmax(180px, 1fr) 2fr auto;
+      gap: var(--space-6);
+      padding: var(--space-8) var(--space-4);
+    }
+    .sa-frente__promessa {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+  /* Hover: a linha inteira inverte. É o único hover grande da página. */
+  @media (hover: hover) {
+    .sa-frente__gatilho:hover {
+      background: var(--text);
+      color: var(--bg);
+    }
+    .sa-frente__gatilho:hover .sa-frente__promessa {
+      color: var(--bg);
+    }
+  }
+  .sa-frente__gatilho:focus-visible {
+    outline-offset: -2px;
+  }
+
+  /* Sinal de mais e menos, em CSS. */
+  .sa-sinal {
+    position: relative;
+    flex: none;
+    width: 20px;
+    height: 20px;
+    align-self: center;
+  }
+  .sa-sinal::before,
+  .sa-sinal::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    transition: transform var(--dur-base) var(--ease-saida);
+  }
+  .sa-sinal::after {
+    transform: rotate(90deg);
+  }
+  [data-state="open"] > .sa-sinal::after,
+  [data-state="open"] .sa-sinal::after {
+    transform: rotate(0deg);
+  }
+
+  .sa-frente__corpo {
+    padding: 0 0 var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .sa-frente__corpo {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) 2fr auto;
+      column-gap: var(--space-6);
+      padding: 0 var(--space-4) var(--space-8);
+    }
+    .sa-frente__corpo > * {
+      grid-column: 2;
+    }
+  }
+  .sa-frente__lista {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 768px) {
+    .sa-frente__lista {
+      columns: 2;
+      column-gap: var(--space-8);
+    }
+  }
+  .sa-frente__lista li {
+    padding: var(--space-2) 0;
+    border-top: 1px solid var(--border);
+    break-inside: avoid;
+  }
+  .sa-frente__acao {
+    margin-top: var(--space-4);
+  }
+
+  /* Conteúdo do acordeão: fica no HTML mesmo fechado (legível sem JS). */
+  .sa-acordeao-item[data-state="closed"] > [data-slot="accordion-content"] {
+    display: none;
+  }
+  .sa-acordeao-item[data-state="open"] > [data-slot="accordion-content"] {
+    animation: sa-abre var(--dur-base) var(--ease-saida);
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Etapa do método                                                   */
+  /* ---------------------------------------------------------------- */
+  .sa-etapas {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: etapa;
+    border-bottom: 1px solid var(--border);
+  }
+  .sa-etapa {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--border);
+    counter-increment: etapa;
+  }
+  @media (min-width: 768px) {
+    .sa-etapa {
+      grid-template-columns: 48px minmax(140px, 1fr) 2fr;
+      gap: var(--space-6);
+    }
+  }
+  .sa-etapa::before {
+    content: counter(etapa);
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-pill);
+    font: 500 14px/1 var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+    transition:
+      background-color var(--dur-base) var(--ease-saida),
+      border-color var(--dur-base) var(--ease-saida),
+      color var(--dur-base) var(--ease-saida);
+  }
+  .sa-etapa[aria-current="step"]::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+  @media (max-width: 767px) {
+    .sa-etapa > div:last-child {
+      grid-column: 2;
+    }
+  }
+  .sa-etapa__falha {
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Dúvida                                                            */
+  /* ---------------------------------------------------------------- */
+  .sa-faqs {
+    max-width: var(--container-texto);
+    border-bottom: 1px solid var(--border);
+  }
+  .sa-faq {
+    border-top: 1px solid var(--border);
+  }
+  .sa-faq__gatilho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    width: 100%;
+    min-height: 72px;
+    padding: var(--space-4) 0;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: color var(--dur-rapida) var(--ease-saida);
+  }
+  @media (hover: hover) {
+    .sa-faq__gatilho:hover {
+      color: var(--accent-text);
+    }
+  }
+  .sa-faq .sa-sinal {
+    width: 16px;
+    height: 16px;
+  }
+  .sa-faq .sa-sinal::before,
+  .sa-faq .sa-sinal::after {
+    top: 7px;
+    width: 16px;
+  }
+  .sa-faq__resposta {
+    padding: 0 var(--space-8) var(--space-6) 0;
+    color: var(--text-muted);
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Pessoa: sempre sobre café                                         */
+  /* ---------------------------------------------------------------- */
+  .sa-pessoa__foto {
+    position: relative;
+    display: grid;
+    place-items: end center;
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--marca-preto);
+  }
+  .sa-pessoa__foto svg {
+    width: 80%;
+    height: auto;
+    fill: var(--areia);
+    opacity: 0.55;
+  }
+  .sa-pessoa__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-lenta) var(--ease-saida);
+  }
+  @media (hover: hover) {
+    .sa-pessoa:hover .sa-pessoa__foto img {
+      transform: scale(1.03);
+    }
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Mídia 9:16                                                        */
+  /* ---------------------------------------------------------------- */
+  .sa-moldura {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+  .sa-moldura video,
+  .sa-moldura img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .sa-reel {
+    display: grid;
+    gap: var(--space-3);
+    color: var(--text);
+    text-decoration: none;
+  }
+  .sa-reel .sa-moldura img {
+    transition: transform var(--dur-lenta) var(--ease-saida);
+  }
+  .sa-reel__tocar {
+    position: absolute;
+    right: var(--space-3);
+    bottom: var(--space-3);
+    display: grid;
+    place-items: center;
+    width: var(--alvo-toque);
+    height: var(--alvo-toque);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    opacity: 0;
+    transition: opacity var(--dur-rapida) var(--ease-saida);
+  }
+  @media (hover: hover) {
+    .sa-reel:hover .sa-moldura img {
+      transform: scale(1.03);
+    }
+    .sa-reel:hover .sa-reel__tocar {
+      opacity: 1;
+    }
+  }
+  .sa-reel:focus-visible .sa-reel__tocar {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .sa-reel__tocar {
+      opacity: 1;
+    }
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Diagnóstico                                                       */
+  /* ---------------------------------------------------------------- */
+  .sa-diag-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg-sunken) 80%, transparent);
+    animation: sa-esmaece var(--dur-lenta) var(--ease-saida);
+  }
+  .sa-diag {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    animation: sa-esmaece var(--dur-lenta) var(--ease-saida);
+  }
+  @media (min-width: 768px) {
+    .sa-diag {
+      inset: auto;
+      top: 50%;
+      left: 50%;
+      width: min(560px, calc(100vw - 2 * var(--space-6)));
+      height: auto;
+      max-height: calc(100dvh - 2 * var(--space-12));
+      transform: translate(-50%, -50%);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-dialog);
+    }
+  }
+  .sa-diag__topo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-4) 0;
+  }
+  @media (min-width: 768px) {
+    .sa-diag__topo {
+      padding: var(--space-6) var(--space-6) 0;
+    }
+  }
+  .sa-diag__trilha {
+    position: relative;
+    flex: 1;
+    height: 4px;
+    overflow: hidden;
+    border-radius: var(--radius-pill);
+    background: var(--bg-sunken);
+  }
+  .sa-diag__barra {
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    transform-origin: left center;
+    transition: transform var(--dur-base) var(--ease-saida);
+  }
+  .sa-diag__corpo {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-6) var(--space-4);
+  }
+  @media (min-width: 768px) {
+    .sa-diag__corpo {
+      padding: var(--space-6);
+    }
+  }
+  .sa-diag__acoes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+  @media (min-width: 768px) {
+    .sa-diag__acoes {
+      padding: var(--space-4) var(--space-6) var(--space-6);
+      border-top: 0;
+    }
+  }
+  .sa-diag__resultado {
+    padding: var(--space-4);
+    border-radius: var(--radius-sm);
+    background: var(--accent-tint);
+  }
+  .sa-diag__titulo:focus {
+    outline: none;
+  }
+  .sa-diag__titulo:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Cabeçalho, barra fixa, aviso de cookies e faixa de testes         */
+  /* ---------------------------------------------------------------- */
+  .sa-cabecalho {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    height: var(--header-h);
+    margin-bottom: calc(-1 * var(--header-h));
+    border-bottom: 1px solid transparent;
+    background: transparent;
+    transition:
+      background-color var(--dur-base) var(--ease-saida),
+      border-color var(--dur-base) var(--ease-saida);
+  }
+  .sa-cabecalho[data-rolou="true"] {
+    background: var(--bg);
+    border-bottom-color: var(--border);
+  }
+
+  .sa-pular {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    z-index: 60;
+    transform: translateY(-200%);
+  }
+  .sa-pular:focus-visible {
+    transform: none;
+  }
+
+  .sa-barra-fixa {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 40;
+    padding: var(--space-3) var(--space-4);
+    padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    box-shadow: var(--shadow-dialog);
+    transform: translateY(calc(100% + var(--space-6)));
+    transition: transform var(--dur-lenta) var(--ease-saida);
+  }
+  .sa-barra-fixa[data-visivel="true"] {
+    transform: none;
+  }
+  @media (min-width: 768px) {
+    .sa-barra-fixa {
+      display: none;
+    }
+  }
+
+  .sa-aviso-cookies {
+    position: fixed;
+    inset: auto var(--space-4) var(--space-4);
+    z-index: 40;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    max-width: 560px;
+    padding: var(--space-3) var(--space-4);
+    padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    box-shadow: var(--shadow-dialog);
+  }
+  @media (min-width: 768px) {
+    .sa-aviso-cookies {
+      left: var(--space-6);
+      right: auto;
+      bottom: var(--space-6);
+    }
+  }
+
+  .sa-faixa-testes {
+    position: relative;
+    z-index: 41;
+    padding: var(--space-2) 0;
+    background: var(--accent-tint);
+    color: var(--text);
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Entrada do hero: o único momento coreografado                     */
+  /* ---------------------------------------------------------------- */
+  /*
+   * O título inteiro sobe 16 px em 600 ms, só com transform. Esmaecer o texto
+   * ou animar cada linha em bloco tira o h1 da disputa de LCP no Chrome
+   * (testado no Chromium 141), por isso as linhas entram juntas.
+   */
+  .sa-hero-titulo {
+    animation: sa-sobe-so var(--dur-hero) var(--ease-saida) both;
+  }
+  .sa-hero-entra {
+    animation: sa-sobe var(--dur-lenta) var(--ease-saida) both;
+    animation-delay: calc(var(--dur-hero) + var(--i, 0) * var(--atraso-opcao));
+  }
+}
+
+@keyframes sa-sobe {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sa-sobe-so {
+  from {
+    transform: translateY(16px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes sa-esmaece {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sa-abre {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Movimento reduzido: tudo aparece pronto, troca seca. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0s !important;
+  }
+}
+
+@layer components {
+  #conteudo:focus {
+    outline: none;
+  }
+
+  .sa-cafe {
+    background: var(--cafe);
+    color: var(--marca-giz);
+  }
+
+  /* Passos de "Como começa": numerados pelo contador da lista. */
+  .sa-passos {
+    counter-reset: passo;
+  }
+  .sa-passo {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+    counter-increment: passo;
+  }
+  .sa-passo::before {
+    content: counter(passo);
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    margin-bottom: var(--space-2);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-pill);
+    font: 500 14px/1 var(--font-sans);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Rodapé: links em texto de apoio. */
+  .sa-link--suave {
+    color: var(--text-muted);
+  }
+
+  /* Sobre o âmbar, o hover não troca de cor: só engrossa o sublinhado. */
+  .sa-sobre-ambar .sa-link {
+    color: var(--marca-preto);
+  }
+  @media (hover: hover) {
+    .sa-sobre-ambar .sa-link:hover {
+      color: var(--marca-preto);
+    }
+  }
+  .sa-sobre-ambar .sa-chip {
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Campo isca do formulário: fora da tela. */
+  .sa-isca {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* Com a barra fixa no ar, o foco rolado pelo teclado não fica atrás dela. */
+  html[data-barra-fixa="visivel"] {
+    scroll-padding-bottom: calc(var(--alvo-toque) + 2 * var(--space-3) + env(safe-area-inset-bottom));
+  }
+
+  /* Com a barra fixa no ar, o aviso de cookies sobe para não cobri-la. */
+  html[data-barra-fixa="visivel"] .sa-aviso-cookies {
+    bottom: calc(var(--alvo-toque) + 2 * var(--space-3) + var(--space-4) + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 768px) {
+    html[data-barra-fixa="visivel"] .sa-aviso-cookies {
+      bottom: var(--space-6);
+    }
+  }
+}
