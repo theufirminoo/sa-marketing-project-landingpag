@@ -1,4 +1,4 @@
-import { comum, ctaFinal, travas } from "@/content/site";
+import { comum, ctaFinal } from "@/content/site";
 import { urlWhatsapp } from "@/lib/whatsapp";
 import { BotaoDiagnostico } from "./BotaoDiagnostico";
 
@@ -10,20 +10,12 @@ export function CtaFinal() {
         <h2 id="cta-final-titulo" className="titulo-1 max-w-[20ch]">
           {ctaFinal.titulo}
         </h2>
-        <ul className="sa-chips mt-8 w-full max-w-[var(--container-texto)] justify-center" aria-labelledby="cta-final-titulo">
-          {travas.map((trava) => (
-            <li key={trava.id}>
-              <BotaoDiagnostico
-                origem="cta-final"
-                trava={trava.id}
-                className="sa-chip sa-chip--ambar"
-                hrefSemJs={urlWhatsapp(comum.mensagemWhatsappSemJs(trava.rotulo))}
-              >
-                {trava.rotulo}
-              </BotaoDiagnostico>
-            </li>
-          ))}
-        </ul>
+        <p className="lead mt-6 max-w-[48ch]">{ctaFinal.texto}</p>
+        <div className="mt-8">
+          <BotaoDiagnostico origem="cta-final" className="sa-btn sa-btn--preto" hrefSemJs={urlWhatsapp(comum.mensagemWhatsappDireta)}>
+            {comum.ctaDiagnostico}
+          </BotaoDiagnostico>
+        </div>
         <p className="mt-8">
           <a
             href={urlWhatsapp(comum.mensagemWhatsappDireta)}

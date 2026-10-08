@@ -115,6 +115,66 @@ export const hero = {
 } as const;
 
 /* ------------------------------------------------------------------ */
+/* Carrossel do hero: o primeiro slide é a pergunta do diagnóstico      */
+/* ------------------------------------------------------------------ */
+
+export type SlideHero = {
+  id: string;
+  /** Cada slide tem um formato, para o hero não ficar repetitivo. */
+  formato: "video" | "arco" | "foto";
+  frente: FrenteId;
+  chamada: string;
+  titulo: string;
+  texto: string;
+  acao: string;
+  imagem: { src: string; alt: string };
+  video?: string;
+};
+
+export const carrossel = {
+  rotulo: "Destaques da SA",
+  anterior: "Slide anterior",
+  proximo: "Próximo slide",
+  pausar: "Pausar a troca automática",
+  tocar: "Retomar a troca automática",
+  irPara: (n: number) => `Ir para o slide ${n}`,
+  posicao: (n: number, total: number) => `Slide ${n} de ${total}`,
+  slides: [
+    {
+      id: "studio",
+      formato: "video",
+      frente: "studio",
+      chamada: "SA Studio",
+      titulo: "Reels, fotos e vídeo gravados pensando na venda.",
+      texto: "Da pauta à edição, cada peça sai com um papel no seu funil.",
+      acao: "Começar pela SA Studio",
+      imagem: { src: "/imagens/hero/estudio.webp", alt: "Bastidor de gravação em estúdio, com câmera e monitor em primeiro plano" },
+      video: "/video/fundo/estudio.mp4",
+    },
+    {
+      id: "consultoria",
+      formato: "arco",
+      frente: "consultoria",
+      chamada: "SA Consultoria",
+      titulo: "Antes de postar mais, descubra onde a venda trava.",
+      texto: "Números, oferta e atendimento na mesa, e um plano do que fazer primeiro.",
+      acao: "Começar pela SA Consultoria",
+      imagem: { src: "/imagens/hero/consultoria.webp", alt: "Profissional apresenta uma estratégia no quadro branco para a equipe" },
+    },
+    {
+      id: "social",
+      formato: "foto",
+      frente: "social",
+      chamada: "SA Social",
+      titulo: "Seguidor que não compra é sinal de funil quebrado.",
+      texto: "Conteúdo e anúncio trabalhando juntos até o direct virar pedido.",
+      acao: "Começar pela SA Social",
+      imagem: { src: "/imagens/hero/social.webp", alt: "Pessoa rolando uma rede social no celular ao lado do notebook" },
+    },
+  ] satisfies SlideHero[],
+};
+
+/* ------------------------------------------------------------------ */
 /* Movimento: vídeos de fundo e faixa das etapas                        */
 /* ------------------------------------------------------------------ */
 
@@ -132,7 +192,7 @@ export const fundos: {
 } = {
   rotulos: { pausar: "Pausar o vídeo de fundo", tocar: "Tocar o vídeo de fundo" },
   // Provisórios do Mixkit (licença gratuita, uso comercial, sem atribuição).
-  hero: "/video/fundo/estudio.mp4",
+  hero: undefined,
   frentes: "/video/fundo/reuniao.mp4",
   quemFaz: "/video/fundo/equipe.mp4",
 };
@@ -275,7 +335,7 @@ export const nomeDaFrente = (id: FrenteId): string =>
 
 export const secaoFrentes = {
   titulo: "Quatro frentes, um plano só.",
-  abertura: "Você não precisa contratar todas. O diagnóstico indica por onde começar.",
+  abertura: "Cada frente cuida de uma parte do caminho até a venda. Entra primeiro a que resolve a sua trava.",
   rotuloServicos: (nome: string) => `O que a ${nome} faz`,
   acao: "Começar por esta frente",
   /** A frente que carrega aberta. */
@@ -292,7 +352,7 @@ export const comoComeca = {
     {
       titulo: "Diagnóstico inicial.",
       texto:
-        "Três perguntas aqui no site e uma conversa pelo WhatsApp, por cortesia da SA. Você sai sabendo qual etapa está falhando.",
+        "Três perguntas aqui no site e uma conversa pelo WhatsApp, por cortesia da SA.",
     },
     {
       titulo: "Plano.",
@@ -395,12 +455,12 @@ export const duvidas = {
     {
       pergunta: "Preciso contratar todas as frentes?",
       resposta:
-        "Não. O diagnóstico mostra qual etapa está falhando e você começa só pela frente que resolve esse ponto.",
+        "Não. Você começa só pela frente que resolve a sua trava e soma outra quando fizer sentido.",
     },
     {
       pergunta: "Como funciona o diagnóstico inicial?",
       resposta:
-        "Você responde três perguntas aqui no site e continua a conversa com a SA pelo WhatsApp. O diagnóstico inicial é cortesia.",
+        "As suas respostas chegam junto com a mensagem no WhatsApp. A conversa começa do ponto em que você parou, sem custo.",
     },
     {
       pergunta: "Quanto custa trabalhar com a SA?",
@@ -415,7 +475,7 @@ export const duvidas = {
     {
       pergunta: "Quem vai cuidar do meu negócio?",
       resposta:
-        "Os sócios da SA: Samuel, Malaquias e Matheus. O time é pequeno e você fala com quem faz o trabalho.",
+        "Os três sócios: Samuel, Malaquias e Matheus. Não existe repasse para outra equipe.",
     },
     {
       pergunta: "Para que tipo de negócio a SA trabalha?",
@@ -451,7 +511,8 @@ export const duvidas = {
 /* ------------------------------------------------------------------ */
 
 export const ctaFinal = {
-  titulo: "O que mais trava suas vendas hoje?",
+  titulo: "Chegou até aqui. Falta só descobrir a sua trava.",
+  texto: "Leva um minuto e a conversa com a SA já começa com as suas respostas.",
   linkDireto: "Prefere falar direto?",
 } as const;
 

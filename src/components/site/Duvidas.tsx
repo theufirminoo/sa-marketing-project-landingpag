@@ -26,7 +26,7 @@ export function Duvidas() {
         </h2>
         <Accordion type="single" collapsible defaultValue="duvida-0" className="sa-faqs mt-12">
           {duvidas.itens.map((item, i) => (
-            <AccordionItem key={item.pergunta} value={`duvida-${i}`} className="sa-faq">
+            <AccordionItem key={item.pergunta} value={`duvida-${i}`} className="sa-faq sa-vidro">
               <AccordionTrigger className="sa-faq__gatilho">
                 <span className="titulo-3">{item.pergunta}</span>
               </AccordionTrigger>

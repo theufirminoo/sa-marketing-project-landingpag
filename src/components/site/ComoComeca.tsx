@@ -21,7 +21,6 @@ export function ComoComeca() {
           <BotaoDiagnostico origem="como-comeca" hrefSemJs={urlWhatsapp(comum.mensagemWhatsappDireta)} className="sa-btn">
             {comum.ctaDiagnostico}
           </BotaoDiagnostico>
-          <p className="pequeno text-text-muted">{comum.microtexto}</p>
         </div>
       </div>
     </section>
