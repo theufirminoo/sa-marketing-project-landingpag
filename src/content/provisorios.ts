@@ -28,12 +28,9 @@ export const fotosSocios: Record<"samuel" | "malaquias" | "matheus", string | un
   matheus: undefined,
 };
 
-/** Vídeo vertical do hero. O arquivo provisório tem "provisorio" no nome. */
+/** Vídeo de fundo do hero (mp4 + webm). O provisório tem "provisorio" no nome. */
 export const videoHero = {
-  src: "/video/hero-provisorio.mp4",
-  poster: "/video/hero-provisorio.jpg",
-  largura: 720,
-  altura: 1280,
+  src: "/video/fundo/criador-provisorio.mp4",
 };
 
 /** Passa a falso quando o texto revisado da política entrar em /privacidade. */

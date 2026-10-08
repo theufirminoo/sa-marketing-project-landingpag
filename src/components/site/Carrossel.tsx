@@ -78,10 +78,25 @@ export function Carrossel({ slides, rotulos }: { slides: ReactNode[]; rotulos: R
           </div>
         ))}
       </div>
-      <div className="sa-carrossel__controles" data-precisa-js="">
-        <button type="button" className="sa-btn-icone" aria-label={rotulos.anterior} onClick={() => ir(atual - 1)}>
-          <ChevronLeftIcon aria-hidden="true" size={20} strokeWidth={1.5} />
-        </button>
+      <button
+        type="button"
+        className="sa-carrossel__seta sa-carrossel__seta--anterior"
+        data-precisa-js=""
+        aria-label={rotulos.anterior}
+        onClick={() => ir(atual - 1)}
+      >
+        <ChevronLeftIcon aria-hidden="true" size={32} strokeWidth={1.5} />
+      </button>
+      <button
+        type="button"
+        className="sa-carrossel__seta sa-carrossel__seta--proxima"
+        data-precisa-js=""
+        aria-label={rotulos.proximo}
+        onClick={() => ir(atual + 1)}
+      >
+        <ChevronRightIcon aria-hidden="true" size={32} strokeWidth={1.5} />
+      </button>
+      <div className="sa-carrossel__rodape" data-precisa-js="">
         <div className="sa-carrossel__pontos">
           {slides.map((_, i) => (
             <button
@@ -94,19 +109,16 @@ export function Carrossel({ slides, rotulos }: { slides: ReactNode[]; rotulos: R
             />
           ))}
         </div>
-        <button type="button" className="sa-btn-icone" aria-label={rotulos.proximo} onClick={() => ir(atual + 1)}>
-          <ChevronRightIcon aria-hidden="true" size={20} strokeWidth={1.5} />
-        </button>
         <button
           type="button"
-          className="sa-btn-icone"
+          className="sa-carrossel__pausa"
           aria-label={rodando ? rotulos.pausar : rotulos.tocar}
           onClick={() => setRodando((r) => !r)}
         >
           {rodando ? (
-            <PauseIcon aria-hidden="true" size={20} strokeWidth={1.5} />
+            <PauseIcon aria-hidden="true" size={16} strokeWidth={1.5} />
           ) : (
-            <PlayIcon aria-hidden="true" size={20} strokeWidth={1.5} />
+            <PlayIcon aria-hidden="true" size={16} strokeWidth={1.5} />
           )}
         </button>
       </div>

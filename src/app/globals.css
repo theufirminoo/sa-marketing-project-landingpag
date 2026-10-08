@@ -1676,18 +1676,135 @@
   /* Todos os slides começam na mesma altura do título do primeiro. */
   .sa-slide--video,
   .sa-slide--arco,
-  .sa-slide--foto {
+  .sa-slide--foto,
+  .sa-slide--metade {
     justify-content: flex-start;
   }
   @media (min-width: 1024px) {
     .sa-slide--video,
     .sa-slide--arco,
-    .sa-slide--foto {
+    .sa-slide--foto,
+    .sa-slide--metade {
       padding-top: calc(var(--header-h) + var(--space-24));
     }
   }
   .sa-slide .sa-video-fundo__controle {
     top: calc(var(--header-h) + var(--space-4));
     bottom: auto;
+  }
+}
+
+/* Controles discretos do carrossel: setas nas laterais, pontos embaixo. */
+@layer components {
+  .sa-carrossel__controles {
+    display: none;
+  }
+  .sa-carrossel__seta {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: var(--alvo-toque);
+    height: var(--space-24);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent);
+    cursor: pointer;
+    opacity: 0.7;
+    transform: translateY(-50%);
+    transition: opacity var(--dur-rapida) var(--ease-saida);
+  }
+  .sa-carrossel__seta--anterior {
+    left: 0;
+  }
+  .sa-carrossel__seta--proxima {
+    right: 0;
+  }
+  @media (hover: hover) {
+    .sa-carrossel__seta:hover {
+      opacity: 1;
+    }
+  }
+  .sa-carrossel__seta:focus-visible {
+    opacity: 1;
+    outline-offset: -4px;
+  }
+  @media (max-width: 767px) {
+    .sa-carrossel__seta {
+      top: auto;
+      bottom: 0;
+      height: var(--alvo-toque);
+      transform: none;
+    }
+  }
+  .sa-carrossel__rodape {
+    position: absolute;
+    bottom: var(--space-2);
+    left: 50%;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    transform: translateX(-50%);
+  }
+  .sa-carrossel__pausa {
+    display: grid;
+    place-items: center;
+    width: var(--alvo-toque);
+    height: var(--alvo-toque);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+  @media (hover: hover) {
+    .sa-carrossel__pausa:hover {
+      color: var(--text);
+    }
+  }
+  .sa-carrossel__ponto::before {
+    width: 12px;
+    height: 3px;
+  }
+
+  /* Slide "metade": foto na metade esquerda, texto na direita. */
+  .sa-slide__metade {
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+    overflow: hidden;
+  }
+  .sa-slide__metade img {
+    object-fit: cover;
+  }
+  .sa-slide--metade::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+  }
+  @media (min-width: 1024px) {
+    .sa-slide__metade {
+      right: 50%;
+    }
+    .sa-slide--metade::before {
+      display: none;
+    }
+    .sa-slide--metade .sa-slide__lado--direita > div {
+      width: 44%;
+    }
+  }
+}
+
+@layer components {
+  /* Espaço para as setas laterais não encostarem no texto. */
+  @media (min-width: 768px) {
+    .sa-carrossel .sa-container {
+      padding-inline: var(--space-16);
+      max-width: calc(var(--container) + 2 * var(--space-16));
+    }
   }
 }

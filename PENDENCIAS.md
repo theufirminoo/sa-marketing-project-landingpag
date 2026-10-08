@@ -61,8 +61,9 @@ SA quando houver.
 
 | Arquivo | Origem |
 | --- | --- |
-| `public/video/fundo/estudio.*` (fundo do hero) | Mixkit 22998, "Behind the scenes of an interview show" |
-| `public/video/hero-provisorio.*` (quadro vertical) | Mixkit 41289, "Youtuber recording himself" |
+| `public/video/fundo/estudio.*` (slide SA Studio) | Mixkit 22998, "Behind the scenes of an interview show" |
+| `public/video/fundo/criador-provisorio.*` (fundo do slide 1) | Mixkit 23485, "A young man recording himself with a camera" |
+| `public/imagens/hero/*.webp` (slides do carrossel) | quadros dos Mixkit 22998, 9069, 41638 e 4908 |
 | `public/video/fundo/reuniao.*` (Frentes) | Mixkit 46680, "Brainstorming over the meeting table" |
 | `public/video/fundo/equipe.*` (Quem faz) | Mixkit 9072, "Young marketing team gather around laptop" |
 | `public/imagens/frentes/consultoria.webp` | quadro do Mixkit 9069, "Digital marketing team leader explains strategy on whiteboard" |

@@ -106,12 +106,6 @@ export const hero = {
   subtitulo:
     "Responda 3 perguntas e converse com a SA pelo WhatsApp. Você sai sabendo qual etapa está falhando e o que fazer primeiro.",
   pergunta: "O que mais trava suas vendas hoje?",
-  video: {
-    ...videoHero,
-    descricao: "Vídeo provisório: criador de conteúdo gravando a si mesmo com uma câmera, no lugar do vídeo da SA.",
-    pausar: "Pausar o vídeo",
-    tocar: "Tocar o vídeo",
-  },
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -121,7 +115,7 @@ export const hero = {
 export type SlideHero = {
   id: string;
   /** Cada slide tem um formato, para o hero não ficar repetitivo. */
-  formato: "video" | "arco" | "foto";
+  formato: "video" | "arco" | "foto" | "metade";
   frente: FrenteId;
   chamada: string;
   titulo: string;
@@ -162,6 +156,16 @@ export const carrossel = {
       imagem: { src: "/imagens/hero/consultoria.webp", alt: "Profissional apresenta uma estratégia no quadro branco para a equipe" },
     },
     {
+      id: "tech",
+      formato: "metade",
+      frente: "tech",
+      chamada: "SA Tech",
+      titulo: "Venda e atendimento rodando sem você preso no WhatsApp.",
+      texto: "Site, automação e sistema que respondem, organizam e lembram o cliente por você.",
+      acao: "Começar pela SA Tech",
+      imagem: { src: "/imagens/hero/tech.webp", alt: "Programador usa o celular ao lado de um teclado iluminado" },
+    },
+    {
       id: "social",
       formato: "foto",
       frente: "social",
@@ -192,7 +196,7 @@ export const fundos: {
 } = {
   rotulos: { pausar: "Pausar o vídeo de fundo", tocar: "Tocar o vídeo de fundo" },
   // Provisórios do Mixkit (licença gratuita, uso comercial, sem atribuição).
-  hero: undefined,
+  hero: videoHero.src,
   frentes: "/video/fundo/reuniao.mp4",
   quemFaz: "/video/fundo/equipe.mp4",
 };

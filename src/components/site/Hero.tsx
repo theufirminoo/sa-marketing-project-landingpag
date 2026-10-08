@@ -6,8 +6,6 @@ import { carrossel, comum, fundos, hero, travas, type SlideHero } from "@/conten
 import { urlWhatsapp } from "@/lib/whatsapp";
 import { BotaoDiagnostico } from "./BotaoDiagnostico";
 import { Carrossel } from "./Carrossel";
-import { HeroVideo } from "./HeroVideo";
-import { Provisorio } from "./Provisorio";
 import { VideoFundo } from "./VideoFundo";
 
 const indice = (i: number) => ({ "--i": i }) as CSSProperties;
@@ -61,9 +59,6 @@ function SlidePergunta() {
             <p className="pequeno sa-hero-entra mt-4 text-text-muted" style={indice(travas.length)}>
               {comum.microtexto}
             </p>
-          </div>
-          <div className="mx-auto mt-12 w-full max-w-sm lg:col-span-4 lg:col-start-9 lg:mx-0 lg:mt-0 lg:max-w-none">
-            <HeroVideo video={hero.video} etiqueta={<Provisorio className="absolute top-3 left-3" />} />
           </div>
         </div>
     </div>
@@ -130,7 +125,28 @@ function SlideFoto({ slide }: { slide: SlideHero }) {
   );
 }
 
-const SLIDES = { video: SlideVideo, arco: SlideArco, foto: SlideFoto } as const;
+/** Foto ocupando a metade esquerda, texto na direita. */
+function SlideMetade({ slide }: { slide: SlideHero }) {
+  return (
+    <div className="sa-slide sa-slide--metade">
+      <div className="sa-slide__metade">
+        <Image src={slide.imagem.src} alt={slide.imagem.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" />
+      </div>
+      <div className="sa-container sa-slide__lado sa-slide__lado--direita">
+        <div>
+          <p className="rotulo text-accent-text">{slide.chamada}</p>
+          <h2 className="titulo-1 mt-4">{slide.titulo}</h2>
+          <p className="lead mt-6 text-text-muted">{slide.texto}</p>
+          <BotaoDiagnostico origem="hero" frente={slide.frente} hrefSemJs={semJs} className="sa-btn mt-8">
+            {slide.acao}
+          </BotaoDiagnostico>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const SLIDES = { video: SlideVideo, arco: SlideArco, foto: SlideFoto, metade: SlideMetade } as const;
 
 export function Hero() {
   return (

@@ -34,7 +34,7 @@ export function VideoFundo({ src, className, rotulos }: Props) {
     if (reduzido || conexao?.saveData) return;
     // Só depois da primeira interação: o LCP já foi fechado e o vídeo não
     // disputa banda nem o maior elemento da tela com o título.
-    const eventos = ["pointerdown", "keydown", "scroll", "touchstart", "wheel"] as const;
+    const eventos = ["pointerdown", "pointermove", "keydown", "scroll", "touchstart", "wheel"] as const;
     const permitir = () => {
       setPermitido(true);
       eventos.forEach((e) => window.removeEventListener(e, permitir));
