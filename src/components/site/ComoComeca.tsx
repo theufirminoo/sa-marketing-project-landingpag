@@ -11,7 +11,7 @@ export function ComoComeca() {
         </h2>
         <ol className="sa-passos mt-12 grid list-none gap-8 p-0 md:grid-cols-3 md:gap-6">
           {comoComeca.passos.map((passo) => (
-            <li key={passo.titulo} className="sa-passo sa-revela">
+            <li key={passo.titulo} className="sa-passo sa-vidro sa-revela">
               <h3 className="titulo-3">{passo.titulo}</h3>
               <p className="corpo mt-2 text-text-muted">{passo.texto}</p>
             </li>

@@ -24,7 +24,7 @@ export function Hero() {
       className="sa-grao overflow-hidden pt-[calc(var(--header-h)+var(--space-6))] pb-16 lg:pt-[calc(var(--header-h)+var(--space-16))] lg:pb-32"
     >
       <div className="sa-brilho" aria-hidden="true" />
-      <VideoFundo src={fundos.hero} className="sa-video-fundo--hero" rotulos={fundos.rotulos} />
+      {fundos.hero ? <VideoFundo src={fundos.hero} className="sa-video-fundo--hero" rotulos={fundos.rotulos} /> : null}
       <div className="sa-veu" aria-hidden="true" />
       <div className="sa-container lg:grid lg:grid-cols-12 lg:gap-x-6">
         <div className="lg:col-span-7">

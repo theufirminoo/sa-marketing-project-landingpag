@@ -8,7 +8,7 @@ import { VideoFundo } from "./VideoFundo";
 export function Frentes() {
   return (
     <section id="frentes" data-theme="dark" aria-labelledby="frentes-titulo" className="sa-grao sa-secao">
-      <VideoFundo src={fundos.frentes} className="sa-video-fundo--suave" rotulos={fundos.rotulos} />
+      {fundos.frentes ? <VideoFundo src={fundos.frentes} className="sa-video-fundo--suave" rotulos={fundos.rotulos} /> : null}
       <div className="sa-container">
         <div className="sa-texto sa-revela">
           <h2 id="frentes-titulo" className="titulo-1">

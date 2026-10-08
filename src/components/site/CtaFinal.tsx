@@ -6,11 +6,6 @@ import { BotaoDiagnostico } from "./BotaoDiagnostico";
 export function CtaFinal() {
   return (
     <section id="cta-final" aria-labelledby="cta-final-titulo" className="sa-secao sa-secao--alta sa-sobre-ambar relative isolate overflow-hidden bg-accent text-marca-preto">
-      <div className="sa-formas" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-      </div>
       <div className="sa-container flex flex-col items-center text-center">
         <h2 id="cta-final-titulo" className="titulo-1 max-w-[20ch]">
           {ctaFinal.titulo}

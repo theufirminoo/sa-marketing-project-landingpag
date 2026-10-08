@@ -16,7 +16,7 @@ function Silhueta({ nome }: { nome: string }) {
 
 function Retrato({ pessoa }: { pessoa: Pessoa }) {
   return (
-    <figure className="sa-pessoa m-0 grid gap-3">
+    <figure className="sa-pessoa relative m-0">
       <div className="sa-pessoa__foto">
         {pessoa.foto ? (
           <Image
@@ -33,7 +33,7 @@ function Retrato({ pessoa }: { pessoa: Pessoa }) {
           </>
         )}
       </div>
-      <figcaption className="grid gap-1">
+      <figcaption className="sa-pessoa__legenda sa-vidro">
         <span className="titulo-3 text-marca-giz">{pessoa.nome}</span>
         <span className="pequeno text-marca-giz">{pessoa.cargo}</span>
         <span className="pequeno text-areia">{pessoa.cargoPt}</span>
@@ -45,7 +45,7 @@ function Retrato({ pessoa }: { pessoa: Pessoa }) {
 export function QuemFaz() {
   return (
     <section id="quem-faz" data-theme="dark" aria-labelledby="quem-faz-titulo" className="sa-grao sa-secao sa-cafe">
-      <VideoFundo src={fundos.quemFaz} className="sa-video-fundo--textura" rotulos={fundos.rotulos} />
+      {fundos.quemFaz ? <VideoFundo src={fundos.quemFaz} className="sa-video-fundo--textura" rotulos={fundos.rotulos} /> : null}
       <div className="sa-container">
         <div className="sa-texto sa-revela">
           <h2 id="quem-faz-titulo" className="titulo-1 text-marca-giz">
