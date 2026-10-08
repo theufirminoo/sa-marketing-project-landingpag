@@ -1259,15 +1259,11 @@
     opacity: var(--opacidade-video, 0.5);
   }
   .sa-video-fundo--hero {
-    --opacidade-video: 0.75;
+    --opacidade-video: 0.6;
   }
-  .sa-video-fundo--suave {
-    --opacidade-video: 0.28;
-    mix-blend-mode: screen;
-  }
+  .sa-video-fundo--suave,
   .sa-video-fundo--textura {
-    --opacidade-video: 0.35;
-    mix-blend-mode: screen;
+    --opacidade-video: 0.14;
   }
   .sa-video-fundo__controle {
     position: absolute;
@@ -1463,5 +1459,27 @@
     display: grid;
     gap: var(--space-1);
     padding: var(--space-4);
+  }
+}
+
+@layer components {
+  .sa-frente__foto {
+    aspect-ratio: 16 / 9;
+    margin-bottom: var(--space-4);
+    padding: var(--space-1);
+  }
+  .sa-frente__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+  }
+  @media (min-width: 768px) {
+    .sa-frente__corpo > .sa-frente__foto {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      margin: 0;
+      align-self: start;
+    }
   }
 }

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { comum, frentes, fundos, secaoFrentes } from "@/content/site";
 import { urlWhatsapp } from "@/lib/whatsapp";
@@ -24,6 +26,15 @@ export function Frentes() {
                 <span className="corpo sa-frente__promessa">{frente.promessa}</span>
               </AccordionTrigger>
               <AccordionContent className="sa-frente__corpo">
+                <div className="sa-frente__foto sa-vidro">
+                  <Image
+                    src={frente.imagem.src}
+                    alt={frente.imagem.alt}
+                    width={960}
+                    height={540}
+                    sizes="(min-width: 768px) 30vw, 100vw"
+                  />
+                </div>
                 <ul className="sa-frente__lista corpo" aria-label={secaoFrentes.rotuloServicos(frente.nome)}>
                   {frente.servicos.map((servico) => (
                     <li key={servico}>{servico}</li>

@@ -52,3 +52,20 @@ Vídeos de fundo (`public/video/fundo/`) e o novo vídeo vertical do hero
 também foram gerados com `ffmpeg`, a partir dos filtros `gradients` e `life`,
 nas cores da marca, sem nenhuma imagem de terceiros. Cada um tem versão WebM
 (VP9) e MP4 (H.264).
+
+## Mídia provisória de banco de imagens
+
+Vídeos e fotos do Mixkit (https://mixkit.co), licença Mixkit Free License:
+uso comercial liberado, sem atribuição obrigatória. Trocar por material da
+SA quando houver.
+
+| Arquivo | Origem |
+| --- | --- |
+| `public/video/fundo/estudio.*` (fundo do hero) | Mixkit 22998, "Behind the scenes of an interview show" |
+| `public/video/hero-provisorio.*` (quadro vertical) | Mixkit 41289, "Youtuber recording himself" |
+| `public/video/fundo/reuniao.*` (Frentes) | Mixkit 46680, "Brainstorming over the meeting table" |
+| `public/video/fundo/equipe.*` (Quem faz) | Mixkit 9072, "Young marketing team gather around laptop" |
+| `public/imagens/frentes/consultoria.webp` | quadro do Mixkit 9069, "Digital marketing team leader explains strategy on whiteboard" |
+| `public/imagens/frentes/social.webp` | quadro do Mixkit 4908, "Person working while scrolling on social networks" |
+| `public/imagens/frentes/studio.webp` | quadro do Mixkit 22016, "Cameraman filming in the city" |
+| `public/imagens/frentes/tech.webp` | quadro do Mixkit 4835, "Office workers hands typing on their devices" |

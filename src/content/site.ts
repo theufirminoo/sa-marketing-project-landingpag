@@ -108,7 +108,7 @@ export const hero = {
   pergunta: "O que mais trava suas vendas hoje?",
   video: {
     ...videoHero,
-    descricao: "Vídeo provisório de luz âmbar em movimento, no lugar do vídeo da SA.",
+    descricao: "Vídeo provisório: criador de conteúdo gravando a si mesmo com uma câmera, no lugar do vídeo da SA.",
     pausar: "Pausar o vídeo",
     tocar: "Tocar o vídeo",
   },
@@ -131,9 +131,10 @@ export const fundos: {
   quemFaz?: string;
 } = {
   rotulos: { pausar: "Pausar o vídeo de fundo", tocar: "Tocar o vídeo de fundo" },
-  hero: undefined,
-  frentes: undefined,
-  quemFaz: undefined,
+  // Provisórios do Mixkit (licença gratuita, uso comercial, sem atribuição).
+  hero: "/video/fundo/estudio.mp4",
+  frentes: "/video/fundo/reuniao.mp4",
+  quemFaz: "/video/fundo/equipe.mp4",
 };
 
 /* ------------------------------------------------------------------ */
@@ -199,6 +200,8 @@ export const metodo = {
 
 export type Frente = {
   id: FrenteId;
+  /** Foto 16:9 em public/imagens/frentes/. Provisória, do Mixkit. */
+  imagem: { src: string; alt: string };
   nome: string;
   promessa: string;
   servicos: readonly string[];
@@ -207,6 +210,7 @@ export type Frente = {
 export const frentes: readonly Frente[] = [
   {
     id: "consultoria",
+    imagem: { src: "/imagens/frentes/consultoria.webp", alt: "Profissional explica a estratégia de marketing num quadro branco para a equipe" },
     nome: "SA Consultoria",
     promessa: "Descobre onde a venda trava e monta o plano.",
     servicos: [
@@ -220,6 +224,7 @@ export const frentes: readonly Frente[] = [
   },
   {
     id: "social",
+    imagem: { src: "/imagens/frentes/social.webp", alt: "Mãos rolando uma rede social no celular, ao lado de um notebook" },
     nome: "SA Social",
     promessa: "Conteúdo e anúncios que levam o seguidor até a compra.",
     servicos: [
@@ -235,6 +240,7 @@ export const frentes: readonly Frente[] = [
   },
   {
     id: "studio",
+    imagem: { src: "/imagens/frentes/studio.webp", alt: "Cinegrafista filmando na rua com a câmera no ombro" },
     nome: "SA Studio",
     promessa: "Vídeo e foto que fazem a marca parecer do tamanho que ela quer ter.",
     servicos: [
@@ -249,6 +255,7 @@ export const frentes: readonly Frente[] = [
   },
   {
     id: "tech",
+    imagem: { src: "/imagens/frentes/tech.webp", alt: "Mãos digitando em notebook e celular sobre relatórios" },
     nome: "SA Tech",
     promessa: "Site, sistema e automação para vender e atender sem trabalho manual.",
     servicos: [
