@@ -20,7 +20,7 @@ function SlidePergunta() {
   return (
     <div className="sa-slide sa-slide--pergunta">
       <div className="sa-brilho" aria-hidden="true" />
-        {fundos.hero ? <VideoFundo src={fundos.hero} className="sa-video-fundo--hero" rotulos={fundos.rotulos} /> : null}
+        {fundos.hero ? <VideoFundo src={fundos.hero} className="sa-video-fundo--hero" /> : null}
         <div className="sa-veu" aria-hidden="true" />
         <div className="sa-container lg:grid lg:grid-cols-12 lg:gap-x-6">
           <div className="lg:col-span-7">
@@ -72,7 +72,7 @@ function SlideVideo({ slide }: { slide: SlideHero }) {
   return (
     <div className="sa-slide sa-slide--video">
       <Image src={slide.imagem.src} alt="" fill sizes="100vw" className="sa-slide__fundo" />
-      {slide.video ? <VideoFundo src={slide.video} className="sa-video-fundo--slide" rotulos={fundos.rotulos} /> : null}
+      {slide.video ? <VideoFundo src={slide.video} className="sa-video-fundo--slide" /> : null}
       <div className="sa-slide__veu" aria-hidden="true" />
       <div className="sa-container sa-slide__centro">
         <p className="rotulo text-accent-text">{slide.chamada}</p>

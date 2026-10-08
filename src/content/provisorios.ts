@@ -2,7 +2,7 @@
  * Valores provisórios definidos pelo cliente para a fase de testes.
  *
  * Cada valor daqui é trocado num lugar só. Quando o último for trocado,
- * `temProvisorios` fica falso e a faixa "Versão de testes" some sozinha.
+ * `temProvisorios` fica falso e a página deixa de ter noindex.
  * `pnpm check:pendencias` lê esta lista.
  */
 
@@ -21,11 +21,15 @@ export const empresa = {
 /** Troque por "/logo-sa.svg" quando o arquivo chegar em public/. */
 export const logoSvg: string | undefined = undefined;
 
-/** Fotos 4:5 em public/socios/. Sem foto, o componente mostra a silhueta. */
+/**
+ * Fotos 4:5 em public/socios/. Sem foto, o componente mostra a silhueta.
+ * As atuais são de banco de imagem (Unsplash, licença livre) só para a fase
+ * de testes; têm "provisorio" no nome e saem quando chegarem as reais.
+ */
 export const fotosSocios: Record<"samuel" | "malaquias" | "matheus", string | undefined> = {
-  samuel: undefined,
-  malaquias: undefined,
-  matheus: undefined,
+  samuel: "/socios/samuel-provisorio.webp",
+  malaquias: "/socios/malaquias-provisorio.webp",
+  matheus: "/socios/matheus-provisorio.webp",
 };
 
 /** Vídeo de fundo do hero (mp4 + webm). O provisório tem "provisorio" no nome. */
@@ -69,9 +73,9 @@ export const provisorios: ItemProvisorio[] = [
   {
     id: "fotos",
     item: "Fotos dos sócios",
-    valorAtual: "Silhueta em SVG",
-    trocaPor: "Três fotos 4:5",
-    ativo: Object.values(fotosSocios).some((foto) => foto === undefined),
+    valorAtual: "Fotos de banco de imagem",
+    trocaPor: "Três fotos 4:5 dos sócios",
+    ativo: Object.values(fotosSocios).some((foto) => foto === undefined || foto.includes("provisorio")),
   },
   {
     id: "video",

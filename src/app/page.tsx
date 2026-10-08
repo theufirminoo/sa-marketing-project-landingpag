@@ -4,7 +4,6 @@ import { ComoComeca } from "@/components/site/ComoComeca";
 import { CtaFinal } from "@/components/site/CtaFinal";
 import { Duvidas } from "@/components/site/Duvidas";
 import { FaixaEtapas } from "@/components/site/FaixaEtapas";
-import { FaixaTestes } from "@/components/site/FaixaTestes";
 import { Footer } from "@/components/site/Footer";
 import { Frentes } from "@/components/site/Frentes";
 import { Header } from "@/components/site/Header";
@@ -15,6 +14,7 @@ import { Cases, Depoimentos, Numeros } from "@/components/site/ProvaReal";
 import { Publica } from "@/components/site/Publica";
 import { PularConteudo } from "@/components/site/PularConteudo";
 import { QuemFaz } from "@/components/site/QuemFaz";
+import { WhatsappFlutuante } from "@/components/site/WhatsappFlutuante";
 import { ancoras, comum, site } from "@/content/site";
 import { urlWhatsapp } from "@/lib/whatsapp";
 
@@ -24,7 +24,6 @@ export default function Home() {
   return (
     <>
       <PularConteudo />
-      <FaixaTestes />
       <Header
         marca={site.nome}
         navegacao={{ rotulo: comum.navPrincipal, ancoras }}
@@ -45,6 +44,7 @@ export default function Home() {
         <CtaFinal />
       </main>
       <Footer />
+      <WhatsappFlutuante />
       <BarraFixa rotulo={comum.ctaDiagnostico} hrefSemJs={ctaSemJs} />
       <DiagnosticoProvider />
       <JsonLd />

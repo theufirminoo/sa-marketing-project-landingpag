@@ -10,7 +10,7 @@ import { VideoFundo } from "./VideoFundo";
 export function Frentes() {
   return (
     <section id="frentes" data-theme="dark" aria-labelledby="frentes-titulo" className="sa-grao sa-secao">
-      {fundos.frentes ? <VideoFundo src={fundos.frentes} className="sa-video-fundo--suave" rotulos={fundos.rotulos} /> : null}
+      {fundos.frentes ? <VideoFundo src={fundos.frentes} className="sa-video-fundo--suave" /> : null}
       <div className="sa-container">
         <div className="sa-texto sa-revela">
           <h2 id="frentes-titulo" className="titulo-1">
@@ -18,7 +18,7 @@ export function Frentes() {
           </h2>
           <p className="lead mt-6 text-text-muted">{secaoFrentes.abertura}</p>
         </div>
-        <Accordion type="multiple" defaultValue={[secaoFrentes.abertaAoCarregar]} className="sa-frentes mt-12">
+        <Accordion type="single" collapsible defaultValue={secaoFrentes.abertaAoCarregar} className="sa-frentes mt-12">
           {frentes.map((frente) => (
             <AccordionItem key={frente.id} value={frente.id} className="sa-frente">
               <AccordionTrigger className="sa-frente__gatilho" data-frente-gatilho={frente.id}>

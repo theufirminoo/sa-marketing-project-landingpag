@@ -38,7 +38,7 @@ const abertas = pendencias.filter((p) => !p.feita);
 const travam = abertas.filter((p) => p.secao === SECAO_QUE_TRAVA);
 
 console.log("\nValores provisórios (src/content/provisorios.ts)");
-if (ativos.length === 0) console.log("  Nenhum. A faixa de testes some sozinha.");
+if (ativos.length === 0) console.log("  Nenhum. O noindex sai sozinho.");
 for (const p of provisorios) {
   console.log(`  ${p.ativo ? "[ ]" : "[x]"} ${p.item}: ${p.valorAtual}  ->  ${p.trocaPor}`);
 }

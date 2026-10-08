@@ -171,6 +171,12 @@
     text-size-adjust: 100%;
     scroll-padding-top: var(--header-h);
   }
+  /* Âncoras do menu deslizam até a seção; com movimento reduzido, pulam. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
 
   /* Toque sem atraso de zoom; o retorno visual vem dos estados :active. */
   a,
@@ -823,7 +829,7 @@
     position: relative;
     display: grid;
     place-items: end center;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1 / 1;
     width: 100%;
     overflow: hidden;
     border-radius: var(--radius-sm);
@@ -839,6 +845,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 20%;
     transition: transform var(--dur-lenta) var(--ease-saida);
   }
   @media (hover: hover) {
@@ -1085,14 +1092,6 @@
     }
   }
 
-  .sa-faixa-testes {
-    position: relative;
-    z-index: 41;
-    padding: var(--space-2) 0;
-    background: var(--accent-tint);
-    color: var(--text);
-  }
-
   /* ---------------------------------------------------------------- */
   /* Entrada do hero: o único momento coreografado                     */
   /* ---------------------------------------------------------------- */
@@ -1228,6 +1227,56 @@
     scroll-padding-bottom: calc(var(--alvo-toque) + 2 * var(--space-3) + env(safe-area-inset-bottom));
   }
 
+  /*
+   * Botão flutuante do WhatsApp. O verde é a cor da marca do WhatsApp (fora
+   * dos tokens), para ser reconhecido de relance.
+   */
+  .sa-whats {
+    position: fixed;
+    right: var(--space-4);
+    bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+    z-index: 39;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-pill);
+    background: #25d366;
+    color: #ffffff;
+    box-shadow: var(--shadow-dialog);
+    transition:
+      transform var(--dur-rapida) var(--ease-saida),
+      opacity var(--dur-rapida) var(--ease-saida);
+  }
+  @media (hover: hover) {
+    .sa-whats:hover {
+      transform: scale(1.06);
+    }
+  }
+  .sa-whats:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+  html[data-barra-fixa="visivel"] .sa-whats {
+    bottom: calc(var(--alvo-toque) + 2 * var(--space-3) + var(--space-4) + env(safe-area-inset-bottom));
+  }
+  @media (max-width: 767px) {
+    /* No celular o aviso de cookies ocupa a largura; o botão espera a escolha. */
+    body:has(.sa-aviso-cookies) .sa-whats {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+  @media (min-width: 768px) {
+    .sa-whats {
+      right: var(--space-6);
+      bottom: var(--space-6);
+    }
+    html[data-barra-fixa="visivel"] .sa-whats {
+      bottom: var(--space-6);
+    }
+  }
+
   /* Com a barra fixa no ar, o aviso de cookies sobe para não cobri-la. */
   html[data-barra-fixa="visivel"] .sa-aviso-cookies {
     bottom: calc(var(--alvo-toque) + 2 * var(--space-3) + var(--space-4) + env(safe-area-inset-bottom));
@@ -1265,14 +1314,6 @@
   .sa-video-fundo--textura {
     --opacidade-video: 0.14;
   }
-  .sa-video-fundo__controle {
-    position: absolute;
-    right: var(--space-4);
-    bottom: var(--space-4);
-    z-index: 1;
-    background: color-mix(in srgb, var(--bg) 70%, transparent);
-  }
-
   /* Brilho âmbar em CSS: dá movimento ao hero desde o primeiro quadro, sem disputar o LCP. */
   .sa-brilho {
     position: absolute;
@@ -1464,7 +1505,7 @@
 
 @layer components {
   .sa-frente__foto {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 21 / 9;
     margin-bottom: var(--space-4);
     padding: var(--space-1);
   }
@@ -1490,6 +1531,25 @@
     display: grid;
     gap: var(--space-3);
     border-bottom: 0;
+  }
+  /* Título fixo à esquerda e cartões ocupando o resto da largura. */
+  .sa-duvidas {
+    display: grid;
+    gap: var(--space-12);
+  }
+  .sa-duvidas .sa-faqs {
+    max-width: none;
+  }
+  @media (min-width: 1024px) {
+    .sa-duvidas {
+      grid-template-columns: 4fr 8fr;
+      gap: var(--space-16);
+      align-items: start;
+    }
+    .sa-duvidas__titulo {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-8));
+    }
   }
   .sa-faq.sa-vidro {
     padding-inline: var(--space-6);
@@ -1529,12 +1589,12 @@
     justify-content: center;
     height: 100%;
     padding-top: calc(var(--header-h) + var(--space-6));
-    padding-bottom: var(--space-24);
+    padding-bottom: var(--space-16);
   }
   @media (min-width: 1024px) {
     .sa-slide {
-      padding-top: calc(var(--header-h) + var(--space-16));
-      padding-bottom: var(--space-32);
+      padding-top: calc(var(--header-h) + var(--space-8));
+      padding-bottom: var(--space-16);
     }
   }
   .sa-slide--pergunta {
@@ -1685,12 +1745,8 @@
     .sa-slide--arco,
     .sa-slide--foto,
     .sa-slide--metade {
-      padding-top: calc(var(--header-h) + var(--space-24));
+      padding-top: calc(var(--header-h) + var(--space-16));
     }
-  }
-  .sa-slide .sa-video-fundo__controle {
-    top: calc(var(--header-h) + var(--space-4));
-    bottom: auto;
   }
 }
 

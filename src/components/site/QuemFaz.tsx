@@ -45,7 +45,7 @@ function Retrato({ pessoa }: { pessoa: Pessoa }) {
 export function QuemFaz() {
   return (
     <section id="quem-faz" data-theme="dark" aria-labelledby="quem-faz-titulo" className="sa-grao sa-secao sa-cafe">
-      {fundos.quemFaz ? <VideoFundo src={fundos.quemFaz} className="sa-video-fundo--textura" rotulos={fundos.rotulos} /> : null}
+      {fundos.quemFaz ? <VideoFundo src={fundos.quemFaz} className="sa-video-fundo--textura" /> : null}
       <div className="sa-container">
         <div className="sa-texto sa-revela">
           <h2 id="quem-faz-titulo" className="titulo-1 text-marca-giz">

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/site/Footer";
-import { FaixaTestes } from "@/components/site/FaixaTestes";
 import { Header } from "@/components/site/Header";
 import { Provisorio } from "@/components/site/Provisorio";
 import { PularConteudo } from "@/components/site/PularConteudo";
@@ -17,7 +16,6 @@ export default function Privacidade() {
   return (
     <>
       <PularConteudo />
-      <FaixaTestes />
       <Header marca={site.nome} simples />
       <main id="conteudo" tabIndex={-1} data-theme="light" className="sa-secao pt-[calc(var(--header-h)+var(--space-16))]">
         <article className="sa-container">

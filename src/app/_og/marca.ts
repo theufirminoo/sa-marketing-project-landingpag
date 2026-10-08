@@ -8,7 +8,7 @@ import { join } from "node:path";
 export const cores = {
   preto: "#1A1A1A", // --marca-preto
   giz: "#F5F5F3", // --marca-giz
-  ambar: "#F9C155", // --marca-ambar
+  ambar: "#F7A866", // --marca-ambar
 } as const;
 
 let fonte: Promise<Buffer> | undefined;

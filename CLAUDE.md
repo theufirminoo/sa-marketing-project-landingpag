@@ -20,7 +20,7 @@ pnpm check:pendencias --estrito  # falha se sobrar provisório ou pendência que
 ## Onde mexer
 
 - Todo texto: `src/content/site.ts`. Nenhuma string de interface em componente.
-- Valores provisórios (WhatsApp, CNPJ, logo, fotos, vídeo, política): `src/content/provisorios.ts`. A faixa "Versão de testes" some quando todos forem trocados.
+- Valores provisórios (WhatsApp, CNPJ, logo, fotos, vídeo, política): `src/content/provisorios.ts`. Quando todos forem trocados, o noindex sai.
 - Identificadores das opções do diagnóstico: `src/content/opcoes.ts` (pequeno de propósito, vai ao cliente).
 - Pendências: `PENDENCIAS.md` (o script lê os `- [ ]`).
 

@@ -49,6 +49,23 @@ export function Carrossel({ slides, rotulos }: { slides: ReactNode[]; rotulos: R
 
   const ir = (n: number) => setAtual((n + total) % total);
 
+  // Setas do teclado trocam o slide enquanto o carrossel ocupa o meio da tela.
+  useEffect(() => {
+    const aoTeclar = (e: KeyboardEvent) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      if (e.altKey || e.ctrlKey || e.metaKey || document.querySelector("[role=dialog]")) return;
+      const alvo = e.target as HTMLElement;
+      if (alvo.closest("input, textarea, select, [role=radiogroup], [contenteditable]")) return;
+      const caixa = raiz.current?.getBoundingClientRect();
+      const meio = window.innerHeight / 2;
+      if (!caixa || caixa.top > meio || caixa.bottom < meio) return;
+      e.preventDefault();
+      setAtual((a) => (a + (e.key === "ArrowRight" ? 1 : -1) + total) % total);
+    };
+    window.addEventListener("keydown", aoTeclar);
+    return () => window.removeEventListener("keydown", aoTeclar);
+  }, [total]);
+
   return (
     <div
       ref={raiz}

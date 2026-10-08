@@ -77,13 +77,13 @@ export const comum = {
   pularConteudo: "Pular para o conteúdo",
   ctaDiagnostico: "Fazer diagnóstico",
   microtexto: "3 perguntas, 1 minuto. O diagnóstico inicial é cortesia.",
-  faixaTestes: "Versão de testes: WhatsApp, CNPJ, fotos e vídeo são provisórios.",
   etiquetaProvisorio: "Provisório",
   navPrincipal: "Seções da página",
   navRodape: "Seções da página, no rodapé",
   inicio: "SA Marketing, início da página",
   novaAba: "(abre em nova aba)",
   mensagemWhatsappDireta: "Oi, vim pelo site da SA e quero conversar.",
+  whatsappFlutuante: "Conversar com a SA no WhatsApp (abre em nova aba)",
   /** Mensagem do link que substitui uma opção quando não há JavaScript. */
   mensagemWhatsappSemJs: (trava: string) =>
     `Oi, vim pelo site da SA e quero conversar.\nTrava: ${trava}`,
@@ -135,6 +135,16 @@ export const carrossel = {
   posicao: (n: number, total: number) => `Slide ${n} de ${total}`,
   slides: [
     {
+      id: "tech",
+      formato: "metade",
+      frente: "tech",
+      chamada: "SA Tech",
+      titulo: "Venda e atendimento rodando sem você preso no WhatsApp.",
+      texto: "Site, automação e sistema que respondem, organizam e lembram o cliente por você.",
+      acao: "Começar pela SA Tech",
+      imagem: { src: "/imagens/hero/tech.webp", alt: "Programador usa o celular ao lado de um teclado iluminado" },
+    },
+    {
       id: "studio",
       formato: "video",
       frente: "studio",
@@ -154,16 +164,6 @@ export const carrossel = {
       texto: "Números, oferta e atendimento na mesa, e um plano do que fazer primeiro.",
       acao: "Começar pela SA Consultoria",
       imagem: { src: "/imagens/hero/consultoria.webp", alt: "Profissional apresenta uma estratégia no quadro branco para a equipe" },
-    },
-    {
-      id: "tech",
-      formato: "metade",
-      frente: "tech",
-      chamada: "SA Tech",
-      titulo: "Venda e atendimento rodando sem você preso no WhatsApp.",
-      texto: "Site, automação e sistema que respondem, organizam e lembram o cliente por você.",
-      acao: "Começar pela SA Tech",
-      imagem: { src: "/imagens/hero/tech.webp", alt: "Programador usa o celular ao lado de um teclado iluminado" },
     },
     {
       id: "social",
@@ -189,12 +189,10 @@ export const carrossel = {
  * vídeo e mostra só o fundo da marca.
  */
 export const fundos: {
-  rotulos: { pausar: string; tocar: string };
   hero?: string;
   frentes?: string;
   quemFaz?: string;
 } = {
-  rotulos: { pausar: "Pausar o vídeo de fundo", tocar: "Tocar o vídeo de fundo" },
   // Provisórios do Mixkit (licença gratuita, uso comercial, sem atribuição).
   hero: videoHero.src,
   frentes: "/video/fundo/reuniao.mp4",
