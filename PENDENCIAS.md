@@ -25,7 +25,7 @@ valor provisório ou pendência que trava o lançamento.
 - [ ] 12. Revisão do Samuel nos subsserviços propostos e nas faixas de faturamento da tela 3.
 - [ ] 13. Respostas para duas perguntas do FAQ: fidelidade de contrato e região de atendimento presencial.
 - [ ] 14. Sobrenomes dos sócios, se a SA quiser mostrá-los.
-- [ ] 15. Primeiros cases, depoimentos e números reais, para ligar as seções ocultas (`cases`, `depoimentos` e `numeros` em `src/content/site.ts`).
+- [ ] 15. Primeiros cases, depoimentos e números reais em `provaSocial` (`src/content/site.ts`). Hoje o bloco mostra exemplos fictícios; para deixar em standby, `provasExemplo = false` em `src/content/provisorios.ts`.
 
 ## Origem dos vídeos provisórios
 

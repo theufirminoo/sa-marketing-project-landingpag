@@ -10,7 +10,7 @@ import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { JsonLd } from "@/components/site/JsonLd";
 import { Metodo } from "@/components/site/Metodo";
-import { Cases, Depoimentos, Numeros } from "@/components/site/ProvaReal";
+import { ProvaSocial } from "@/components/site/ProvaSocial";
 import { Publica } from "@/components/site/Publica";
 import { PularConteudo } from "@/components/site/PularConteudo";
 import { QuemFaz } from "@/components/site/QuemFaz";
@@ -37,9 +37,7 @@ export default function Home() {
         <ComoComeca />
         <QuemFaz />
         <Publica />
-        <Cases />
-        <Depoimentos />
-        <Numeros />
+        <ProvaSocial />
         <Duvidas />
         <CtaFinal />
       </main>

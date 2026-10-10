@@ -45,12 +45,17 @@ Fonte da verdade: `docs/design-system/sa-tokens.css` (importado em `globals.css`
 - Botão diz o que acontece. Nunca "Saiba mais", "Enviar" ou "Clique aqui".
 - Erro diz o que falta e como corrigir, sem pedir desculpa.
 
-## Proibição de inventar prova
+## Prova social: exemplos só para posicionar
 
-A SA ainda não tem depoimentos, números, logos de clientes nem cases. Não
-invente nenhum. As seções `Cases`, `Depoimentos`, `Numeros` e "O que a SA
-publica" ficam ocultas enquanto as listas em `site.ts` estiverem vazias.
-Número só com fonte; depoimento só com nome, empresa e autorização.
+A SA ainda não tem depoimentos, números, logos de clientes nem cases reais.
+Por pedido do cliente, o bloco `ProvaSocial` mostra exemplos fictícios de
+`src/content/provas-exemplo.ts` (marcados com a etiqueta "Exemplo") enquanto
+`provasExemplo` estiver `true` em `provisorios.ts`. Prova real entra em
+`provaSocial` (site.ts) e substitui os exemplos sozinha. Com `provasExemplo`
+em `false` e as listas vazias, a seção some (standby). Nunca misture exemplo
+com dado real nem tire a etiqueta dos exemplos. Número real só com fonte;
+depoimento real só com nome, empresa e autorização. "O que a SA publica"
+continua oculta enquanto a lista de Reels estiver vazia.
 
 ## Decisões de arquitetura que não são óbvias
 

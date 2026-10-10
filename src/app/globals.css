@@ -2084,3 +2084,130 @@
     }
   }
 }
+
+/* Prova social: números, depoimentos e cases. */
+@layer components {
+  .sa-etiqueta-exemplo {
+    display: inline-block;
+    margin-left: var(--space-1);
+    padding: 0 var(--space-2);
+    border: 1px dashed var(--border-control);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 400;
+    vertical-align: middle;
+  }
+  .sa-prova-numeros {
+    display: grid;
+    gap: var(--space-8);
+    margin: var(--space-12) 0 0;
+  }
+  .sa-prova-numeros > div {
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+  .sa-prova-numeros .display {
+    order: -1;
+    font-size: clamp(56px, 8vw, 96px);
+    color: var(--accent-text);
+  }
+  .sa-prova-depoimentos,
+  .sa-prova-cases {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-12) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sa-prova-depoimentos > li {
+    display: flex;
+    padding: var(--space-6);
+  }
+  .sa-prova-depoimentos figure {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+  .sa-prova-depoimentos blockquote::before {
+    content: "“";
+    display: block;
+    height: 0.6em;
+    color: var(--accent-text);
+    font-size: 56px;
+    line-height: 1;
+  }
+  .sa-prova-autor {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .sa-prova-avatar {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 700;
+  }
+  @media (max-width: 767px) {
+    /* Celular: números em linha e depoimentos deslizando de lado. */
+    .sa-prova-numeros {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+    }
+    .sa-prova-numeros .display {
+      font-size: 36px;
+    }
+    .sa-prova-numeros .corpo {
+      font-size: 14px;
+    }
+    .sa-prova-numeros dd.pequeno {
+      display: none;
+    }
+    .sa-prova-depoimentos {
+      grid-auto-flow: column;
+      grid-auto-columns: 85%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      margin-inline: calc(-1 * var(--space-4));
+      padding-inline: var(--space-4);
+      scrollbar-width: none;
+    }
+    .sa-prova-depoimentos > li {
+      scroll-snap-align: center;
+    }
+  }
+  .sa-prova-cases > li {
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-sunken);
+  }
+  .sa-prova-antes-depois {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-4) 0 0;
+  }
+  @media (min-width: 768px) {
+    .sa-prova-numeros {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+    .sa-prova-depoimentos {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .sa-prova-cases {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sa-prova-antes-depois {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}

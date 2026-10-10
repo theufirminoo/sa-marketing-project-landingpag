@@ -37,6 +37,13 @@ export const videoHero = {
   src: "/video/fundo/criador-provisorio.mp4",
 };
 
+/**
+ * Prova social de exemplo (fictícia), para ver o bloco montado.
+ * true: mostra os exemplos enquanto não houver prova real em site.ts.
+ * false: standby, a seção some até entrar prova real.
+ */
+export const provasExemplo = true;
+
 /** Passa a falso quando o texto revisado da política entrar em /privacidade. */
 export const politicaProvisoria = true;
 
@@ -90,6 +97,13 @@ export const provisorios: ItemProvisorio[] = [
     valorAtual: "Texto provisório curto",
     trocaPor: "Texto revisado",
     ativo: politicaProvisoria,
+  },
+  {
+    id: "provas",
+    item: "Prova social de exemplo",
+    valorAtual: "Depoimentos, números e cases fictícios",
+    trocaPor: "Prova real em provaSocial (site.ts) ou provasExemplo = false",
+    ativo: provasExemplo,
   },
 ];
 

@@ -462,14 +462,29 @@ export const publica = {
   reels: [] as readonly Reel[],
 };
 
-/** Só entram com dado real, com nome, empresa e autorização. */
-export type Case = { cliente: string; resumo: string; fonte: string };
+/**
+ * Prova social. As listas abaixo são só para dado real (com fonte, nome,
+ * empresa e autorização). Enquanto estiverem vazias, a seção usa os
+ * exemplos de `src/content/provas-exemplo.ts`, se `provasExemplo` estiver
+ * ligado em provisorios.ts; desligado, a seção some (standby).
+ */
+export type Case = { cliente: string; segmento: string; antes: string; depois: string; fonte: string };
 export type Depoimento = { nome: string; empresa: string; texto: string; autorizadoEm: string };
 export type Numero = { valor: string; descricao: string; fonte: string };
 
-export const cases = { titulo: "Cases.", itens: [] as readonly Case[] };
-export const depoimentos = { titulo: "Quem já trabalha com a SA.", itens: [] as readonly Depoimento[] };
-export const numeros = { titulo: "Números da SA.", itens: [] as readonly Numero[] };
+export const provaSocial = {
+  titulo: "Quem já vende com a SA.",
+  abertura: "Resultado de quem passou pelo diagnóstico e seguiu com a gente.",
+  rotuloNumeros: "Números da SA",
+  rotuloDepoimentos: "Depoimentos de clientes",
+  rotuloCases: "Cases",
+  antes: "Antes",
+  depois: "Depois",
+  etiquetaExemplo: "Exemplo",
+  cases: [] as readonly Case[],
+  depoimentos: [] as readonly Depoimento[],
+  numeros: [] as readonly Numero[],
+};
 
 /* ------------------------------------------------------------------ */
 /* 7. Dúvidas                                                          */
