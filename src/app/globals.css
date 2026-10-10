@@ -1349,38 +1349,42 @@
     }
   }
 
-  /* Faixa âmbar que corre com as cinco etapas. */
+  /*
+   * Faixa que corre com as cinco etapas. Discreta de propósito, em tons
+   * neutros, para não competir com o botão principal.
+   */
   .sa-faixa-etapas {
     overflow: hidden;
     contain: paint;
-    padding-block: var(--space-4);
-    background: var(--accent);
-    color: var(--on-accent);
+    padding-block: var(--space-3);
+    border-block: 1px solid var(--border);
+    background: var(--bg-sunken);
+    color: var(--text-muted);
   }
   .sa-faixa-etapas__trilho {
     display: flex;
     width: max-content;
-    animation: sa-corre 45s linear infinite;
+    animation: sa-corre 60s linear infinite;
   }
   .sa-faixa-etapas ul {
     display: flex;
-    gap: var(--space-12);
+    gap: var(--space-8);
     margin: 0;
-    padding: 0 var(--space-12) 0 0;
+    padding: 0 var(--space-8) 0 0;
     list-style: none;
   }
   .sa-faixa-etapas li {
     display: flex;
     align-items: center;
-    gap: var(--space-12);
+    gap: var(--space-8);
     white-space: nowrap;
   }
   .sa-faixa-etapas li::after {
     content: "";
-    width: 12px;
-    height: 12px;
+    width: 6px;
+    height: 6px;
     border-radius: var(--radius-pill);
-    background: currentColor;
+    background: var(--border-control);
   }
 
   /* Funil do Método. */
@@ -1652,38 +1656,6 @@
     }
   }
 
-  /* Foto em arco, com uma linha âmbar acompanhando a curva. */
-  .sa-slide__arco {
-    position: absolute;
-    inset: 0;
-    z-index: -3;
-    overflow: hidden;
-  }
-  .sa-slide__arco img {
-    object-fit: cover;
-  }
-  .sa-slide--arco::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    background: color-mix(in srgb, var(--bg) 78%, transparent);
-  }
-  @media (min-width: 1024px) {
-    .sa-slide__arco {
-      left: auto;
-      width: 52%;
-      border-left: 2px solid var(--accent);
-      border-radius: 100% 0 0 100% / 50% 0 0 50%;
-    }
-    .sa-slide--arco::before {
-      display: none;
-    }
-    .sa-slide--arco .sa-slide__lado > * {
-      max-width: 30rem;
-    }
-  }
-
   .sa-carrossel__controles {
     position: absolute;
     bottom: var(--space-6);
@@ -1735,16 +1707,14 @@
 @layer components {
   /* Todos os slides começam na mesma altura do título do primeiro. */
   .sa-slide--video,
-  .sa-slide--arco,
   .sa-slide--foto,
-  .sa-slide--metade {
+  .sa-slide--painel {
     justify-content: flex-start;
   }
   @media (min-width: 1024px) {
     .sa-slide--video,
-    .sa-slide--arco,
     .sa-slide--foto,
-    .sa-slide--metade {
+    .sa-slide--painel {
       padding-top: calc(var(--header-h) + var(--space-16));
     }
   }
@@ -1825,34 +1795,6 @@
     height: 3px;
   }
 
-  /* Slide "metade": foto na metade esquerda, texto na direita. */
-  .sa-slide__metade {
-    position: absolute;
-    inset: 0;
-    z-index: -3;
-    overflow: hidden;
-  }
-  .sa-slide__metade img {
-    object-fit: cover;
-  }
-  .sa-slide--metade::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
-  }
-  @media (min-width: 1024px) {
-    .sa-slide__metade {
-      right: 50%;
-    }
-    .sa-slide--metade::before {
-      display: none;
-    }
-    .sa-slide--metade .sa-slide__lado--direita > div {
-      width: 44%;
-    }
-  }
 }
 
 @layer components {
@@ -1861,6 +1803,151 @@
     .sa-carrossel .sa-container {
       padding-inline: var(--space-16);
       max-width: calc(var(--container) + 2 * var(--space-16));
+    }
+  }
+}
+
+/* Slide "painel": foto de fundo, texto e cartão com o que a frente entrega. */
+@layer components {
+  .sa-slide__veu--painel {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+      linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 88%, transparent) 45%, color-mix(in srgb, var(--bg) 55%, transparent) 100%),
+      linear-gradient(0deg, var(--bg) 0%, transparent 30%);
+  }
+  .sa-painel {
+    display: grid;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  .sa-painel__cartao {
+    padding: var(--space-6);
+  }
+  .sa-painel__lista {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: passo;
+  }
+  .sa-painel__lista li {
+    position: relative;
+    padding-left: var(--space-8);
+  }
+  .sa-painel__lista li::before {
+    content: "";
+    position: absolute;
+    top: 0.55em;
+    left: var(--space-1);
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--border-control);
+  }
+  .sa-painel__lista[data-numerado] li {
+    counter-increment: passo;
+  }
+  .sa-painel__lista[data-numerado] li::before {
+    content: counter(passo, decimal-leading-zero);
+    top: 0.1em;
+    left: 0;
+    width: auto;
+    height: auto;
+    background: none;
+    color: var(--accent-text);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .sa-painel__lista strong {
+    font-weight: 700;
+    color: var(--text);
+  }
+  @media (max-width: 1023px) {
+    /* No celular o texto cobre a foto inteira: véu uniforme garante contraste. */
+    .sa-slide__veu--painel {
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+    }
+    /* No celular o cartão vira uma lista curta, sem o título. */
+    .sa-painel__cartao {
+      padding: var(--space-4);
+    }
+    .sa-painel__cartao > .titulo-3 {
+      display: none;
+    }
+    .sa-painel__lista {
+      margin: 0;
+      gap: var(--space-2);
+      font-size: 14px;
+    }
+    .sa-painel__lista:not([data-numerado]) li:nth-child(n + 4) {
+      display: none;
+    }
+  }
+  @media (min-width: 1024px) {
+    .sa-painel {
+      grid-template-columns: 7fr 5fr;
+      gap: var(--space-16);
+    }
+    .sa-painel__cartao {
+      padding: var(--space-8);
+    }
+    /*
+     * Variante "etapas" (Consultoria): texto em cima e as etapas em linha,
+     * para não repetir o desenho do slide da SA Tech.
+     */
+    [data-variante="etapas"] .sa-painel {
+      grid-template-columns: 1fr;
+      gap: var(--space-12);
+    }
+    [data-variante="etapas"] .sa-painel__texto {
+      max-width: 44rem;
+    }
+    [data-variante="etapas"] .sa-painel__cartao {
+      padding: 0;
+      border: 0;
+      background: none;
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    [data-variante="etapas"] .sa-painel__cartao > .titulo-3 {
+      display: none;
+    }
+    [data-variante="etapas"] .sa-painel__cartao::before,
+    [data-variante="etapas"] .sa-painel__cartao::after {
+      display: none;
+    }
+    [data-variante="etapas"] .sa-painel__lista {
+      max-width: none;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin: 0;
+    }
+    [data-variante="etapas"] .sa-painel__lista li {
+      padding: var(--space-6);
+      padding-top: var(--space-16);
+      border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+      border-radius: var(--radius-sm);
+      background: color-mix(in srgb, var(--bg) 55%, transparent);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+    }
+    [data-variante="etapas"] .sa-painel__lista li::before {
+      top: var(--space-6);
+      left: var(--space-6);
+      font-size: 20px;
+    }
+    [data-variante="etapas"] .sa-painel__lista strong {
+      display: block;
+      margin-bottom: var(--space-1);
+    }
+    [data-variante="etapas"] .sa-slide__veu--painel {
+      background:
+        linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 80%, transparent) 60%, color-mix(in srgb, var(--bg) 50%, transparent) 100%),
+        linear-gradient(0deg, color-mix(in srgb, var(--bg) 70%, transparent) 0%, transparent 60%);
     }
   }
 }

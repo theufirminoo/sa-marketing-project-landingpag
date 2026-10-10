@@ -105,7 +105,9 @@ export const hero = {
   titulo: ["Descubra onde", "o seu marketing", "para de vender."],
   subtitulo:
     "Responda 3 perguntas e converse com a SA pelo WhatsApp. Você sai sabendo qual etapa está falhando e o que fazer primeiro.",
+  passo: "Responda aqui. Pergunta 1 de 3",
   pergunta: "O que mais trava suas vendas hoje?",
+  dica: "Escolha a resposta que mais parece com você para começar.",
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -115,7 +117,7 @@ export const hero = {
 export type SlideHero = {
   id: string;
   /** Cada slide tem um formato, para o hero não ficar repetitivo. */
-  formato: "video" | "arco" | "foto" | "metade";
+  formato: "video" | "foto" | "painel";
   frente: FrenteId;
   chamada: string;
   titulo: string;
@@ -123,6 +125,8 @@ export type SlideHero = {
   acao: string;
   imagem: { src: string; alt: string };
   video?: string;
+  /** Formato "painel": cartão de vidro ao lado do texto. */
+  painel?: { titulo: string; itens: readonly { cabeca?: string; texto: string }[]; numerado?: boolean };
 };
 
 export const carrossel = {
@@ -136,13 +140,24 @@ export const carrossel = {
   slides: [
     {
       id: "tech",
-      formato: "metade",
+      formato: "painel",
       frente: "tech",
       chamada: "SA Tech",
-      titulo: "Venda e atendimento rodando sem você preso no WhatsApp.",
-      texto: "Site, automação e sistema que respondem, organizam e lembram o cliente por você.",
+      titulo: "Seu WhatsApp atende, qualifica e agenda enquanto você vende.",
+      texto: "A SA Tech constrói o site, a loja, o CRM e as automações do seu negócio, tudo ligado ao seu atendimento.",
       acao: "Começar pela SA Tech",
       imagem: { src: "/imagens/hero/tech.webp", alt: "Programador usa o celular ao lado de um teclado iluminado" },
+      painel: {
+        titulo: "O que a SA Tech constrói",
+        itens: [
+          { texto: "Sites, landing pages e lojas virtuais" },
+          { texto: "Automação de WhatsApp e Instagram" },
+          { texto: "Atendimento com IA que responde e qualifica" },
+          { texto: "CRM, ERP e painéis sob medida" },
+          { texto: "Integrações entre as ferramentas que você já usa" },
+          { texto: "Suporte e evolução todo mês" },
+        ],
+      },
     },
     {
       id: "studio",
@@ -157,13 +172,23 @@ export const carrossel = {
     },
     {
       id: "consultoria",
-      formato: "arco",
+      formato: "painel",
       frente: "consultoria",
       chamada: "SA Consultoria",
       titulo: "Antes de postar mais, descubra onde a venda trava.",
-      texto: "Números, oferta e atendimento na mesa, e um plano do que fazer primeiro.",
+      texto: "A SA senta com você, abre números, oferta e atendimento, e sai com um plano do que fazer primeiro.",
       acao: "Começar pela SA Consultoria",
       imagem: { src: "/imagens/hero/consultoria.webp", alt: "Profissional apresenta uma estratégia no quadro branco para a equipe" },
+      painel: {
+        titulo: "Como a consultoria anda",
+        numerado: true,
+        itens: [
+          { cabeca: "Diagnóstico", texto: "a gente mapeia do primeiro contato até a venda fechada." },
+          { cabeca: "Plano", texto: "metas, oferta e rotina comercial definidas com você." },
+          { cabeca: "Treino", texto: "equipe pronta para atender e vender do mesmo jeito." },
+          { cabeca: "Acompanhamento", texto: "indicadores revistos todo mês, com ajuste de rota." },
+        ],
+      },
     },
     {
       id: "social",

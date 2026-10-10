@@ -39,9 +39,13 @@ function SlidePergunta() {
               ))}
             </h1>
             <p className="lead mt-6 text-text-muted">{hero.subtitulo}</p>
-            <p id="hero-pergunta" className="titulo-3 mt-8">
-              {hero.pergunta}
-            </p>
+            <div className="sa-hero-pergunta mt-8">
+              <p className="rotulo text-accent-text">{hero.passo}</p>
+              <p id="hero-pergunta" className="titulo-3 mt-2">
+                {hero.pergunta}
+              </p>
+              <p className="pequeno mt-1 text-text-muted">{hero.dica}</p>
+            </div>
             <ul className="sa-chips mt-4" aria-labelledby="hero-pergunta">
               {travas.map((trava, i) => (
                 <li key={trava.id} className="sa-hero-entra" style={indice(i)}>
@@ -86,25 +90,6 @@ function SlideVideo({ slide }: { slide: SlideHero }) {
   );
 }
 
-/** Texto à esquerda, foto em arco à direita, com linha âmbar na borda. */
-function SlideArco({ slide }: { slide: SlideHero }) {
-  return (
-    <div className="sa-slide sa-slide--arco">
-      <div className="sa-slide__arco">
-        <Image src={slide.imagem.src} alt={slide.imagem.alt} fill sizes="(min-width: 1024px) 55vw, 100vw" />
-      </div>
-      <div className="sa-container sa-slide__lado">
-        <p className="rotulo text-accent-text">{slide.chamada}</p>
-        <h2 className="titulo-1 mt-4">{slide.titulo}</h2>
-        <p className="lead mt-6 text-text-muted">{slide.texto}</p>
-        <BotaoDiagnostico origem="hero" frente={slide.frente} hrefSemJs={semJs} className="sa-btn mt-8">
-          {slide.acao}
-        </BotaoDiagnostico>
-      </div>
-    </div>
-  );
-}
-
 /** Foto inteira de um lado e cartão de vidro com o texto do outro. */
 function SlideFoto({ slide }: { slide: SlideHero }) {
   return (
@@ -125,15 +110,15 @@ function SlideFoto({ slide }: { slide: SlideHero }) {
   );
 }
 
-/** Foto ocupando a metade esquerda, texto na direita. */
-function SlideMetade({ slide }: { slide: SlideHero }) {
+/** Foto de fundo, texto à esquerda e cartão de vidro com o que a frente entrega. */
+function SlidePainel({ slide }: { slide: SlideHero }) {
+  const Lista = slide.painel?.numerado ? "ol" : "ul";
   return (
-    <div className="sa-slide sa-slide--metade">
-      <div className="sa-slide__metade">
-        <Image src={slide.imagem.src} alt={slide.imagem.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" />
-      </div>
-      <div className="sa-container sa-slide__lado sa-slide__lado--direita">
-        <div>
+    <div className="sa-slide sa-slide--painel" data-variante={slide.painel?.numerado ? "etapas" : "lista"}>
+      <Image src={slide.imagem.src} alt={slide.imagem.alt} fill sizes="100vw" className="sa-slide__fundo" />
+      <div className="sa-slide__veu sa-slide__veu--painel" aria-hidden="true" />
+      <div className="sa-container sa-painel">
+        <div className="sa-painel__texto">
           <p className="rotulo text-accent-text">{slide.chamada}</p>
           <h2 className="titulo-1 mt-4">{slide.titulo}</h2>
           <p className="lead mt-6 text-text-muted">{slide.texto}</p>
@@ -141,12 +126,25 @@ function SlideMetade({ slide }: { slide: SlideHero }) {
             {slide.acao}
           </BotaoDiagnostico>
         </div>
+        {slide.painel ? (
+          <div className="sa-painel__cartao sa-vidro">
+            <p className="titulo-3">{slide.painel.titulo}</p>
+            <Lista className="sa-painel__lista corpo" data-numerado={slide.painel.numerado ? "true" : undefined}>
+              {slide.painel.itens.map((item) => (
+                <li key={item.texto}>
+                  {item.cabeca ? <strong>{item.cabeca}: </strong> : null}
+                  {item.texto}
+                </li>
+              ))}
+            </Lista>
+          </div>
+        ) : null}
       </div>
     </div>
   );
 }
 
-const SLIDES = { video: SlideVideo, arco: SlideArco, foto: SlideFoto, metade: SlideMetade } as const;
+const SLIDES = { video: SlideVideo, foto: SlideFoto, painel: SlidePainel } as const;
 
 export function Hero() {
   return (
