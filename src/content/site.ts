@@ -126,6 +126,8 @@ export type SlideHero = {
   imagem: { src: string; alt: string };
   video?: string;
   /** Formato "painel": cartão de vidro ao lado do texto. */
+  /** Destaques curtos mostrados em blocos no slide (vídeo e foto). */
+  destaques?: readonly string[];
   painel?: { titulo: string; itens: readonly { cabeca?: string; texto: string }[]; numerado?: boolean };
 };
 
@@ -167,8 +169,9 @@ export const carrossel = {
       titulo: "Reels, fotos e vídeo gravados pensando na venda.",
       texto: "Da pauta à edição, cada peça sai com um papel no seu funil.",
       acao: "Começar pela SA Studio",
-      imagem: { src: "/imagens/hero/estudio.webp", alt: "Bastidor de gravação em estúdio, com câmera e monitor em primeiro plano" },
+      imagem: { src: "/imagens/hero/estudio.webp", alt: "Editora de vídeo de fone trabalhando na linha do tempo em dois monitores" },
       video: "/video/fundo/estudio.mp4",
+      destaques: ["Reels toda semana", "Foto de produto e equipe", "Videocast e cortes", "Depoimento de cliente em vídeo"],
     },
     {
       id: "consultoria",
@@ -198,6 +201,7 @@ export const carrossel = {
       titulo: "Seguidor que não compra é sinal de funil quebrado.",
       texto: "Conteúdo e anúncio trabalhando juntos até o direct virar pedido.",
       acao: "Começar pela SA Social",
+      destaques: ["Conteúdo que atrai", "Anúncio que alcança", "Direct respondido", "Pedido fechado"],
       imagem: { src: "/imagens/hero/social.webp", alt: "Pessoa rolando uma rede social no celular ao lado do notebook" },
     },
   ] satisfies SlideHero[],
@@ -541,6 +545,13 @@ export const ctaFinal = {
   titulo: "Chegou até aqui. Falta só descobrir a sua trava.",
   texto: "Leva um minuto e a conversa com a SA já começa com as suas respostas.",
   linkDireto: "Prefere falar direto?",
+  rotuloBeneficios: "O que você leva do diagnóstico",
+  beneficios: [
+    { titulo: "A etapa que trava", texto: "Você sai sabendo se o problema está em atrair, educar, qualificar, converter ou fidelizar." },
+    { titulo: "Por onde começar", texto: "A frente certa para o seu momento, sem contratar o que você não precisa." },
+    { titulo: "Conversa já adiantada", texto: "Suas respostas chegam escritas no WhatsApp da SA. Você não repete a história." },
+  ],
+  garantias: ["Diagnóstico inicial é cortesia", "Sem contrato para conversar", "3 perguntas, 1 minuto"],
 } as const;
 
 /* ------------------------------------------------------------------ */

@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
-type Conexao = { saveData?: boolean };
-
 type Props = {
   src: string;
   /** Classe de opacidade e mistura, definida em globals.css. */
@@ -14,8 +12,8 @@ type Props = {
 
 /**
  * Vídeo decorativo atrás do conteúdo da seção, em laço contínuo e sem
- * controle. Só começa depois da primeira interação (para não virar o LCP) e
- * nunca com movimento reduzido ou economia de dados.
+ * controle. Só começa depois da primeira interação, para não virar o LCP.
+ * Por decisão do cliente, toca também com movimento reduzido: é só fundo.
  */
 export function VideoFundo({ src, className }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -23,9 +21,6 @@ export function VideoFundo({ src, className }: Props) {
   const [visivel, setVisivel] = useState(false);
 
   useEffect(() => {
-    const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const conexao = (navigator as Navigator & { connection?: Conexao }).connection;
-    if (reduzido || conexao?.saveData) return;
     const eventos = ["pointerdown", "pointermove", "keydown", "scroll", "touchstart", "wheel"] as const;
     const tocar = () => {
       eventos.forEach((e) => window.removeEventListener(e, tocar));

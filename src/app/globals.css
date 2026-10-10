@@ -1709,7 +1709,7 @@
   .sa-slide--video,
   .sa-slide--foto,
   .sa-slide--painel {
-    justify-content: flex-start;
+    justify-content: center;
   }
   @media (min-width: 1024px) {
     .sa-slide--video,
@@ -1894,6 +1894,33 @@
     .sa-painel__cartao {
       padding: var(--space-8);
     }
+    /* Variante "lista" (SA Tech): itens viram ladrilhos em duas colunas. */
+    [data-variante="lista"] .sa-painel {
+      grid-template-columns: 6fr 6fr;
+    }
+    [data-variante="lista"] .sa-painel__lista {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+    }
+    [data-variante="lista"] .sa-painel__lista li {
+      display: flex;
+      align-items: flex-end;
+      min-height: 112px;
+      padding: var(--space-4);
+      padding-top: var(--space-12);
+      border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+      border-radius: var(--radius-sm);
+      background: color-mix(in srgb, var(--bg) 45%, transparent);
+    }
+    [data-variante="lista"] .sa-painel__lista li::before {
+      top: var(--space-4);
+      left: var(--space-4);
+      width: 24px;
+      height: 3px;
+      border-radius: 0;
+      background: var(--accent);
+    }
     /*
      * Variante "etapas" (Consultoria): texto em cima e as etapas em linha,
      * para não repetir o desenho do slide da SA Tech.
@@ -1948,6 +1975,112 @@
       background:
         linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 80%, transparent) 60%, color-mix(in srgb, var(--bg) 50%, transparent) 100%),
         linear-gradient(0deg, color-mix(in srgb, var(--bg) 70%, transparent) 0%, transparent 60%);
+    }
+  }
+}
+
+/* Blocos de destaque do slide de vídeo (SA Studio). */
+@layer components {
+  .sa-destaques {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+  }
+  .sa-destaques li {
+    padding: var(--space-3) var(--space-4);
+    font-size: 14px;
+  }
+  @media (min-width: 1024px) {
+    .sa-destaques {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-top: var(--space-16);
+    }
+    .sa-destaques li {
+      padding: var(--space-6);
+      font-size: 17px;
+    }
+  }
+
+  /* Cadeia do slide de foto (SA Social): do conteúdo ao pedido. */
+  .sa-cadeia {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: elo;
+  }
+  .sa-cadeia li {
+    counter-increment: elo;
+    padding: var(--space-3);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--bg) 40%, transparent);
+  }
+  .sa-cadeia li::before {
+    content: counter(elo, decimal-leading-zero);
+    display: block;
+    margin-bottom: var(--space-1);
+    color: var(--accent-text);
+    font-weight: 700;
+  }
+  @media (min-width: 1024px) {
+    .sa-cadeia {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+/* CTA final: o que a pessoa leva e o que tira o atrito antes do botão. */
+@layer components {
+  .sa-beneficios {
+    display: grid;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: 64rem;
+    margin: var(--space-12) 0 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+  }
+  .sa-beneficios li {
+    padding: var(--space-4);
+    border: 1px solid color-mix(in srgb, var(--marca-preto) 18%, transparent);
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--marca-giz) 35%, transparent);
+  }
+  .sa-garantias {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2) var(--space-6);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sa-garantias li::before {
+    content: "✓";
+    margin-right: var(--space-2);
+    font-weight: 700;
+  }
+  @media (max-width: 767px) {
+    .sa-beneficios .corpo {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) {
+    .sa-beneficios {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+    .sa-beneficios li {
+      padding: var(--space-6);
     }
   }
 }

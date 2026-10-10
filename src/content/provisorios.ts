@@ -23,13 +23,13 @@ export const logoSvg: string | undefined = undefined;
 
 /**
  * Fotos 4:5 em public/socios/. Sem foto, o componente mostra a silhueta.
- * As atuais são de banco de imagem (Unsplash, licença livre) só para a fase
- * de testes; têm "provisorio" no nome e saem quando chegarem as reais.
+ * Matheus já é a foto real. Samuel e Malaquias ainda são de banco de imagem
+ * (Unsplash, licença livre), com "provisorio" no nome, até chegarem as reais.
  */
 export const fotosSocios: Record<"samuel" | "malaquias" | "matheus", string | undefined> = {
   samuel: "/socios/samuel-provisorio.webp",
   malaquias: "/socios/malaquias-provisorio.webp",
-  matheus: "/socios/matheus-provisorio.webp",
+  matheus: "/socios/matheus.webp",
 };
 
 /** Vídeo de fundo do hero (mp4 + webm). O provisório tem "provisorio" no nome. */

@@ -11,12 +11,25 @@ export function CtaFinal() {
           {ctaFinal.titulo}
         </h2>
         <p className="lead mt-6 max-w-[48ch]">{ctaFinal.texto}</p>
+        <ul className="sa-beneficios" aria-label={ctaFinal.rotuloBeneficios}>
+          {ctaFinal.beneficios.map((b) => (
+            <li key={b.titulo}>
+              <h3 className="titulo-3">{b.titulo}</h3>
+              <p className="corpo mt-2">{b.texto}</p>
+            </li>
+          ))}
+        </ul>
         <div className="mt-8">
           <BotaoDiagnostico origem="cta-final" className="sa-btn sa-btn--preto" hrefSemJs={urlWhatsapp(comum.mensagemWhatsappDireta)}>
             {comum.ctaDiagnostico}
           </BotaoDiagnostico>
         </div>
-        <p className="mt-8">
+        <ul className="sa-garantias pequeno">
+          {ctaFinal.garantias.map((g) => (
+            <li key={g}>{g}</li>
+          ))}
+        </ul>
+        <p className="mt-6">
           <a
             href={urlWhatsapp(comum.mensagemWhatsappDireta)}
             target="_blank"

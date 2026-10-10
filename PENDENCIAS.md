@@ -11,7 +11,7 @@ valor provisório ou pendência que trava o lançamento.
 - [ ] 1. Número real de WhatsApp. Hoje: `5500000000000` (provisório, não pertence a ninguém). Trocar em `NEXT_PUBLIC_WHATSAPP_NUMBER`.
 - [ ] 2. CNPJ e razão social reais. Hoje: `SA Marketing, CNPJ 00.000.000/0001-00` (fictício). Trocar em `src/content/provisorios.ts`.
 - [ ] 3. Logo em SVG. Hoje o cabeçalho e o rodapé mostram "SA Marketing" em texto. Salvar em `public/logo-sa.svg` e apontar `logoSvg` em `src/content/provisorios.ts`. Os ícones (favicon e Apple) mostram "SA" provisório e também devem trocar.
-- [ ] 4. Fotos dos três sócios, em 4:5. Hoje: silhueta em SVG. Salvar em `public/socios/` e preencher `fotosSocios` em `src/content/provisorios.ts`.
+- [ ] 4. Fotos de Samuel e Malaquias, em 4:5 (a do Matheus já é real; a original veio em 217x240, mandar uma maior). Hoje: banco de imagem. Salvar em `public/socios/` e preencher `fotosSocios` em `src/content/provisorios.ts`.
 - [ ] 5. Vídeo vertical real para o hero e vídeos reais para os fundos (hero, Frentes, Quem faz: bastidor, gravação, cliente; mp4 e webm sem áudio, até 2,5 MB cada, caminhos em `fundos` no `src/content/site.ts`). Hoje são animações abstratas geradas com `ffmpeg` (ver "Origem dos vídeos provisórios" abaixo). Trocar `videoHero` em `src/content/provisorios.ts`. Ao trocar, conferir de novo o LCP no computador: um pôster com conteúdo real pode passar a ser o maior elemento da tela.
 - [ ] 6. Texto final da política de privacidade. Hoje: texto provisório curto em `/privacidade`. Trocar em `src/content/site.ts` (`privacidade`) e pôr `politicaProvisoria = false`.
 - [ ] 7. Confirmação do domínio: samarketing.co.br ou samarketing.com.br. Hoje: `https://samarketing.co.br` em `NEXT_PUBLIC_SITE_URL`.
@@ -61,7 +61,7 @@ SA quando houver.
 
 | Arquivo | Origem |
 | --- | --- |
-| `public/video/fundo/estudio.*` (slide SA Studio) | Mixkit 22998, "Behind the scenes of an interview show" |
+| `public/video/fundo/estudio.*` (slide SA Studio) | Mixkit 23267, "Woman doing video editing with headphones" |
 | `public/video/fundo/criador-provisorio.*` (fundo do slide 1) | Mixkit 23485, "A young man recording himself with a camera" |
 | `public/imagens/hero/*.webp` (slides do carrossel) | quadros dos Mixkit 22998, 9069, 41638 e 4908 |
 | `public/video/fundo/reuniao.*` (Frentes) | Mixkit 46680, "Brainstorming over the meeting table" |

@@ -85,6 +85,15 @@ function SlideVideo({ slide }: { slide: SlideHero }) {
         <BotaoDiagnostico origem="hero" frente={slide.frente} hrefSemJs={semJs} className="sa-btn mt-8">
           {slide.acao}
         </BotaoDiagnostico>
+        {slide.destaques ? (
+          <ul className="sa-destaques">
+            {slide.destaques.map((d) => (
+              <li key={d} className="sa-vidro corpo">
+                {d}
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     </div>
   );
@@ -101,6 +110,13 @@ function SlideFoto({ slide }: { slide: SlideHero }) {
           <p className="rotulo text-accent-text">{slide.chamada}</p>
           <h2 className="titulo-1 mt-4">{slide.titulo}</h2>
           <p className="lead mt-6">{slide.texto}</p>
+          {slide.destaques ? (
+            <ol className="sa-cadeia pequeno">
+              {slide.destaques.map((d) => (
+                <li key={d}>{d}</li>
+              ))}
+            </ol>
+          ) : null}
           <BotaoDiagnostico origem="hero" frente={slide.frente} hrefSemJs={semJs} className="sa-btn mt-8">
             {slide.acao}
           </BotaoDiagnostico>

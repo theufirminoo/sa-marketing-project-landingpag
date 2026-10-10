@@ -34,8 +34,8 @@ Fonte da verdade: `docs/design-system/sa-tokens.css` (importado em `globals.css`
 - Uma família só: Bricolage Grotesque (`next/font/google`, eixos `opsz` e `wdth`). Caixa normal sempre; nada de destacar palavra do título.
 - `@theme` zera a paleta do Tailwind: só existem as cores, raios e sombras dos tokens. No shadcn, `accent` é o âmbar; hover usa `--surface-hover`.
 - Anime só `opacity`, `transform`, `background-color`, `border-color` e `color`. Nunca `transition: all`. Hover dentro de `@media (hover: hover)`.
-- Movimento (pedido do cliente depois da primeira versão): vídeos de fundo com transparência no hero, em Frentes e em Quem faz (`VideoFundo`), brilho âmbar em CSS no hero, faixa neutra das etapas que corre (discreta para não competir com o botão), funil animado no Método, formas que andam no CTA final e revelação ao rolar só em CSS (`.sa-revela`, `animation-timeline: view()`). Tudo desliga com `prefers-reduced-motion`.
-- Vídeo de fundo só começa depois da primeira interação (rolar, tocar, teclar): antes disso ele vira o LCP no celular. Sem botão de pausa (pedido do cliente: roda em laço como fundo), WebM primeiro e MP4 de reserva.
+- Movimento (pedido do cliente depois da primeira versão): vídeos de fundo com transparência no hero, em Frentes e em Quem faz (`VideoFundo`), brilho âmbar em CSS no hero, faixa neutra das etapas que corre (discreta para não competir com o botão), funil animado no Método, formas que andam no CTA final e revelação ao rolar só em CSS (`.sa-revela`, `animation-timeline: view()`). Tudo desliga com `prefers-reduced-motion`, menos os vídeos de fundo.
+- Vídeo de fundo só começa depois da primeira interação (rolar, tocar, teclar): antes disso ele vira o LCP no celular. Sem botão de pausa e tocando mesmo com movimento reduzido (decisão do cliente: é só fundo, roda em laço), WebM primeiro e MP4 de reserva.
 
 ## Regras de copy
 
