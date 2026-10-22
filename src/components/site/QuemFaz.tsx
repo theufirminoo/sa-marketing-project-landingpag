@@ -50,7 +50,7 @@ function Retrato({ cartao }: { cartao: Cartao }) {
 function Grupo({ id, rotulo, texto, cartoes }: { id: string; rotulo: string; texto?: string; cartoes: Cartao[] }) {
   return (
     <div className="sa-time__grupo">
-      <h3 id={id} className="rotulo text-text-muted">
+      <h3 id={id} className="titulo-2">
         {rotulo}
       </h3>
       {texto ? <p className="corpo mt-2 text-text-muted">{texto}</p> : null}

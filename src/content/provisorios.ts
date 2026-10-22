@@ -7,11 +7,13 @@
  */
 
 export const WHATSAPP_PROVISORIO = "5500000000000";
+/** WhatsApp comercial da SA, (38) 99893-4902, confirmado pelo cliente. */
+export const WHATSAPP_SA = "5538998934902";
 const CNPJ_PROVISORIO = "00.000.000/0001-00";
 
 /** Número no formato internacional, só dígitos: 55 + DDD + número. */
 export const whatsappNumero: string =
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || WHATSAPP_PROVISORIO;
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || WHATSAPP_SA;
 
 export const empresa = {
   razaoSocial: "SA Marketing",

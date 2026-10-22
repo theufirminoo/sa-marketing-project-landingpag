@@ -17,6 +17,9 @@
   --on-accent: #1A1A1A;
   --accent-text: #F7A866;
   --accent-tint: #3A2210;
+  /* Laranja forte da apresentação comercial. Só em área grande, gráfico e
+     degradê: em texto pequeno sobre #1A1A1A o contraste fica abaixo de 4,5:1. */
+  --accent-forte: #F0501A;
   --focus: #F7A866;
   --success: #4CC38A;
   --danger: #FF7A6B;

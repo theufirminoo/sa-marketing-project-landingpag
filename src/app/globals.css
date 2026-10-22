@@ -105,6 +105,7 @@
   --color-on-accent: var(--on-accent);
   --color-accent-text: var(--accent-text);
   --color-accent-tint: var(--accent-tint);
+  --color-accent-forte: var(--accent-forte);
   --color-focus: var(--focus);
   --color-success: var(--success);
   --color-danger: var(--danger);
@@ -1894,22 +1895,24 @@
       margin-top: var(--space-6);
     }
     [data-variante="lista"] .sa-painel__lista li {
-      display: flex;
-      align-items: flex-end;
-      min-height: 112px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      min-height: 128px;
       padding: var(--space-4);
-      padding-top: var(--space-12);
       border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
       border-radius: var(--radius-sm);
       background: color-mix(in srgb, var(--bg) 45%, transparent);
+      transition:
+        border-color var(--dur-rapida) var(--ease-saida),
+        background-color var(--dur-rapida) var(--ease-saida);
     }
-    [data-variante="lista"] .sa-painel__lista li::before {
-      top: var(--space-4);
-      left: var(--space-4);
-      width: 24px;
-      height: 3px;
-      border-radius: 0;
-      background: var(--accent);
+    @media (hover: hover) {
+      [data-variante="lista"] .sa-painel__lista li:hover {
+        border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+        background-color: color-mix(in srgb, var(--accent-tint) 70%, transparent);
+      }
     }
     /*
      * Variante "etapas" (Consultoria): texto em cima e as etapas em linha,
@@ -1980,9 +1983,42 @@
     list-style: none;
     text-align: left;
   }
-  .sa-destaques li {
-    padding: var(--space-3) var(--space-4);
+  .sa-destaque {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-3);
+    min-height: 128px;
+    padding: var(--space-3);
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+  }
+  .sa-destaque__foto {
+    z-index: -2;
+    object-fit: cover;
+    transition: transform var(--dur-lenta) var(--ease-saida);
+  }
+  /* Escurece embaixo, onde fica o texto. */
+  .sa-destaque::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to top, color-mix(in srgb, var(--bg) 94%, transparent) 15%, color-mix(in srgb, var(--bg) 25%, transparent) 75%);
+  }
+  .sa-destaque__texto {
     font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  @media (hover: hover) {
+    .sa-destaque:hover .sa-destaque__foto {
+      transform: scale(1.05);
+    }
   }
   @media (min-width: 1024px) {
     .sa-destaques {
@@ -1990,8 +2026,11 @@
       gap: var(--space-4);
       margin-top: var(--space-16);
     }
-    .sa-destaques li {
-      padding: var(--space-6);
+    .sa-destaque {
+      min-height: 200px;
+      padding: var(--space-4);
+    }
+    .sa-destaque__texto {
       font-size: 17px;
     }
   }
@@ -2233,5 +2272,206 @@
       grid-template-columns: repeat(3, 1fr);
       gap: var(--space-8) var(--space-6);
     }
+  }
+}
+
+/* Ícone dos blocos do carrossel: degradê do laranja claro ao forte. */
+@layer components {
+  .sa-icone {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--accent), var(--accent-forte));
+    color: var(--on-accent);
+  }
+  /* Lista da SA Tech com ícone no lugar do marcador. */
+  :where(.sa-painel__lista:not([data-numerado])) li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-left: 0;
+  }
+  .sa-painel__lista:not([data-numerado]) li::before {
+    display: none;
+  }
+  @media (max-width: 1023px) {
+    .sa-painel__lista:not([data-numerado]) li {
+      padding-left: 0;
+    }
+    .sa-painel__lista .sa-icone {
+      width: 32px;
+      height: 32px;
+    }
+  }
+}
+
+/* Hero: a primeira pergunta é um cartão que abre o diagnóstico. */
+@layer components {
+  .sa-hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4) var(--space-6);
+    width: 100%;
+    max-width: 40rem;
+    padding: var(--space-6);
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-sm);
+    background-color: color-mix(in srgb, var(--bg) 62%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      border-color var(--dur-rapida) var(--ease-saida),
+      background-color var(--dur-rapida) var(--ease-saida);
+  }
+  .sa-hero-cta__texto {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .sa-hero-cta__acao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--alvo-toque);
+    padding: 0 var(--space-6);
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color var(--dur-rapida) var(--ease-saida);
+  }
+  .sa-hero-cta__acao svg {
+    transition: transform var(--dur-rapida) var(--ease-saida);
+  }
+  @media (hover: hover) {
+    .sa-hero-cta:hover {
+      border-color: var(--accent);
+      background-color: color-mix(in srgb, var(--bg) 45%, transparent);
+    }
+    .sa-hero-cta:hover .sa-hero-cta__acao {
+      background: var(--accent-hover);
+    }
+    .sa-hero-cta:hover .sa-hero-cta__acao svg {
+      transform: translateX(4px);
+    }
+  }
+  .sa-hero-cta:active .sa-hero-cta__acao {
+    background: var(--accent-pressed);
+  }
+  @media (max-width: 639px) {
+    .sa-hero-cta {
+      padding: var(--space-4);
+    }
+    .sa-hero-cta__acao {
+      width: 100%;
+    }
+  }
+}
+
+/* Botão de contorno: discreto, mas claramente clicável. */
+@layer components {
+  .sa-btn--contorno {
+    gap: var(--space-2);
+    background: transparent;
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  .sa-btn--contorno svg {
+    color: var(--accent-text);
+    transition: transform var(--dur-rapida) var(--ease-saida), color var(--dur-rapida) var(--ease-saida);
+  }
+  @media (hover: hover) {
+    .sa-btn--contorno:hover {
+      background: var(--accent);
+      color: var(--on-accent);
+    }
+    .sa-btn--contorno:hover svg {
+      color: var(--on-accent);
+      transform: translateX(4px);
+    }
+  }
+  .sa-btn--contorno:active {
+    background: var(--accent-pressed);
+    color: var(--on-accent);
+  }
+}
+
+/* Laranja forte da apresentação: nos números grandes e no fundo do CTA final. */
+@layer components {
+  .sa-prova-numeros .display {
+    background: linear-gradient(120deg, var(--accent) 10%, var(--accent-forte) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--accent);
+  }
+  .sa-cta-final {
+    background-image: radial-gradient(ellipse at 50% 40%, var(--accent) 45%, var(--accent-forte) 130%);
+  }
+}
+
+/* Logo do cliente nos cases: ao lado no computador, em cima no celular. */
+@layer components {
+  .sa-prova-cases > li {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .sa-case__logo {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--marca-giz);
+  }
+  .sa-case__logo img,
+  .sa-case__logo svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  @media (min-width: 1024px) {
+    .sa-prova-cases > li {
+      grid-template-columns: 72px 1fr;
+      gap: var(--space-6);
+    }
+  }
+}
+
+/* Quebra de linha automática e equilibrada: título sem palavra sozinha,
+   parágrafo sem última linha de uma palavra só. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  .titulo-1,
+  .titulo-2,
+  .titulo-3,
+  .rotulo {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dt,
+  dd,
+  figcaption,
+  blockquote,
+  .corpo,
+  .lead,
+  .pequeno {
+    text-wrap: pretty;
   }
 }

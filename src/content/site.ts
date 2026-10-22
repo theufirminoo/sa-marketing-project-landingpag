@@ -105,14 +105,27 @@ export const hero = {
   titulo: ["Descubra onde", "o seu marketing", "para de vender."],
   subtitulo:
     "Responda 3 perguntas e converse com a SA pelo WhatsApp. Você sai sabendo qual etapa está falhando e o que fazer primeiro.",
-  passo: "Responda aqui. Pergunta 1 de 3",
+  passo: "Primeira pergunta do diagnóstico",
   pergunta: "O que mais trava suas vendas hoje?",
-  dica: "Escolha a resposta que mais parece com você para começar.",
+  acao: "Responder agora",
 } as const;
 
 /* ------------------------------------------------------------------ */
 /* Carrossel do hero: o primeiro slide é a pergunta do diagnóstico      */
 /* ------------------------------------------------------------------ */
+
+/** Ícones dos blocos do carrossel; o desenho de cada um fica em Hero.tsx. */
+export type IconeSlide =
+  | "site"
+  | "whatsapp"
+  | "ia"
+  | "painel"
+  | "integracao"
+  | "suporte"
+  | "reels"
+  | "foto"
+  | "videocast"
+  | "depoimento";
 
 export type SlideHero = {
   id: string;
@@ -127,8 +140,8 @@ export type SlideHero = {
   video?: string;
   /** Formato "painel": cartão de vidro ao lado do texto. */
   /** Destaques curtos mostrados em blocos no slide (vídeo e foto). */
-  destaques?: readonly string[];
-  painel?: { titulo: string; itens: readonly { cabeca?: string; texto: string }[]; numerado?: boolean };
+  destaques?: readonly { texto: string; icone?: IconeSlide; imagem?: string }[];
+  painel?: { titulo: string; itens: readonly { cabeca?: string; texto: string; icone?: IconeSlide }[]; numerado?: boolean };
 };
 
 export const carrossel = {
@@ -152,12 +165,12 @@ export const carrossel = {
       painel: {
         titulo: "O que a SA Tech constrói",
         itens: [
-          { texto: "Sites, landing pages e lojas virtuais" },
-          { texto: "Automação de WhatsApp e Instagram" },
-          { texto: "Atendimento com IA que responde e qualifica" },
-          { texto: "CRM, ERP e painéis sob medida" },
-          { texto: "Integrações entre as ferramentas que você já usa" },
-          { texto: "Suporte e evolução todo mês" },
+          { texto: "Sites, landing pages e lojas virtuais", icone: "site" },
+          { texto: "Automação de WhatsApp e Instagram", icone: "whatsapp" },
+          { texto: "Atendimento com IA que responde e qualifica", icone: "ia" },
+          { texto: "CRM, ERP e painéis sob medida", icone: "painel" },
+          { texto: "Integrações entre as ferramentas que você já usa", icone: "integracao" },
+          { texto: "Suporte e evolução todo mês", icone: "suporte" },
         ],
       },
     },
@@ -171,7 +184,12 @@ export const carrossel = {
       acao: "Começar pela SA Studio",
       imagem: { src: "/imagens/hero/estudio.webp", alt: "Editora de vídeo de fone trabalhando na linha do tempo em dois monitores" },
       video: "/video/fundo/estudio.mp4",
-      destaques: ["Reels toda semana", "Foto de produto e equipe", "Videocast e cortes", "Depoimento de cliente em vídeo"],
+      destaques: [
+        { texto: "Reels toda semana", icone: "reels", imagem: "/imagens/studio/reels.webp" },
+        { texto: "Foto de produto e equipe", icone: "foto", imagem: "/imagens/studio/produto.webp" },
+        { texto: "Videocast e cortes", icone: "videocast", imagem: "/imagens/studio/videocast.webp" },
+        { texto: "Depoimento de cliente em vídeo", icone: "depoimento", imagem: "/imagens/studio/depoimento.webp" },
+      ],
     },
     {
       id: "consultoria",
@@ -201,7 +219,12 @@ export const carrossel = {
       titulo: "Seguidor que não compra é sinal de funil quebrado.",
       texto: "Conteúdo e anúncio trabalhando juntos até o direct virar pedido.",
       acao: "Começar pela SA Social",
-      destaques: ["Conteúdo que atrai", "Anúncio que alcança", "Direct respondido", "Pedido fechado"],
+      destaques: [
+        { texto: "Conteúdo que atrai" },
+        { texto: "Anúncio que alcança" },
+        { texto: "Direct respondido" },
+        { texto: "Pedido fechado" },
+      ],
       imagem: { src: "/imagens/hero/social.webp", alt: "Pessoa rolando uma rede social no celular ao lado do notebook" },
     },
   ] satisfies SlideHero[],
@@ -427,7 +450,7 @@ export const quemFaz = {
   pessoas: [
     {
       id: "samuel",
-      nome: "Samuel",
+      nome: "Samuel Cezar",
       cargo: "Chief Executive Officer (CEO)",
       cargoPt: "Gestor comercial",
       foto: fotosSocios.samuel,
@@ -441,7 +464,7 @@ export const quemFaz = {
     },
     {
       id: "matheus",
-      nome: "Matheus",
+      nome: "Matheus Firmino",
       cargo: "Chief Technology Officer (CTO)",
       cargoPt: "Tecnologia e sistemas",
       foto: fotosSocios.matheus,
@@ -451,8 +474,8 @@ export const quemFaz = {
   rotuloParceiros: "Parceiros",
   aberturaParceiros: "Especialistas que gravam e cuidam das redes junto com a SA.",
   parceiros: [
-    { id: "nayara", nome: "Nayara", funcao: "Filmmaker e storymaker", foto: "/socios/nayara.webp" },
-    { id: "lunna", nome: "Lunna", funcao: "Social media e audiovisual", foto: "/socios/lunna.webp" },
+    { id: "nayara", nome: "Nayara Kelly", funcao: "Filmmaker e storymaker", foto: "/socios/nayara.webp" },
+    { id: "lunna", nome: "Lunna Rodrigues", funcao: "Social media e audiovisual", foto: "/socios/lunna.webp" },
   ] satisfies Parceiro[],
 } as const;
 
@@ -485,7 +508,8 @@ export const publica = {
  * exemplos de `src/content/provas-exemplo.ts`, se `provasExemplo` estiver
  * ligado em provisorios.ts; desligado, a seção some (standby).
  */
-export type Case = { cliente: string; segmento: string; antes: string; depois: string; fonte: string };
+/** `logo`: caminho da logo do cliente em public/ (quadrada, fundo claro). Sem ela, entra uma marca de exemplo. */
+export type Case = { cliente: string; segmento: string; antes: string; depois: string; fonte: string; logo?: string };
 export type Depoimento = { nome: string; empresa: string; texto: string; autorizadoEm: string };
 export type Numero = { valor: string; descricao: string; fonte: string };
 

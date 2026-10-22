@@ -36,7 +36,7 @@ pnpm check:pendencias        # use --estrito antes do lançamento
 
 | Variável | Valor inicial | Para que serve |
 | --- | --- | --- |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | `5500000000000` (provisório) | Número do WhatsApp, só dígitos. Com o provisório a URL `wa.me` é gerada, mas a conversa não abre. |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | vazio (usa `5538998934902`, comercial da SA) | Número do WhatsApp, só dígitos. Preencha só para testar com outro número. |
 | `NEXT_PUBLIC_SITE_URL` | `https://samarketing.co.br` | Canônico, Open Graph e sitemap. |
 | `CRM_WEBHOOK_URL` | vazio | Recebe o lead (POST JSON). Vazio: em desenvolvimento o corpo aparece no console do servidor. |
 | `CRM_WEBHOOK_TOKEN` | vazio | Enviado como `Authorization: Bearer`. |

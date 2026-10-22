@@ -5,7 +5,7 @@ import { BotaoDiagnostico } from "./BotaoDiagnostico";
 /** Fundo âmbar. É o único bloco centralizado da página. */
 export function CtaFinal() {
   return (
-    <section id="cta-final" aria-labelledby="cta-final-titulo" className="sa-secao sa-secao--alta sa-sobre-ambar relative isolate overflow-hidden bg-accent text-marca-preto">
+    <section id="cta-final" aria-labelledby="cta-final-titulo" className="sa-secao sa-secao--alta sa-sobre-ambar sa-cta-final relative isolate overflow-hidden bg-accent text-marca-preto">
       <div className="sa-container flex flex-col items-center text-center">
         <h2 id="cta-final-titulo" className="titulo-1 max-w-[20ch]">
           {ctaFinal.titulo}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArrowRightIcon } from "lucide-react";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { comum, frentes, fundos, secaoFrentes } from "@/content/site";
@@ -45,9 +46,10 @@ export function Frentes() {
                     origem="frente"
                     frente={frente.id}
                     hrefSemJs={urlWhatsapp(comum.mensagemWhatsappDireta)}
-                    className="sa-link corpo"
+                    className="sa-btn sa-btn--contorno"
                   >
                     {secaoFrentes.acao}
+                    <ArrowRightIcon aria-hidden="true" size={18} strokeWidth={2} />
                   </BotaoDiagnostico>
                 </div>
               </AccordionContent>

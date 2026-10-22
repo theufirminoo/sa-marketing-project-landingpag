@@ -1,7 +1,10 @@
 import { casesExemplo, depoimentosExemplo, numerosExemplo } from "@/content/provas-exemplo";
 import { provasExemplo } from "@/content/provisorios";
 import { provaSocial } from "@/content/site";
+import Image from "next/image";
+
 import { Contador } from "./Contador";
+import { LogoExemplo } from "./LogoExemplo";
 
 /**
  * Bloco independente de prova social: números, depoimentos e cases.
@@ -85,21 +88,26 @@ export function ProvaSocial() {
           <ul className="sa-prova-cases" aria-label={provaSocial.rotuloCases}>
             {cases.itens.map((c) => (
               <li key={c.cliente} className="sa-revela">
-                <p className="rotulo text-accent-text">{c.segmento}</p>
-                <h3 className="titulo-2 mt-2">
-                  {c.cliente} <Etiqueta ativa={cases.exemplo} />
-                </h3>
-                <dl className="sa-prova-antes-depois">
-                  <div>
-                    <dt className="pequeno text-text-muted">{provaSocial.antes}</dt>
-                    <dd className="corpo m-0 mt-1">{c.antes}</dd>
-                  </div>
-                  <div>
-                    <dt className="pequeno text-accent-text">{provaSocial.depois}</dt>
-                    <dd className="corpo m-0 mt-1">{c.depois}</dd>
-                  </div>
-                </dl>
-                <p className="pequeno mt-4 text-text-muted">{c.fonte}</p>
+                <div className="sa-case__logo">
+                  {c.logo ? <Image src={c.logo} alt={c.cliente} width={72} height={72} /> : <LogoExemplo nome={c.cliente} />}
+                </div>
+                <div>
+                  <p className="rotulo text-accent-text">{c.segmento}</p>
+                  <h3 className="titulo-2 mt-2">
+                    {c.cliente} <Etiqueta ativa={cases.exemplo} />
+                  </h3>
+                  <dl className="sa-prova-antes-depois">
+                    <div>
+                      <dt className="pequeno text-text-muted">{provaSocial.antes}</dt>
+                      <dd className="corpo m-0 mt-1">{c.antes}</dd>
+                    </div>
+                    <div>
+                      <dt className="pequeno text-accent-text">{provaSocial.depois}</dt>
+                      <dd className="corpo m-0 mt-1">{c.depois}</dd>
+                    </div>
+                  </dl>
+                  <p className="pequeno mt-4 text-text-muted">{c.fonte}</p>
+                </div>
               </li>
             ))}
           </ul>

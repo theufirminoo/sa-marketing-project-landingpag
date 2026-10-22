@@ -1,8 +1,22 @@
 import { Fragment, type CSSProperties } from "react";
 
 import Image from "next/image";
+import {
+  ArrowRightIcon,
+  BotIcon,
+  CameraIcon,
+  ClapperboardIcon,
+  LayoutDashboardIcon,
+  LifeBuoyIcon,
+  MessageCircleIcon,
+  MessageSquareQuoteIcon,
+  MicIcon,
+  MonitorSmartphoneIcon,
+  WorkflowIcon,
+  type LucideIcon,
+} from "lucide-react";
 
-import { carrossel, comum, fundos, hero, travas, type SlideHero } from "@/content/site";
+import { carrossel, comum, fundos, hero, type IconeSlide, type SlideHero } from "@/content/site";
 import { urlWhatsapp } from "@/lib/whatsapp";
 import { BotaoDiagnostico } from "./BotaoDiagnostico";
 import { Carrossel } from "./Carrossel";
@@ -10,11 +24,34 @@ import { VideoFundo } from "./VideoFundo";
 
 const indice = (i: number) => ({ "--i": i }) as CSSProperties;
 
+const ICONES: Record<IconeSlide, LucideIcon> = {
+  site: MonitorSmartphoneIcon,
+  whatsapp: MessageCircleIcon,
+  ia: BotIcon,
+  painel: LayoutDashboardIcon,
+  integracao: WorkflowIcon,
+  suporte: LifeBuoyIcon,
+  reels: ClapperboardIcon,
+  foto: CameraIcon,
+  videocast: MicIcon,
+  depoimento: MessageSquareQuoteIcon,
+};
+
+function Icone({ nome }: { nome?: IconeSlide }) {
+  if (!nome) return null;
+  const Desenho = ICONES[nome];
+  return (
+    <span className="sa-icone" aria-hidden="true">
+      <Desenho size={20} strokeWidth={1.75} />
+    </span>
+  );
+}
+
 /**
- * O hero já é a primeira pergunta. Cada opção é um <button> em pílula:
- * clicar abre o diagnóstico na tela 2 com a resposta registrada.
+ * O hero mostra a primeira pergunta num cartão que é um botão só: tocar
+ * abre o diagnóstico na tela 1, com as opções, e ele avança como sempre.
  * A entrada é CSS, para não esperar o JavaScript e não atrasar o LCP: o
- * título sobe 16 px e as opções aparecem em seguida, com 40 ms entre elas.
+ * título sobe 16 px e o cartão aparece em seguida.
  */
 function SlidePergunta() {
   return (
@@ -39,28 +76,22 @@ function SlidePergunta() {
               ))}
             </h1>
             <p className="lead mt-6 text-text-muted">{hero.subtitulo}</p>
-            <div className="sa-hero-pergunta mt-8">
-              <p className="rotulo text-accent-text">{hero.passo}</p>
-              <p id="hero-pergunta" className="titulo-3 mt-2">
-                {hero.pergunta}
-              </p>
-              <p className="pequeno mt-1 text-text-muted">{hero.dica}</p>
-            </div>
-            <ul className="sa-chips mt-4" aria-labelledby="hero-pergunta">
-              {travas.map((trava, i) => (
-                <li key={trava.id} className="sa-hero-entra" style={indice(i)}>
-                  <BotaoDiagnostico
-                    origem="hero"
-                    trava={trava.id}
-                    className="sa-chip"
-                    hrefSemJs={urlWhatsapp(comum.mensagemWhatsappSemJs(trava.rotulo))}
-                  >
-                    {trava.rotulo}
-                  </BotaoDiagnostico>
-                </li>
-              ))}
-            </ul>
-            <p className="pequeno sa-hero-entra mt-4 text-text-muted" style={indice(travas.length)}>
+            <BotaoDiagnostico
+              origem="hero"
+              hrefSemJs={urlWhatsapp(comum.mensagemWhatsappDireta)}
+              className="sa-hero-cta sa-hero-entra mt-8"
+              style={indice(0)}
+            >
+              <span className="sa-hero-cta__texto">
+                <span className="rotulo text-accent-text">{hero.passo}</span>
+                <span className="titulo-2">{hero.pergunta}</span>
+              </span>
+              <span className="sa-hero-cta__acao">
+                {hero.acao}
+                <ArrowRightIcon aria-hidden="true" size={20} strokeWidth={2} />
+              </span>
+            </BotaoDiagnostico>
+            <p className="pequeno sa-hero-entra mt-4 text-text-muted" style={indice(1)}>
               {comum.microtexto}
             </p>
           </div>
@@ -88,8 +119,12 @@ function SlideVideo({ slide }: { slide: SlideHero }) {
         {slide.destaques ? (
           <ul className="sa-destaques">
             {slide.destaques.map((d) => (
-              <li key={d} className="sa-vidro corpo">
-                {d}
+              <li key={d.texto} className="sa-destaque">
+                {d.imagem ? (
+                  <Image src={d.imagem} alt="" fill sizes="(min-width: 1024px) 280px, 45vw" className="sa-destaque__foto" />
+                ) : null}
+                <Icone nome={d.icone} />
+                <span className="sa-destaque__texto corpo">{d.texto}</span>
               </li>
             ))}
           </ul>
@@ -113,7 +148,7 @@ function SlideFoto({ slide }: { slide: SlideHero }) {
           {slide.destaques ? (
             <ol className="sa-cadeia pequeno">
               {slide.destaques.map((d) => (
-                <li key={d}>{d}</li>
+                <li key={d.texto}>{d.texto}</li>
               ))}
             </ol>
           ) : null}
@@ -148,8 +183,11 @@ function SlidePainel({ slide }: { slide: SlideHero }) {
             <Lista className="sa-painel__lista corpo" data-numerado={slide.painel.numerado ? "true" : undefined}>
               {slide.painel.itens.map((item) => (
                 <li key={item.texto}>
-                  {item.cabeca ? <strong>{item.cabeca}: </strong> : null}
-                  {item.texto}
+                  <Icone nome={item.icone} />
+                  <span>
+                    {item.cabeca ? <strong>{item.cabeca}: </strong> : null}
+                    {item.texto}
+                  </span>
                 </li>
               ))}
             </Lista>

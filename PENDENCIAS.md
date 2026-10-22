@@ -8,7 +8,7 @@ valor provisório ou pendência que trava o lançamento.
 
 ## Travam o lançamento
 
-- [ ] 1. Número real de WhatsApp. Hoje: `5500000000000` (provisório, não pertence a ninguém). Trocar em `NEXT_PUBLIC_WHATSAPP_NUMBER`.
+- [x] 1. WhatsApp real: (38) 99893-4902 (`5538998934902`), padrão em `src/content/provisorios.ts`; `NEXT_PUBLIC_WHATSAPP_NUMBER` ainda pode sobrescrever.
 - [ ] 2. CNPJ e razão social reais. Hoje: `SA Marketing, CNPJ 00.000.000/0001-00` (fictício). Trocar em `src/content/provisorios.ts`.
 - [ ] 3. Logo em SVG. Hoje cabeçalho e rodapé usam a logo extraída do portfólio (PDF do Canva) em imagem: `public/logo-sa.webp` e `public/logo-sa-completo.webp`. Com o SVG, salvar em `public/logo-sa.svg` e apontar `logoSvg` em `src/content/provisorios.ts`. Os ícones (favicon e Apple) também devem trocar.
 - [x] 4. Fotos dos sócios e dos parceiros: reais, recortadas sobre o mesmo fundo neutro (`public/socios/`).
@@ -24,7 +24,7 @@ valor provisório ou pendência que trava o lançamento.
 - [ ] 11. ID do GTM e do Pixel da Meta. O GTM entra por `NEXT_PUBLIC_GTM_ID`; o Pixel deve ser configurado dentro do GTM.
 - [ ] 12. Revisão do Samuel nos subsserviços propostos e nas faixas de faturamento da tela 3.
 - [ ] 13. Região de atendimento presencial, para o FAQ. (Fidelidade resolvida: projeto mínimo de 3 meses, como no portfólio, já está em "Em quanto tempo vejo resultado?".)
-- [ ] 14. Sobrenomes dos sócios, se a SA quiser mostrá-los.
+- [x] 14. Nomes completos: Samuel Cezar, Matheus Firmino, Malaquias, Nayara Kelly e Lunna Rodrigues.
 - [ ] 15. Primeiros cases, depoimentos e números reais em `provaSocial` (`src/content/site.ts`). Hoje o bloco mostra exemplos fictícios; para deixar em standby, `provasExemplo = false` em `src/content/provisorios.ts`.
 
 ## Origem dos vídeos provisórios
