@@ -23,6 +23,7 @@ pnpm check:pendencias --estrito  # falha se sobrar provisório ou pendência que
 - Valores provisórios (WhatsApp, CNPJ, logo, fotos, vídeo, política): `src/content/provisorios.ts`. Quando todos forem trocados, o noindex sai.
 - Identificadores das opções do diagnóstico: `src/content/opcoes.ts` (pequeno de propósito, vai ao cliente).
 - Pendências: `PENDENCIAS.md` (o script lê os `- [ ]`).
+- Melhorias futuras: `BACKLOG.md`. **Ao revisar o site inteiro, leia esse arquivo primeiro e execute o que estiver nele.**
 
 ## Design system
 
@@ -65,6 +66,6 @@ continua oculta enquanto a lista de Reels estiver vazia.
 - **Acordeão legível sem JS.** O `AccordionContent` do shadcn foi reescrito para manter o conteúdo fechado no HTML (escondido por CSS); o do Radix desmonta o conteúdo.
 - **LCP.** O `h1` é um bloco de texto só (linhas separadas por `<br>`) e entra só com `transform`. Esmaecer o texto ou animar cada linha em bloco tira o título da disputa de LCP no Chrome.
 - **Fontes de reserva calibradas.** `globals.css` declara faces locais (Arial/Liberation Sans e Roboto) com `size-adjust` medido para cada largura condensada, para a troca de fonte não mudar a quebra de linha (CLS 0).
-- **Métricas próprias.** Só depois do "Aceitar": `AvisoCookies` importa `src/lib/metricas/coletor.ts` sob demanda (fora do bundle inicial). Lotes vão por `sendBeacon` para `POST /api/eventos`, que valida com zod (`esquema.ts`), acrescenta país/cidade dos cabeçalhos da Vercel e o aparelho pelo User-Agent, troca o IP por um código diário com sal e grava em Postgres (`EVENTOS_DATABASE_URL`, esquema e visões em `db/metricas.sql`). Nunca coletar o que a pessoa digita nem dado do lead. "Preferências de cookies" no rodapé reabre o aviso; recusar apaga os códigos do navegador. Ao coletar dado novo, atualize a política em `site.ts`.
+- **Métricas próprias.** Só depois do "Aceitar": `AvisoCookies` importa `src/lib/metricas/coletor.ts` sob demanda (fora do bundle inicial). Lotes vão por `sendBeacon` para `POST /api/eventos`, que valida com zod (`esquema.ts`), acrescenta país/cidade dos cabeçalhos da Vercel e o aparelho pelo User-Agent, troca o IP por um código diário com sal e grava em Postgres (`EVENTOS_DATABASE_URL`, esquema e visões em `db/metricas.sql`). Ligar o banco está no `BACKLOG.md`. Nunca coletar o que a pessoa digita nem dado do lead. "Preferências de cookies" no rodapé reabre o aviso; recusar apaga os códigos do navegador. Ao coletar dado novo, atualize a política em `site.ts`.
 - **Carrossel.** Setas, pontos, teclado (← →) e arrastar com o dedo (`touch-action: pan-y`: o gesto vertical continua rolando a página).
 - **Lead.** `POST /api/lead` valida com o mesmo esquema zod do formulário, responde na hora e encaminha ao CRM com `after()`, tempo limite de 5 s. Falha do webhook nunca bloqueia; nunca logar dado pessoal em produção.

@@ -26,7 +26,6 @@ valor provisório ou pendência que trava o lançamento.
 - [ ] 13. Região de atendimento presencial, para o FAQ. (Fidelidade resolvida: projeto mínimo de 3 meses, como no portfólio, já está em "Em quanto tempo vejo resultado?".)
 - [x] 14. Nomes completos: Samuel Cezar, Matheus Firmino, Malaquias, Nayara Kelly e Lunna Rodrigues.
 - [ ] 15. Primeiros cases, depoimentos e números reais em `provaSocial` (`src/content/site.ts`). Hoje o bloco mostra exemplos fictícios; para deixar em standby, `provasExemplo = false` em `src/content/provisorios.ts`.
-- [ ] 16. Banco das métricas próprias: criar um Postgres (Neon, Supabase ou Vercel Postgres), rodar `db/metricas.sql`, pôr `EVENTOS_DATABASE_URL` e `EVENTOS_SAL` na Vercel e agendar a limpeza de 13 meses. Sem isso, os eventos chegam e são descartados.
 
 ## Origem dos vídeos provisórios
 
