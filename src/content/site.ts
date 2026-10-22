@@ -409,6 +409,15 @@ export type Pessoa = {
   foto?: string;
 };
 
+/** Parceiros: trabalham junto com a SA, mas não são sócios. */
+export type Parceiro = {
+  id: string;
+  nome: string;
+  funcao: string;
+  /** Foto 4:5 em public/socios/. */
+  foto: string;
+};
+
 export const quemFaz = {
   titulo: "Quem cuida do seu negócio.",
   abertura: "A SA é um time pequeno. Você fala com quem faz o trabalho.",
@@ -437,6 +446,13 @@ export const quemFaz = {
       foto: fotosSocios.matheus,
     },
   ] satisfies Pessoa[],
+  rotuloSocios: "Sócios",
+  rotuloParceiros: "Parceiros",
+  aberturaParceiros: "Especialistas que trabalham junto com a SA nas entregas.",
+  parceiros: [
+    { id: "nayara", nome: "Nayara", funcao: "Videomaker e filmmaker", foto: "/socios/nayara.webp" },
+    { id: "luna", nome: "Luna", funcao: "Social media", foto: "/socios/luna.webp" },
+  ] satisfies Parceiro[],
 } as const;
 
 /* ------------------------------------------------------------------ */

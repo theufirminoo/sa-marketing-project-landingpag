@@ -23,11 +23,11 @@ export const logoSvg: string | undefined = undefined;
 
 /**
  * Fotos 4:5 em public/socios/. Sem foto, o componente mostra a silhueta.
- * Matheus já é a foto real. Samuel e Malaquias ainda são de banco de imagem
- * (Unsplash, licença livre), com "provisorio" no nome, até chegarem as reais.
+ * Samuel e Matheus já são fotos reais. Malaquias ainda é de banco de imagem
+ * (Unsplash, licença livre), com "provisorio" no nome, até chegar a real.
  */
 export const fotosSocios: Record<"samuel" | "malaquias" | "matheus", string | undefined> = {
-  samuel: "/socios/samuel-provisorio.webp",
+  samuel: "/socios/samuel.webp",
   malaquias: "/socios/malaquias-provisorio.webp",
   matheus: "/socios/matheus.webp",
 };

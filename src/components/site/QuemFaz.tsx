@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { fundos, quemFaz, type Pessoa } from "@/content/site";
+import { fundos, quemFaz, type Parceiro, type Pessoa } from "@/content/site";
 import { Provisorio } from "./Provisorio";
 import { VideoFundo } from "./VideoFundo";
 
@@ -42,6 +42,26 @@ function Retrato({ pessoa }: { pessoa: Pessoa }) {
   );
 }
 
+function RetratoParceiro({ parceiro }: { parceiro: Parceiro }) {
+  return (
+    <figure className="sa-pessoa sa-pessoa--parceiro relative m-0">
+      <div className="sa-pessoa__foto">
+        <Image
+          src={parceiro.foto}
+          alt={quemFaz.altFoto(parceiro.nome)}
+          width={800}
+          height={1000}
+          sizes="(min-width: 1280px) 280px, (min-width: 768px) 22vw, 50vw"
+        />
+      </div>
+      <figcaption className="sa-pessoa__legenda sa-vidro">
+        <span className="titulo-3 text-marca-giz">{parceiro.nome}</span>
+        <span className="pequeno text-areia">{parceiro.funcao}</span>
+      </figcaption>
+    </figure>
+  );
+}
+
 export function QuemFaz() {
   return (
     <section id="quem-faz" data-theme="dark" aria-labelledby="quem-faz-titulo" className="sa-grao sa-secao sa-cafe">
@@ -53,13 +73,27 @@ export function QuemFaz() {
           </h2>
           <p className="lead mt-6 text-areia">{quemFaz.abertura}</p>
         </div>
-        <ul className="mt-12 grid list-none gap-12 p-0 md:grid-cols-3 md:gap-6">
+        <h3 className="rotulo mt-12 text-areia">{quemFaz.rotuloSocios}</h3>
+        <ul className="mt-4 grid list-none gap-12 p-0 md:grid-cols-3 md:gap-6">
           {quemFaz.pessoas.map((pessoa) => (
             <li key={pessoa.id} className="sa-revela">
               <Retrato pessoa={pessoa} />
             </li>
           ))}
         </ul>
+        <div className="sa-parceiros">
+          <div>
+            <h3 className="rotulo text-areia">{quemFaz.rotuloParceiros}</h3>
+            <p className="corpo mt-2 text-areia">{quemFaz.aberturaParceiros}</p>
+          </div>
+          <ul className="sa-parceiros__lista">
+            {quemFaz.parceiros.map((parceiro) => (
+              <li key={parceiro.id} className="sa-revela">
+                <RetratoParceiro parceiro={parceiro} />
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

@@ -2211,3 +2211,53 @@
     }
   }
 }
+
+/* Parceiros: menores que os sócios, ao lado de um texto curto. */
+@layer components {
+  .sa-parceiros {
+    display: grid;
+    gap: var(--space-6);
+    margin-top: var(--space-16);
+    padding-top: var(--space-8);
+    border-top: 1px solid color-mix(in srgb, var(--marca-giz) 18%, transparent);
+  }
+  .sa-parceiros__lista {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sa-parceiros__lista {
+    max-width: 560px;
+  }
+  /* Legenda do parceiro fica embaixo da foto, sem cobrir o rosto. */
+  .sa-pessoa--parceiro .sa-pessoa__legenda {
+    position: static;
+    gap: 0;
+    margin-top: var(--space-2);
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .sa-pessoa--parceiro .sa-pessoa__legenda::before,
+  .sa-pessoa--parceiro .sa-pessoa__legenda::after {
+    display: none;
+  }
+  .sa-pessoa--parceiro .titulo-3 {
+    font-size: 17px;
+  }
+  @media (min-width: 768px) {
+    .sa-parceiros {
+      grid-template-columns: 1fr 2fr;
+      align-items: start;
+    }
+    .sa-parceiros__lista {
+      gap: var(--space-6);
+    }
+  }
+}
