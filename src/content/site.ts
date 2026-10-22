@@ -185,10 +185,10 @@ export const carrossel = {
       imagem: { src: "/imagens/hero/estudio.webp", alt: "Editora de vídeo de fone trabalhando na linha do tempo em dois monitores" },
       video: "/video/fundo/estudio.mp4",
       destaques: [
-        { texto: "Reels toda semana", icone: "reels", imagem: "/imagens/studio/reels.webp" },
-        { texto: "Foto de produto e equipe", icone: "foto", imagem: "/imagens/studio/produto.webp" },
-        { texto: "Videocast e cortes", icone: "videocast", imagem: "/imagens/studio/videocast.webp" },
-        { texto: "Depoimento de cliente em vídeo", icone: "depoimento", imagem: "/imagens/studio/depoimento.webp" },
+        { texto: "Reels toda semana", icone: "reels" },
+        { texto: "Foto de produto e equipe", icone: "foto" },
+        { texto: "Videocast e cortes", icone: "videocast" },
+        { texto: "Depoimento de cliente em vídeo", icone: "depoimento" },
       ],
     },
     {

@@ -2001,7 +2001,10 @@
     overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
     border-radius: var(--radius-sm);
-    background: var(--surface);
+    /* Só vidro e ícone: foto aqui brigava com o vídeo do fundo. */
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
   }
   .sa-destaque__foto {
     z-index: -2;
@@ -2033,7 +2036,7 @@
       margin-top: var(--space-16);
     }
     .sa-destaque {
-      min-height: 200px;
+      min-height: 140px;
       padding: var(--space-4);
     }
     .sa-destaque__texto {

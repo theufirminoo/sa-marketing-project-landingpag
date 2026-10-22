@@ -12,7 +12,8 @@ type Props = {
 
 /**
  * Vídeo decorativo atrás do conteúdo da seção, em laço contínuo e sem
- * controle. Só começa depois da primeira interação, para não virar o LCP.
+ * controle. Começa sozinho logo depois do carregamento da página (ou na
+ * primeira interação, o que vier antes).
  * Se o navegador recusar o play (economia de energia), tenta de novo no
  * próximo toque.
  * Por decisão do cliente, toca também com movimento reduzido: é só fundo.
@@ -34,7 +35,19 @@ export function VideoFundo({ src, className }: Props) {
       video.play().then(parar, () => {});
     };
     eventos.forEach((e) => window.addEventListener(e, tentar, { passive: true }));
-    return parar;
+    // Também começa sozinho, logo depois que a página termina de carregar:
+    // o título já foi desenhado e o vídeo entra por trás, esmaecendo.
+    let espera = 0;
+    const depoisDeCarregar = () => {
+      espera = window.setTimeout(tentar, 400);
+    };
+    if (document.readyState === "complete") depoisDeCarregar();
+    else window.addEventListener("load", depoisDeCarregar, { once: true });
+    return () => {
+      parar();
+      window.clearTimeout(espera);
+      window.removeEventListener("load", depoisDeCarregar);
+    };
   }, []);
 
   return (
