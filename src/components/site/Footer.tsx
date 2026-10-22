@@ -12,8 +12,8 @@ export function Footer() {
     <footer data-theme="dark" className="sa-grao sa-rodape bg-bg-sunken py-16 lg:py-24">
       <div className="sa-container pequeno grid grid-cols-2 gap-x-6 gap-y-8 text-text-muted md:grid-cols-12">
         <div className="col-span-2 flex items-center gap-2 md:col-span-4">
-          <Logo nome={site.nome} href="/#inicio" />
-          {logoSvg ? null : <Provisorio />}
+          <Logo nome={site.nome} href="/#inicio" completa />
+          {logoSvg?.endsWith(".svg") ? null : <Provisorio />}
         </div>
         <nav aria-label={comum.navRodape} className="md:col-span-4">
           <ul className="m-0 grid list-none gap-1 p-0">

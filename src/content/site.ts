@@ -420,7 +420,7 @@ export type Parceiro = {
 
 export const quemFaz = {
   titulo: "Quem cuida do seu negócio.",
-  abertura: "A SA é um time pequeno. Você fala com quem faz o trabalho.",
+  abertura: "Marketing digital desde 2020, num time pequeno. Você fala com quem faz o trabalho.",
   altFoto: (nome: string) => `Retrato de ${nome}`,
   altSilhueta: (nome: string) => `Silhueta provisória no lugar da foto de ${nome}`,
   pessoas: [

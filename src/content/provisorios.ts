@@ -18,8 +18,13 @@ export const empresa = {
   cnpj: CNPJ_PROVISORIO,
 };
 
-/** Troque por "/logo-sa.svg" quando o arquivo chegar em public/. */
-export const logoSvg: string | undefined = undefined;
+/**
+ * Logo extraída do portfólio da SA (PDF do Canva), em imagem. Continua
+ * provisória até chegar o SVG: troque por "/logo-sa.svg" quando chegar.
+ */
+export const logoSvg: string | undefined = "/logo-sa.webp";
+/** Versão completa (SA + Marketing & Business + assinatura), usada no rodapé. */
+export const logoCompleta = "/logo-sa-completo.webp";
 
 /**
  * Fotos 4:5 em public/socios/. Sem foto, o componente mostra a silhueta.
@@ -74,8 +79,8 @@ export const provisorios: ItemProvisorio[] = [
     id: "logo",
     item: "Logo",
     valorAtual: logoSvg ?? 'Nome "SA Marketing" em texto',
-    trocaPor: "public/logo-sa.svg",
-    ativo: logoSvg === undefined,
+    trocaPor: "public/logo-sa.svg (vetor)",
+    ativo: !logoSvg?.endsWith(".svg"),
   },
   {
     id: "fotos",
