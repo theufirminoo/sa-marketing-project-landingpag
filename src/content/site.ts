@@ -220,12 +220,10 @@ export const carrossel = {
 export const fundos: {
   hero?: string;
   frentes?: string;
-  quemFaz?: string;
 } = {
   // Provisórios do Mixkit (licença gratuita, uso comercial, sem atribuição).
   hero: videoHero.src,
   frentes: "/video/fundo/reuniao.mp4",
-  quemFaz: "/video/fundo/equipe.mp4",
 };
 
 /* ------------------------------------------------------------------ */
@@ -306,6 +304,7 @@ export const frentes: readonly Frente[] = [
     promessa: "Descobre onde a venda trava e monta o plano.",
     servicos: [
       "Diagnóstico de negócio",
+      "Análise de mercado e concorrência",
       "Planejamento estratégico e metas",
       "Estruturação comercial",
       "Posicionamento e oferta",
@@ -323,6 +322,7 @@ export const frentes: readonly Frente[] = [
       "Gestão de perfis e calendário editorial",
       "Roteiro e texto para Reels e carrosséis",
       "Design de posts",
+      "Criação de logomarca",
       "Atendimento de directs e comentários",
       "Perfil da Empresa no Google",
       "Parcerias com influenciadores e UGC",
@@ -335,7 +335,7 @@ export const frentes: readonly Frente[] = [
     nome: "SA Studio",
     promessa: "Vídeo e foto que fazem a marca parecer do tamanho que ela quer ter.",
     servicos: [
-      "Storymaker, com cobertura em tempo real",
+      "Storymaker, com cobertura de eventos em tempo real",
       "Videomaker, com pacote recorrente de Reels",
       "Filmmaker, para vídeo institucional e comercial",
       "Fotografia de produto, equipe e espaço",
@@ -356,6 +356,7 @@ export const frentes: readonly Frente[] = [
       "Automações de WhatsApp e Instagram",
       "Atendimento com IA",
       "Integrações e dashboards",
+      "SEO para o site aparecer no Google",
       "Suporte e evolução mensal",
     ],
   },
@@ -428,30 +429,30 @@ export const quemFaz = {
       id: "samuel",
       nome: "Samuel",
       cargo: "Chief Executive Officer (CEO)",
-      cargoPt: "Diretor executivo",
+      cargoPt: "Gestor comercial",
       foto: fotosSocios.samuel,
     },
     {
       id: "malaquias",
       nome: "Malaquias",
-      cargo: "Chief Commercial Officer (CCO)",
-      cargoPt: "Diretor comercial",
+      cargo: "Chief Marketing Officer (CMO)",
+      cargoPt: "Gestor de tráfego",
       foto: fotosSocios.malaquias,
     },
     {
       id: "matheus",
       nome: "Matheus",
       cargo: "Chief Technology Officer (CTO)",
-      cargoPt: "Diretor de tecnologia",
+      cargoPt: "Tecnologia e sistemas",
       foto: fotosSocios.matheus,
     },
   ] satisfies Pessoa[],
   rotuloSocios: "Sócios",
   rotuloParceiros: "Parceiros",
-  aberturaParceiros: "Especialistas que trabalham junto com a SA nas entregas.",
+  aberturaParceiros: "Especialistas que gravam e cuidam das redes junto com a SA.",
   parceiros: [
-    { id: "nayara", nome: "Nayara", funcao: "Videomaker e filmmaker", foto: "/socios/nayara.webp" },
-    { id: "luna", nome: "Luna", funcao: "Social media", foto: "/socios/luna.webp" },
+    { id: "nayara", nome: "Nayara", funcao: "Filmmaker e storymaker", foto: "/socios/nayara.webp" },
+    { id: "lunna", nome: "Lunna", funcao: "Social media e audiovisual", foto: "/socios/lunna.webp" },
   ] satisfies Parceiro[],
 } as const;
 
@@ -527,17 +528,17 @@ export const duvidas = {
     {
       pergunta: "Quanto custa trabalhar com a SA?",
       resposta:
-        "Depende das frentes e do tamanho do trabalho. Você recebe a proposta com escopo, prazo e valor depois do diagnóstico inicial.",
+        "Cada projeto tem preço próprio, porque depende das frentes e do tamanho do trabalho. Você recebe a proposta com escopo, prazo e valor depois do diagnóstico inicial.",
     },
     {
       pergunta: "Em quanto tempo vejo resultado?",
       resposta:
-        "Depende da etapa que está travando. Anúncios costumam dar sinal nas primeiras semanas; conteúdo e posicionamento levam alguns meses. O plano traz o prazo esperado de cada frente.",
+        "Os projetos têm no mínimo 3 meses, o tempo de montar a base, medir e ajustar. Anúncios costumam dar sinal nas primeiras semanas; conteúdo e posicionamento levam alguns meses. Você acompanha tudo por relatório com os números da sua empresa.",
     },
     {
       pergunta: "Quem vai cuidar do meu negócio?",
       resposta:
-        "Os três sócios: Samuel, Malaquias e Matheus. Não existe repasse para outra equipe.",
+        "Os três sócios, Samuel, Malaquias e Matheus, com a Nayara na gravação e a Lunna nas redes sociais. Ninguém repassa o seu projeto para outra equipe.",
     },
     {
       pergunta: "Para que tipo de negócio a SA trabalha?",

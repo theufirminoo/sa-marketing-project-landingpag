@@ -823,7 +823,7 @@
   }
 
   /* ---------------------------------------------------------------- */
-  /* Pessoa: sempre sobre café                                         */
+  /* Pessoa: foto quadrada, legenda embaixo                            */
   /* ---------------------------------------------------------------- */
   .sa-pessoa__foto {
     position: relative;
@@ -845,7 +845,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 20%;
     transition: transform var(--dur-lenta) var(--ease-saida);
   }
   @media (hover: hover) {
@@ -1496,15 +1495,6 @@
     border-top: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
   }
 
-  /* Legenda de vidro sobre a foto do sócio. */
-  .sa-pessoa__legenda {
-    position: absolute;
-    inset: auto var(--space-3) var(--space-3);
-    z-index: 1;
-    display: grid;
-    gap: var(--space-1);
-    padding: var(--space-4);
-  }
 }
 
 @layer components {
@@ -2212,52 +2202,36 @@
   }
 }
 
-/* Parceiros: menores que os sócios, ao lado de um texto curto. */
+
+/* Quem faz: fundo neutro e parado; sócios e parceiros na mesma grade. */
 @layer components {
-  .sa-parceiros {
-    display: grid;
-    gap: var(--space-6);
-    margin-top: var(--space-16);
-    padding-top: var(--space-8);
-    border-top: 1px solid color-mix(in srgb, var(--marca-giz) 18%, transparent);
+  .sa-secao--time {
+    background: var(--surface);
   }
-  .sa-parceiros__lista {
+  .sa-time__grupo {
+    margin-top: var(--space-12);
+  }
+  .sa-time__grupo + .sa-time__grupo {
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--border);
+  }
+  .sa-time {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-4);
-    margin: 0;
+    gap: var(--space-6) var(--space-4);
+    margin: var(--space-4) 0 0;
     padding: 0;
     list-style: none;
   }
-  .sa-parceiros__lista {
-    max-width: 560px;
-  }
-  /* Legenda do parceiro fica embaixo da foto, sem cobrir o rosto. */
-  .sa-pessoa--parceiro .sa-pessoa__legenda {
-    position: static;
-    gap: 0;
-    margin-top: var(--space-2);
-    padding: 0;
-    border: 0;
-    background: none;
-    box-shadow: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-  .sa-pessoa--parceiro .sa-pessoa__legenda::before,
-  .sa-pessoa--parceiro .sa-pessoa__legenda::after {
-    display: none;
-  }
-  .sa-pessoa--parceiro .titulo-3 {
-    font-size: 17px;
+  .sa-pessoa__legenda {
+    display: grid;
+    gap: 2px;
+    margin-top: var(--space-3);
   }
   @media (min-width: 768px) {
-    .sa-parceiros {
-      grid-template-columns: 1fr 2fr;
-      align-items: start;
-    }
-    .sa-parceiros__lista {
-      gap: var(--space-6);
+    .sa-time {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8) var(--space-6);
     }
   }
 }

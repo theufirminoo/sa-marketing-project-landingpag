@@ -1,6 +1,7 @@
 import { casesExemplo, depoimentosExemplo, numerosExemplo } from "@/content/provas-exemplo";
 import { provasExemplo } from "@/content/provisorios";
 import { provaSocial } from "@/content/site";
+import { Contador } from "./Contador";
 
 /**
  * Bloco independente de prova social: números, depoimentos e cases.
@@ -46,7 +47,9 @@ export function ProvaSocial() {
             {numeros.itens.map((n) => (
               <div key={n.descricao}>
                 <dt className="corpo mt-2">{n.descricao}</dt>
-                <dd className="display sa-num m-0">{n.valor}</dd>
+                <dd className="display sa-num m-0">
+                  <Contador valor={n.valor} />
+                </dd>
                 <dd className="pequeno m-0 mt-1 text-text-muted">
                   {n.fonte} <Etiqueta ativa={numeros.exemplo} />
                 </dd>

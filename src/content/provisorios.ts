@@ -27,13 +27,12 @@ export const logoSvg: string | undefined = "/logo-sa.webp";
 export const logoCompleta = "/logo-sa-completo.webp";
 
 /**
- * Fotos 4:5 em public/socios/. Sem foto, o componente mostra a silhueta.
- * Samuel e Matheus já são fotos reais. Malaquias ainda é de banco de imagem
- * (Unsplash, licença livre), com "provisorio" no nome, até chegar a real.
+ * Fotos quadradas em public/socios/. Sem foto, o componente mostra a silhueta.
+ * As três são fotos reais, recortadas sobre o mesmo fundo neutro, 800 x 800.
  */
 export const fotosSocios: Record<"samuel" | "malaquias" | "matheus", string | undefined> = {
   samuel: "/socios/samuel.webp",
-  malaquias: "/socios/malaquias-provisorio.webp",
+  malaquias: "/socios/malaquias.webp",
   matheus: "/socios/matheus.webp",
 };
 
@@ -85,8 +84,8 @@ export const provisorios: ItemProvisorio[] = [
   {
     id: "fotos",
     item: "Fotos dos sócios",
-    valorAtual: "Fotos de banco de imagem",
-    trocaPor: "Três fotos 4:5 dos sócios",
+    valorAtual: "Fotos reais dos três sócios",
+    trocaPor: "Três fotos dos sócios",
     ativo: Object.values(fotosSocios).some((foto) => foto === undefined || foto.includes("provisorio")),
   },
   {

@@ -11,11 +11,11 @@ valor provisório ou pendência que trava o lançamento.
 - [ ] 1. Número real de WhatsApp. Hoje: `5500000000000` (provisório, não pertence a ninguém). Trocar em `NEXT_PUBLIC_WHATSAPP_NUMBER`.
 - [ ] 2. CNPJ e razão social reais. Hoje: `SA Marketing, CNPJ 00.000.000/0001-00` (fictício). Trocar em `src/content/provisorios.ts`.
 - [ ] 3. Logo em SVG. Hoje cabeçalho e rodapé usam a logo extraída do portfólio (PDF do Canva) em imagem: `public/logo-sa.webp` e `public/logo-sa-completo.webp`. Com o SVG, salvar em `public/logo-sa.svg` e apontar `logoSvg` em `src/content/provisorios.ts`. Os ícones (favicon e Apple) também devem trocar.
-- [ ] 4. Foto do Malaquias, em 4:5 (Samuel, Matheus, Nayara e Luna já são reais). Hoje: banco de imagem. Confirmar o cargo do Malaquias (hoje CCO, diretor comercial).
-- [ ] 5. Vídeo vertical real para o hero e vídeos reais para os fundos (hero, Frentes, Quem faz: bastidor, gravação, cliente; mp4 e webm sem áudio, até 2,5 MB cada, caminhos em `fundos` no `src/content/site.ts`). Hoje são animações abstratas geradas com `ffmpeg` (ver "Origem dos vídeos provisórios" abaixo). Trocar `videoHero` em `src/content/provisorios.ts`. Ao trocar, conferir de novo o LCP no computador: um pôster com conteúdo real pode passar a ser o maior elemento da tela.
+- [x] 4. Fotos dos sócios e dos parceiros: reais, recortadas sobre o mesmo fundo neutro (`public/socios/`).
+- [ ] 5. Vídeo vertical real para o hero e vídeos reais para os fundos (hero e Frentes: bastidor, gravação, cliente; mp4 e webm sem áudio, até 2,5 MB cada, caminhos em `fundos` no `src/content/site.ts`). Hoje são animações abstratas geradas com `ffmpeg` (ver "Origem dos vídeos provisórios" abaixo). Trocar `videoHero` em `src/content/provisorios.ts`. Ao trocar, conferir de novo o LCP no computador: um pôster com conteúdo real pode passar a ser o maior elemento da tela.
 - [ ] 6. Texto final da política de privacidade. Hoje: texto provisório curto em `/privacidade`. Trocar em `src/content/site.ts` (`privacidade`) e pôr `politicaProvisoria = false`.
-- [ ] 7. Confirmação do domínio: samarketing.co.br ou samarketing.com.br. Hoje: `https://samarketing.co.br` em `NEXT_PUBLIC_SITE_URL`.
-- [ ] 8. Significado de CCO: Chief Commercial Officer ou Chief Creative Officer. Hoje: Chief Commercial Officer, Diretor comercial.
+- [ ] 7. Confirmação do domínio. A apresentação comercial mostra `agenciasa.com.br`; o site ainda usa `https://samarketing.co.br` em `NEXT_PUBLIC_SITE_URL`.
+- [x] 8. Cargos pela apresentação comercial: Samuel CEO (gestor comercial), Malaquias CMO (gestor de tráfego). Matheus: CTO por pedido dele; a apresentação diz COO.
 
 ## Melhoram a página, mas não travam
 
@@ -23,7 +23,7 @@ valor provisório ou pendência que trava o lançamento.
 - [ ] 10. Três Reels, com pôster, legenda e link. Sem isso a seção "O que a SA publica" fica oculta. Preencher `publica.reels` em `src/content/site.ts`.
 - [ ] 11. ID do GTM e do Pixel da Meta. O GTM entra por `NEXT_PUBLIC_GTM_ID`; o Pixel deve ser configurado dentro do GTM.
 - [ ] 12. Revisão do Samuel nos subsserviços propostos e nas faixas de faturamento da tela 3.
-- [ ] 13. Respostas para duas perguntas do FAQ: fidelidade de contrato e região de atendimento presencial.
+- [ ] 13. Região de atendimento presencial, para o FAQ. (Fidelidade resolvida: projeto mínimo de 3 meses, como no portfólio, já está em "Em quanto tempo vejo resultado?".)
 - [ ] 14. Sobrenomes dos sócios, se a SA quiser mostrá-los.
 - [ ] 15. Primeiros cases, depoimentos e números reais em `provaSocial` (`src/content/site.ts`). Hoje o bloco mostra exemplos fictícios; para deixar em standby, `provasExemplo = false` em `src/content/provisorios.ts`.
 
@@ -65,7 +65,6 @@ SA quando houver.
 | `public/video/fundo/criador-provisorio.*` (fundo do slide 1) | Mixkit 23485, "A young man recording himself with a camera" |
 | `public/imagens/hero/*.webp` (slides do carrossel) | quadros dos Mixkit 22998, 9069, 41638 e 4908 |
 | `public/video/fundo/reuniao.*` (Frentes) | Mixkit 46680, "Brainstorming over the meeting table" |
-| `public/video/fundo/equipe.*` (Quem faz) | Mixkit 9072, "Young marketing team gather around laptop" |
 | `public/imagens/frentes/consultoria.webp` | quadro do Mixkit 9069, "Digital marketing team leader explains strategy on whiteboard" |
 | `public/imagens/frentes/social.webp` | quadro do Mixkit 4908, "Person working while scrolling on social networks" |
 | `public/imagens/frentes/studio.webp` | quadro do Mixkit 22016, "Cameraman filming in the city" |

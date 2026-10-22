@@ -1,10 +1,11 @@
 import Image from "next/image";
 
-import { fundos, quemFaz, type Parceiro, type Pessoa } from "@/content/site";
+import { quemFaz } from "@/content/site";
 import { Provisorio } from "./Provisorio";
-import { VideoFundo } from "./VideoFundo";
 
-/** Silhueta provisória de cabeça e ombros, a mesma para os três. */
+type Cartao = { id: string; nome: string; foto?: string; linhas: readonly string[] };
+
+/** Silhueta provisória de cabeça e ombros, para quem ainda não tem foto. */
 function Silhueta({ nome }: { nome: string }) {
   return (
     <svg viewBox="0 0 200 200" role="img" aria-label={quemFaz.altSilhueta(nome)} focusable="false">
@@ -14,86 +15,75 @@ function Silhueta({ nome }: { nome: string }) {
   );
 }
 
-function Retrato({ pessoa }: { pessoa: Pessoa }) {
+/** Foto quadrada e, embaixo dela, nome e função. Nada cobre o rosto. */
+function Retrato({ cartao }: { cartao: Cartao }) {
   return (
-    <figure className="sa-pessoa relative m-0">
+    <figure className="sa-pessoa m-0">
       <div className="sa-pessoa__foto">
-        {pessoa.foto ? (
+        {cartao.foto ? (
           <Image
-            src={pessoa.foto}
-            alt={quemFaz.altFoto(pessoa.nome)}
+            src={cartao.foto}
+            alt={quemFaz.altFoto(cartao.nome)}
             width={800}
-            height={1000}
-            sizes="(min-width: 1280px) 384px, (min-width: 768px) 30vw, 100vw"
+            height={800}
+            sizes="(min-width: 1280px) 384px, (min-width: 768px) 30vw, 50vw"
           />
         ) : (
           <>
-            <Silhueta nome={pessoa.nome} />
+            <Silhueta nome={cartao.nome} />
             <Provisorio className="absolute top-3 left-3" />
           </>
         )}
       </div>
-      <figcaption className="sa-pessoa__legenda sa-vidro">
-        <span className="titulo-3 text-marca-giz">{pessoa.nome}</span>
-        <span className="pequeno text-marca-giz">{pessoa.cargo}</span>
-        <span className="pequeno text-areia">{pessoa.cargoPt}</span>
+      <figcaption className="sa-pessoa__legenda">
+        <span className="titulo-3">{cartao.nome}</span>
+        {cartao.linhas.map((linha) => (
+          <span key={linha} className="pequeno text-text-muted">
+            {linha}
+          </span>
+        ))}
       </figcaption>
     </figure>
   );
 }
 
-function RetratoParceiro({ parceiro }: { parceiro: Parceiro }) {
+function Grupo({ id, rotulo, texto, cartoes }: { id: string; rotulo: string; texto?: string; cartoes: Cartao[] }) {
   return (
-    <figure className="sa-pessoa sa-pessoa--parceiro relative m-0">
-      <div className="sa-pessoa__foto">
-        <Image
-          src={parceiro.foto}
-          alt={quemFaz.altFoto(parceiro.nome)}
-          width={800}
-          height={1000}
-          sizes="(min-width: 1280px) 280px, (min-width: 768px) 22vw, 50vw"
-        />
-      </div>
-      <figcaption className="sa-pessoa__legenda sa-vidro">
-        <span className="titulo-3 text-marca-giz">{parceiro.nome}</span>
-        <span className="pequeno text-areia">{parceiro.funcao}</span>
-      </figcaption>
-    </figure>
+    <div className="sa-time__grupo">
+      <h3 id={id} className="rotulo text-text-muted">
+        {rotulo}
+      </h3>
+      {texto ? <p className="corpo mt-2 text-text-muted">{texto}</p> : null}
+      <ul className="sa-time" aria-labelledby={id}>
+        {cartoes.map((cartao) => (
+          <li key={cartao.id} className="sa-revela">
+            <Retrato cartao={cartao} />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
+/**
+ * Fundo neutro e parado, sem vídeo, para as pessoas aparecerem.
+ * Sócios e parceiros usam a mesma grade de três colunas: as fotos de
+ * baixo ficam alinhadas com as de cima.
+ */
 export function QuemFaz() {
+  const socios = quemFaz.pessoas.map((p) => ({ id: p.id, nome: p.nome, foto: p.foto, linhas: [p.cargo, p.cargoPt] }));
+  const parceiros = quemFaz.parceiros.map((p) => ({ id: p.id, nome: p.nome, foto: p.foto, linhas: [p.funcao] }));
   return (
-    <section id="quem-faz" data-theme="dark" aria-labelledby="quem-faz-titulo" className="sa-grao sa-secao sa-cafe">
-      {fundos.quemFaz ? <VideoFundo src={fundos.quemFaz} className="sa-video-fundo--textura" /> : null}
+    <section id="quem-faz" data-theme="dark" aria-labelledby="quem-faz-titulo" className="sa-secao sa-secao--time">
       <div className="sa-container">
         <div className="sa-texto sa-revela">
-          <h2 id="quem-faz-titulo" className="titulo-1 text-marca-giz">
+          <h2 id="quem-faz-titulo" className="titulo-1">
             {quemFaz.titulo}
           </h2>
-          <p className="lead mt-6 text-areia">{quemFaz.abertura}</p>
+          <p className="lead mt-6 text-text-muted">{quemFaz.abertura}</p>
         </div>
-        <h3 className="rotulo mt-12 text-areia">{quemFaz.rotuloSocios}</h3>
-        <ul className="mt-4 grid list-none gap-12 p-0 md:grid-cols-3 md:gap-6">
-          {quemFaz.pessoas.map((pessoa) => (
-            <li key={pessoa.id} className="sa-revela">
-              <Retrato pessoa={pessoa} />
-            </li>
-          ))}
-        </ul>
-        <div className="sa-parceiros">
-          <div>
-            <h3 className="rotulo text-areia">{quemFaz.rotuloParceiros}</h3>
-            <p className="corpo mt-2 text-areia">{quemFaz.aberturaParceiros}</p>
-          </div>
-          <ul className="sa-parceiros__lista">
-            {quemFaz.parceiros.map((parceiro) => (
-              <li key={parceiro.id} className="sa-revela">
-                <RetratoParceiro parceiro={parceiro} />
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Grupo id="time-socios" rotulo={quemFaz.rotuloSocios} cartoes={socios} />
+        <Grupo id="time-parceiros" rotulo={quemFaz.rotuloParceiros} texto={quemFaz.aberturaParceiros} cartoes={parceiros} />
       </div>
     </section>
   );
