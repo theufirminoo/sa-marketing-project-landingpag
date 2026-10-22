@@ -15,9 +15,11 @@ function separar(valor: string) {
 }
 
 /**
- * Número que sobe contando até o valor quando entra na tela. O HTML do
- * servidor já traz o valor final (sem JavaScript ou com movimento reduzido,
- * fica parado). Leitor de tela ouve só o valor final.
+ * Número que sobe contando até o valor toda vez que entra na tela, indo ou
+ * voltando; ao sair, volta para zero e espera a próxima entrada. O HTML do
+ * servidor traz o valor final (sem JavaScript, fica parado). Por pedido do
+ * cliente, anima também com movimento reduzido: é só o texto mudando, sem
+ * deslocamento. Leitor de tela ouve só o valor final.
  */
 export function Contador({ valor, className }: { valor: string; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -25,7 +27,7 @@ export function Contador({ valor, className }: { valor: string; className?: stri
   useEffect(() => {
     const el = ref.current;
     const partes = separar(valor);
-    if (!el || !partes || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || !partes) return;
     const formato = new Intl.NumberFormat("pt-BR", {
       minimumFractionDigits: partes.casas,
       maximumFractionDigits: partes.casas,
@@ -33,22 +35,28 @@ export function Contador({ valor, className }: { valor: string; className?: stri
     const escrever = (n: number) => {
       el.textContent = `${partes.antes}${formato.format(n)}${partes.depois}`;
     };
-    escrever(0);
     let quadro = 0;
+    const animar = () => {
+      cancelAnimationFrame(quadro);
+      const inicio = performance.now();
+      const passo = (agora: number) => {
+        const t = Math.min(1, (agora - inicio) / DURACAO);
+        escrever(partes.alvo * (1 - Math.pow(1 - t, 3)));
+        if (t < 1) quadro = requestAnimationFrame(passo);
+        else el.textContent = valor;
+      };
+      quadro = requestAnimationFrame(passo);
+    };
+    escrever(0);
     const observador = new IntersectionObserver(
       ([entrada]) => {
-        if (!entrada.isIntersecting) return;
-        observador.disconnect();
-        const inicio = performance.now();
-        const passo = (agora: number) => {
-          const t = Math.min(1, (agora - inicio) / DURACAO);
-          escrever(partes.alvo * (1 - Math.pow(1 - t, 3)));
-          if (t < 1) quadro = requestAnimationFrame(passo);
-          else el.textContent = valor;
-        };
-        quadro = requestAnimationFrame(passo);
+        if (entrada.isIntersecting) animar();
+        else {
+          cancelAnimationFrame(quadro);
+          escrever(0);
+        }
       },
-      { threshold: 0.6 },
+      { threshold: 0.5 },
     );
     observador.observe(el);
     return () => {

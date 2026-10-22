@@ -1,11 +1,12 @@
 "use client";
 
 import Script from "next/script";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 type Escolha = "aceito" | "recusado";
 const CHAVE = "sa:consentimento";
 const EVENTO = "sa:consentimento";
+const REABRIR = "sa:reabrir-cookies";
 
 function lerEscolha(): Escolha | null {
   try {
@@ -31,6 +32,18 @@ function assinarRolagem(aoMudar: () => void) {
   return () => window.removeEventListener("scroll", aoMudar);
 }
 const rolou = () => window.scrollY > 8;
+
+/** Volta a mostrar o aviso: usado pelo link "Preferências de cookies" do rodapé. */
+export function reabrirAvisoCookies() {
+  try {
+    window.localStorage.removeItem(CHAVE);
+  } catch {
+    // nada salvo
+  }
+  import("@/lib/metricas/coletor").then((m) => m.apagarIdentificadores());
+  window.dispatchEvent(new Event(REABRIR));
+  window.dispatchEvent(new Event(EVENTO));
+}
 
 function escolher(valor: Escolha) {
   try {
@@ -63,6 +76,21 @@ export function AvisoCookies({ textos: avisoCookies }: { textos: Textos }) {
   // Depois de aparecer, o aviso fica até a escolha, mesmo se a pessoa voltar ao topo.
   const [visto, setVisto] = useState(false);
   if (jaRolou && !visto) setVisto(true);
+
+  useEffect(() => {
+    const reabrir = () => {
+      setEscolhaLocal(null);
+      setVisto(true);
+    };
+    window.addEventListener(REABRIR, reabrir);
+    return () => window.removeEventListener(REABRIR, reabrir);
+  }, []);
+
+  // Métricas próprias: o coletor só é baixado depois do "Aceitar".
+  useEffect(() => {
+    if (final === "aceito") import("@/lib/metricas/coletor").then((m) => m.iniciarMetricas());
+    if (final === "recusado") import("@/lib/metricas/coletor").then((m) => m.apagarIdentificadores());
+  }, [final]);
 
   return (
     <>

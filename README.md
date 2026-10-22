@@ -41,6 +41,8 @@ pnpm check:pendencias        # use --estrito antes do lançamento
 | `CRM_WEBHOOK_URL` | vazio | Recebe o lead (POST JSON). Vazio: em desenvolvimento o corpo aparece no console do servidor. |
 | `CRM_WEBHOOK_TOKEN` | vazio | Enviado como `Authorization: Bearer`. |
 | `NEXT_PUBLIC_GTM_ID` | vazio | Google Tag Manager. Só carrega depois do "Aceitar" no aviso de cookies. |
+| `EVENTOS_DATABASE_URL` | vazio | Postgres das métricas próprias (rode `db/metricas.sql` antes). Vazio: eventos descartados em produção. |
+| `EVENTOS_SAL` | vazio | Sal secreto do código diário do IP. Texto longo e aleatório. |
 
 ## Estrutura
 
@@ -59,6 +61,19 @@ docs/
   PROMPT.md       briefing original
 scripts/          check-pendencias.ts
 ```
+
+## Métricas próprias
+
+Depois do "Aceitar" no aviso de cookies, `src/lib/metricas/coletor.ts` é
+baixado e manda eventos em lotes para `POST /api/eventos`: visualização com
+tempos de carregamento, seções vistas e tempo em cada uma, rolagem, cliques,
+etapas do diagnóstico, Web Vitals, vídeos, troca de slide, erros e saída com
+tempo ativo. O servidor acrescenta país, estado e cidade (cabeçalhos da
+Vercel), navegador, sistema e aparelho, e troca o IP por um código diário com
+sal. Nada de nome, WhatsApp, empresa ou Instagram. A tabela e as visões do
+painel estão em `db/metricas.sql`; a retenção prevista é de 13 meses.
+"Preferências de cookies", no rodapé, reabre o aviso; recusar apaga os
+códigos do navegador.
 
 ## Corpo enviado ao CRM
 

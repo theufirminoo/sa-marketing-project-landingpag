@@ -2,6 +2,7 @@ import { logoSvg } from "@/content/provisorios";
 import { ancoras, comum, rodape, site } from "@/content/site";
 import { urlWhatsapp } from "@/lib/whatsapp";
 import { Logo } from "./Logo";
+import { PreferenciasCookies } from "./PreferenciasCookies";
 import { Provisorio } from "./Provisorio";
 
 /** O ano vem de next.config.ts, fixado no build. */
@@ -43,13 +44,18 @@ export function Footer() {
             >
               {rodape.whatsapp}
               <span className="sr-only"> {comum.novaAba}</span>
-              <Provisorio />
             </a>
           </li>
           <li>
             <a href="/privacidade" className="sa-link sa-link--suave inline-flex min-h-12 items-center">
               {rodape.politica}
             </a>
+          </li>
+          <li>
+            <PreferenciasCookies
+              rotulo={rodape.preferencias}
+              className="sa-link sa-link--suave inline-flex min-h-12 cursor-pointer items-center border-0 bg-transparent p-0 text-left"
+            />
           </li>
         </ul>
         <div className="col-span-2 grid gap-2 border-t border-border pt-8 md:col-span-12 md:grid-cols-[1fr_auto] md:items-baseline md:gap-6">

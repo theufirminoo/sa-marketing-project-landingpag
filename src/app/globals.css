@@ -1278,12 +1278,16 @@
   }
 
   /* Com a barra fixa no ar, o aviso de cookies sobe para não cobri-la. */
+  /* Sobe com transform (não conta como deslocamento de layout). */
+  .sa-aviso-cookies {
+    transition: transform var(--dur-lenta) var(--ease-saida);
+  }
   html[data-barra-fixa="visivel"] .sa-aviso-cookies {
-    bottom: calc(var(--alvo-toque) + 2 * var(--space-3) + var(--space-4) + env(safe-area-inset-bottom));
+    transform: translateY(calc(-1 * (var(--alvo-toque) + 2 * var(--space-3) + env(safe-area-inset-bottom))));
   }
   @media (min-width: 768px) {
     html[data-barra-fixa="visivel"] .sa-aviso-cookies {
-      bottom: var(--space-6);
+      transform: none;
     }
   }
 }
@@ -1558,6 +1562,8 @@
 @layer components {
   .sa-carrossel {
     position: relative;
+    /* O gesto lateral fica com o carrossel; o vertical rola a página. */
+    touch-action: pan-y;
   }
   .sa-carrossel__trilho {
     display: grid;
@@ -2473,5 +2479,110 @@
   .lead,
   .pequeno {
     text-wrap: pretty;
+  }
+}
+
+/* Quatro frentes: a que está aberta ganha destaque. */
+@layer components {
+  .sa-frente {
+    border-radius: var(--radius-sm);
+    transition:
+      background-color var(--dur-lenta) var(--ease-saida),
+      border-color var(--dur-lenta) var(--ease-saida);
+  }
+  .sa-frente[data-state="open"] {
+    border-top-color: transparent;
+    background-color: color-mix(in srgb, var(--surface) 82%, transparent);
+    box-shadow: inset 4px 0 0 var(--accent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  .sa-frente[data-state="open"] + .sa-frente {
+    border-top-color: transparent;
+  }
+  .sa-frente[data-state="open"] .sa-frente__gatilho .titulo-2 {
+    color: var(--accent-text);
+  }
+  @media (max-width: 767px) {
+    .sa-frente__gatilho,
+    .sa-frente__corpo {
+      padding-inline: var(--space-4);
+    }
+  }
+}
+
+/* Celular: blocos mais compactos em Como começa e na prova social. */
+@layer components {
+  @media (max-width: 767px) {
+    .sa-passo.sa-vidro {
+      grid-template-columns: 32px 1fr;
+      column-gap: var(--space-3);
+      row-gap: var(--space-1);
+      padding: var(--space-4);
+    }
+    .sa-passo::before {
+      grid-row: span 2;
+      width: 32px;
+      height: 32px;
+      margin: 0;
+    }
+    .sa-passo .titulo-3 {
+      font-size: 17px;
+    }
+    .sa-passo .corpo {
+      margin-top: 0;
+      font-size: 15px;
+    }
+
+    .sa-prova-depoimentos {
+      grid-auto-columns: 78%;
+      gap: var(--space-3);
+    }
+    .sa-prova-depoimentos > li {
+      padding: var(--space-4);
+    }
+    .sa-prova-depoimentos figure {
+      gap: var(--space-4);
+    }
+    .sa-prova-depoimentos blockquote {
+      font-size: 15px;
+    }
+    .sa-prova-depoimentos blockquote::before {
+      font-size: 40px;
+    }
+    .sa-prova-autor .titulo-3 {
+      font-size: 16px;
+    }
+    .sa-prova-avatar {
+      width: 36px;
+      height: 36px;
+      font-size: 14px;
+    }
+
+    .sa-prova-cases {
+      gap: var(--space-3);
+    }
+    .sa-prova-cases > li {
+      grid-template-columns: 48px 1fr;
+      gap: var(--space-3);
+      padding: var(--space-4);
+    }
+    .sa-case__logo {
+      width: 48px;
+      height: 48px;
+    }
+    .sa-prova-cases .titulo-2 {
+      font-size: 20px;
+    }
+    .sa-prova-antes-depois {
+      gap: var(--space-2);
+      margin-top: var(--space-3);
+    }
+    .sa-prova-antes-depois .corpo {
+      font-size: 15px;
+    }
+    .sa-prova-cases .pequeno.mt-4 {
+      margin-top: var(--space-2);
+    }
   }
 }

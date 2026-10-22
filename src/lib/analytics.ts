@@ -15,6 +15,7 @@ type Eventos = {
 declare global {
   interface Window {
     dataLayer?: Record<string, unknown>[];
+    saMetricas?: (evento: string, dados: Record<string, unknown>) => void;
   }
 }
 
@@ -22,6 +23,8 @@ export function registrarEvento<E extends keyof Eventos>(evento: E, dados: Event
   try {
     window.dataLayer = window.dataLayer ?? [];
     window.dataLayer.push({ event: evento, ...dados });
+    // Métricas próprias: a ponte só existe depois do "Aceitar".
+    window.saMetricas?.(evento, dados);
   } catch {
     // Medição nunca quebra a página.
   }

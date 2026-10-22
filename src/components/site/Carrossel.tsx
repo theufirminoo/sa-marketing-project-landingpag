@@ -28,6 +28,7 @@ export function Carrossel({ slides, rotulos }: { slides: ReactNode[]; rotulos: R
   const [emUso, setEmUso] = useState(false);
   const total = slides.length;
   const raiz = useRef<HTMLDivElement>(null);
+  const toque = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     // Com movimento reduzido a troca automática nunca é liberada.
@@ -73,6 +74,23 @@ export function Carrossel({ slides, rotulos }: { slides: ReactNode[]; rotulos: R
       role="region"
       aria-roledescription="carrossel"
       aria-label={rotulos.rotulo}
+      onTouchStart={(e) => {
+        const t = e.touches[0];
+        toque.current = { x: t.clientX, y: t.clientY };
+      }}
+      onTouchEnd={(e) => {
+        // Arrastar para o lado troca o slide, como as setas; arrastar para
+        // cima ou para baixo continua rolando a página.
+        const inicio = toque.current;
+        toque.current = null;
+        if (!inicio) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - inicio.x;
+        const dy = t.clientY - inicio.y;
+        if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+        setLiberado(true);
+        setAtual((a) => (a + (dx < 0 ? 1 : -1) + total) % total);
+      }}
       onPointerEnter={() => setEmUso(true)}
       onPointerLeave={() => setEmUso(false)}
       onFocus={() => setEmUso(true)}
