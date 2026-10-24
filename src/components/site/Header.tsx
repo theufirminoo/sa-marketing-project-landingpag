@@ -52,7 +52,7 @@ export function Header({ marca, simples = false, navegacao, cta }: Props) {
             <BotaoDiagnostico
               origem="cabecalho"
               hrefSemJs={cta.hrefSemJs}
-              className="sa-btn px-4 whitespace-nowrap max-[359px]:py-1 max-[359px]:whitespace-normal md:px-6"
+              className="sa-btn sa-cabecalho__cta px-4 whitespace-nowrap max-[359px]:py-1 max-[359px]:whitespace-normal md:px-6"
             >
               {cta.rotulo}
             </BotaoDiagnostico>

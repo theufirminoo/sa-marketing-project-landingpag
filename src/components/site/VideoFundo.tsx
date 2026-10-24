@@ -57,6 +57,9 @@ export function VideoFundo({ src, className }: Props) {
       muted
       loop
       playsInline
+      controls={false}
+      disablePictureInPicture
+      disableRemotePlayback
       preload="none"
       aria-hidden="true"
       tabIndex={-1}

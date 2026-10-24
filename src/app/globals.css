@@ -1300,7 +1300,7 @@
   .sa-video-fundo {
     position: absolute;
     inset: 0;
-    z-index: -3;
+    z-index: 1;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -1322,7 +1322,7 @@
   .sa-brilho {
     position: absolute;
     inset: -20%;
-    z-index: -4;
+    z-index: 0;
     pointer-events: none;
     background:
       radial-gradient(40% 50% at 78% 30%, color-mix(in srgb, var(--accent) 45%, transparent), transparent 70%),
@@ -1333,7 +1333,7 @@
   .sa-veu {
     position: absolute;
     inset: 0;
-    z-index: -2;
+    z-index: 2;
     pointer-events: none;
     background: linear-gradient(
       180deg,
@@ -1602,7 +1602,7 @@
     display: block;
   }
   .sa-slide__fundo {
-    z-index: -4;
+    z-index: 0;
     object-fit: cover;
   }
   .sa-video-fundo--slide {
@@ -1611,7 +1611,7 @@
   .sa-slide__veu {
     position: absolute;
     inset: 0;
-    z-index: -2;
+    z-index: 2;
     pointer-events: none;
     background: color-mix(in srgb, var(--bg) 72%, transparent);
   }
@@ -1809,7 +1809,7 @@
   .sa-slide__veu--painel {
     position: absolute;
     inset: 0;
-    z-index: -2;
+    z-index: 2;
     background:
       linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 88%, transparent) 45%, color-mix(in srgb, var(--bg) 55%, transparent) 100%),
       linear-gradient(0deg, var(--bg) 0%, transparent 30%);
@@ -2586,6 +2586,53 @@
     }
     .sa-prova-cases .pequeno.mt-4 {
       margin-top: var(--space-2);
+    }
+  }
+}
+
+/*
+ * Camadas do fundo sem z-index negativo: o Safari do iPhone desenha o vídeo
+ * por cima do texto quando ele fica atrás com índice negativo. Ordem:
+ * imagem/brilho (0), vídeo (1), véu (2), conteúdo (4).
+ */
+@layer components {
+  .sa-slide > .sa-container,
+  .sa-grao > .sa-container {
+    position: relative;
+    z-index: 4;
+  }
+  .sa-video-fundo::-webkit-media-controls,
+  .sa-video-fundo::-webkit-media-controls-start-playback-button {
+    display: none !important;
+    -webkit-appearance: none;
+  }
+}
+
+/* Celular: sem botões repetidos e sem nada cobrindo o conteúdo. */
+@layer components {
+  @media (max-width: 767px) {
+    /* Com a barra fixa no ar, o botão do cabeçalho some: um só "Fazer diagnóstico" na tela. */
+    .sa-cabecalho__cta {
+      transition: opacity var(--dur-base) var(--ease-saida);
+    }
+    html[data-barra-fixa="visivel"] .sa-cabecalho__cta {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .sa-whats {
+      right: var(--space-3);
+      width: 48px;
+      height: 48px;
+    }
+    .sa-whats svg {
+      width: 24px;
+      height: 24px;
+    }
+    /* Terceiro sócio sozinho na linha: centralizado, no mesmo tamanho dos outros. */
+    .sa-time > li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: calc(50% - var(--space-2));
     }
   }
 }
