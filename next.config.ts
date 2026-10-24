@@ -20,6 +20,12 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // CSP só com o que não depende de nonce: bloqueia moldura de terceiros,
+          // plugins, troca de <base> e conteúdo misto. A CSP de scripts está no BACKLOG.
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests",
+          },
         ],
       },
       {

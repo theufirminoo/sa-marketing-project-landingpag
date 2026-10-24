@@ -735,3 +735,13 @@ export const privacidade = {
     },
   ],
 } as const;
+
+/* ------------------------------------------------------------------ */
+/* Página não encontrada                                               */
+/* ------------------------------------------------------------------ */
+
+export const naoEncontrada = {
+  titulo: "Esta página não existe.",
+  texto: "O endereço pode ter mudado. A página principal tem tudo sobre a SA e o diagnóstico.",
+  voltar: "Ir para a página inicial",
+} as const;

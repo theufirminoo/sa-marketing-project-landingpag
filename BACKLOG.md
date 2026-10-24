@@ -16,3 +16,19 @@ banco ligado. Para ativar:
 - [ ] Agendar a limpeza de 13 meses (comando no topo de `db/metricas.sql`).
 - [ ] Painel interno das métricas: página protegida `/painel` ou Metabase/Looker Studio ligado às visões.
 - [ ] Conferir se a política de privacidade continua batendo com o que é coletado.
+
+## Segurança (da validação de 24/10/2026, `docs/VALIDACAO.md`)
+
+- [ ] CSP de scripts com nonce (`script-src`), depois de definir o ID do GTM. Hoje a CSP cobre moldura, base, form, object e conteúdo misto.
+- [ ] HSTS com `includeSubDomains; preload` no domínio próprio, depois de confirmar HTTPS em produção.
+- [ ] Regras do Vercel Firewall para limite global em `/api/lead` e `/api/eventos` (o limite atual vale por instância).
+- [ ] Dependabot ou Renovate no GitHub para atualizar dependências com falha de segurança.
+
+## Depois de publicar
+
+- [ ] Monitoramento de disponibilidade com alerta (UptimeRobot ou Better Stack).
+- [ ] Google Search Console: verificar o domínio, enviar o sitemap e acompanhar Core Web Vitals reais (LCP, INP, CLS no p75).
+- [ ] Monitoramento de erros (as métricas próprias já registram os erros do navegador; Sentry é opcional).
+- [ ] Teste em iPhone (Safari), Samsung Internet e com VoiceOver/TalkBack.
+- [ ] Revisão trimestral: links quebrados, acessos à Vercel/GitHub/Registro.br/CRM, ex-prestadores, política de privacidade e dados comerciais.
+- [ ] Definir o responsável pela manutenção (SA ou M9 Studio Tech).
