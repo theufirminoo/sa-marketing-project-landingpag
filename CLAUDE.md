@@ -30,7 +30,7 @@ pnpm check:pendencias --estrito  # falha se sobrar provisório ou pendência que
 Fonte da verdade: `docs/design-system/sa-tokens.css` (importado em `globals.css`) e `docs/design-system/sa-components.css` (portado para `@layer components` em `globals.css`).
 
 - Pílula é escolha. Retângulo de canto 4 px é ação. Linha de largura total é conteúdo que se abre.
-- 60% escuro (`--bg` #1A1A1A), 30% claro (giz), âmbar no máximo 10%: botão principal, opção selecionada, etapa ativa, fundo do CTA final. "Quem faz" fica sobre `--surface`, parado e sem vídeo, para destacar as pessoas. Laranja forte (`--accent-forte`, da apresentação comercial) só em degradê, ícone e número grande, nunca em texto pequeno.
+- 60% escuro (`--bg` #1A1A1A), 30% claro (giz), âmbar no máximo 10%: botão principal, opção selecionada, etapa ativa, fundo do CTA final. "Quem faz" fica sobre `--surface`, parado e sem vídeo, para destacar as pessoas. Laranja forte (`--accent-forte` #D9531A, variação escura da base #FF751F) só em degradê, ícone e número grande, nunca em texto pequeno.
 - Tema por seção com `data-theme`. Não existe alternância de tema nem `prefers-color-scheme`.
 - Uma família só: Bricolage Grotesque (`next/font/google`, eixos `opsz` e `wdth`). Caixa normal sempre; nada de destacar palavra do título.
 - `@theme` zera a paleta do Tailwind: só existem as cores, raios e sombras dos tokens. No shadcn, `accent` é o âmbar; hover usa `--surface-hover`.
