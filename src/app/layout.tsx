@@ -1,17 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque } from "next/font/google";
+import { Bricolage_Grotesque, Poppins } from "next/font/google";
 
 import { AvisoCookies } from "@/components/site/AvisoCookies";
 import { temProvisorios } from "@/content/provisorios";
 import { avisoCookies, metadados, site } from "@/content/site";
 import "./globals.css";
 
-/** Uma família só, variável em peso, largura e tamanho óptico. */
+/** Primária: títulos. Variável em peso, largura e tamanho óptico. */
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   axes: ["opsz", "wdth"],
   display: "swap",
   variable: "--font-bricolage",
+});
+
+/** Secundária: textos, botões e rótulos. Mesma família da apresentação comercial. */
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -50,7 +58,7 @@ const estiloSemJs =
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={bricolage.variable}>
+    <html lang="pt-BR" className={`${bricolage.variable} ${poppins.variable}`}>
       <head>
         <noscript>
           <style>{estiloSemJs}</style>

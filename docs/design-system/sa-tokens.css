@@ -78,6 +78,8 @@
   --ease-saida: cubic-bezier(0.2, 0, 0, 1);
   /* Fonte */
   --font-sans: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Secundária: Poppins nos textos corridos, botões e rótulos. */
+  --font-texto: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 /* Estilos de texto. A largura (font-stretch) e os tamanhos fluidos ficam aqui. */
@@ -116,28 +118,28 @@
   font-stretch: 100%;
 }
 .lead {
-  font-family: var(--font-sans);
+  font-family: var(--font-texto);
   font-size: 20px;
   line-height: 1.5;
   font-weight: 400;
   font-stretch: 100%;
 }
 .corpo {
-  font-family: var(--font-sans);
+  font-family: var(--font-texto);
   font-size: 17px;
   line-height: 1.6;
   font-weight: 400;
   font-stretch: 100%;
 }
 .pequeno {
-  font-family: var(--font-sans);
+  font-family: var(--font-texto);
   font-size: 14px;
   line-height: 1.5;
   font-weight: 400;
   font-stretch: 100%;
 }
 .rotulo {
-  font-family: var(--font-sans);
+  font-family: var(--font-texto);
   font-size: 13px;
   line-height: 1.4;
   font-weight: 500;

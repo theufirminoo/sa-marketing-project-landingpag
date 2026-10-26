@@ -90,6 +90,7 @@
 
 @theme inline {
   --font-sans: var(--font-bricolage), "SA Reserva 100", "SA Reserva Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-texto: var(--font-poppins), system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --color-bg: var(--bg);
   --color-bg-sunken: var(--bg-sunken);
@@ -137,6 +138,7 @@
 @layer base {
   :root {
     --font-sans: var(--font-bricolage), "SA Reserva 100", "SA Reserva Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-texto: var(--font-poppins), system-ui, -apple-system, "Segoe UI", sans-serif;
     /* Escalonamento das opções na entrada do hero, definido no prompt. */
     --atraso-opcao: 40ms;
     color-scheme: dark;
@@ -194,7 +196,7 @@
     min-height: 100dvh;
     background: var(--bg);
     color: var(--text);
-    font-family: var(--font-sans);
+    font-family: var(--font-texto);
     font-size: 17px;
     line-height: 1.6;
     font-optical-sizing: auto;
@@ -315,7 +317,7 @@
     border-radius: var(--radius-sm);
     background: var(--accent);
     color: var(--on-accent);
-    font: 600 16px/1.2 var(--font-sans);
+    font: 600 16px/1.2 var(--font-texto);
     text-align: center;
     text-decoration: none;
     cursor: pointer;
@@ -468,7 +470,7 @@
     border-radius: var(--radius-pill);
     background: transparent;
     color: var(--text);
-    font: 500 16px/1.2 var(--font-sans);
+    font: 500 16px/1.2 var(--font-texto);
     text-align: left;
     text-decoration: none;
     cursor: pointer;
@@ -567,7 +569,7 @@
     background: var(--surface);
     color: var(--text);
     /* 17 px: o iOS não dá zoom no campo. */
-    font: 400 17px/1.4 var(--font-sans);
+    font: 400 17px/1.4 var(--font-texto);
     transition: border-color var(--dur-rapida) var(--ease-saida);
   }
   .sa-input::placeholder {
@@ -755,7 +757,7 @@
     height: 32px;
     border: 1px solid var(--border-control);
     border-radius: var(--radius-pill);
-    font: 500 14px/1 var(--font-sans);
+    font: 500 14px/1 var(--font-texto);
     font-variant-numeric: tabular-nums;
     color: var(--text);
     transition:
@@ -1190,7 +1192,7 @@
     margin-bottom: var(--space-2);
     border: 1px solid var(--border-control);
     border-radius: var(--radius-pill);
-    font: 500 14px/1 var(--font-sans);
+    font: 500 14px/1 var(--font-texto);
     font-variant-numeric: tabular-nums;
   }
 
@@ -1405,7 +1407,7 @@
     stroke-width: 1;
   }
   .sa-funil__faixa text {
-    font: 600 14px/1 var(--font-sans);
+    font: 600 14px/1 var(--font-texto);
     fill: var(--text);
     text-anchor: middle;
     dominant-baseline: middle;
