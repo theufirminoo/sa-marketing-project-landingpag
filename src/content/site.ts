@@ -466,7 +466,7 @@ export const quemFaz = {
       id: "matheus",
       nome: "Matheus Firmino",
       cargo: "Chief Technology Officer (CTO)",
-      cargoPt: "Tecnologia e sistemas",
+      cargoPt: "Gestor de tecnologia",
       foto: fotosSocios.matheus,
     },
   ] satisfies Pessoa[],
@@ -475,7 +475,7 @@ export const quemFaz = {
   aberturaParceiros: "Especialistas que gravam e cuidam das redes junto com a SA.",
   parceiros: [
     { id: "nayara", nome: "Nayara Kelly", funcao: "Filmmaker e storymaker", foto: "/socios/nayara.webp" },
-    { id: "lunna", nome: "Lunna Rodrigues", funcao: "Social media e audiovisual", foto: "/socios/lunna.webp" },
+    { id: "lunna", nome: "Lunna Rodrigues", funcao: "Social media", foto: "/socios/lunna.webp" },
   ] satisfies Parceiro[],
 } as const;
 
@@ -666,7 +666,7 @@ export const diagnostico = {
     resultado: {
       anuncio: "Resultado do diagnóstico",
       titulo: (frentes: string) => `Pelo que você contou, o começo é pela ${frentes}.`,
-      texto: "A SA já recebeu suas respostas. Abra a conversa para combinar o diagnóstico.",
+      texto: "Suas respostas já vão escritas na mensagem. Abra a conversa com a SA para combinar o diagnóstico.",
       abrirWhatsapp: "Abrir conversa no WhatsApp",
       refazer: "Refazer o diagnóstico",
     },

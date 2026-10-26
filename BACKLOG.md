@@ -32,3 +32,16 @@ banco ligado. Para ativar:
 - [ ] Teste em iPhone (Safari), Samsung Internet e com VoiceOver/TalkBack.
 - [ ] Revisão trimestral: links quebrados, acessos à Vercel/GitHub/Registro.br/CRM, ex-prestadores, política de privacidade e dados comerciais.
 - [ ] Definir o responsável pela manutenção (SA ou M9 Studio Tech).
+
+## Diagnóstico: receber os leads no site
+
+Hoje `POST /api/lead` valida e só encaminha para `CRM_WEBHOOK_URL`, que ainda
+não existe: sem ela, o lead é descartado. O que chega de fato é a mensagem que
+a pessoa envia no WhatsApp (se ela enviar). Por isso a tela de resultado diz
+que as respostas vão na mensagem, e não que a SA já recebeu.
+
+- [ ] Banco de dados para os leads (tabela `leads` no mesmo Postgres das métricas, ou um CRM com webhook).
+- [ ] Gravar em `/api/lead` com `after()`: nome, WhatsApp, empresa, Instagram, respostas, frentes recomendadas, origem (utm) e data.
+- [ ] Aviso para a SA a cada lead novo (e-mail ou WhatsApp interno).
+- [ ] Acesso restrito aos leads (painel protegido ou o próprio CRM) e prazo de retenção na política de privacidade.
+- [ ] Depois de ligado, voltar o texto do resultado para "A SA já recebeu suas respostas".
