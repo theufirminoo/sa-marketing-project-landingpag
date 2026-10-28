@@ -1,17 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Poppins } from "next/font/google";
+import { Montserrat, Poppins } from "next/font/google";
 
 import { AvisoCookies } from "@/components/site/AvisoCookies";
 import { temProvisorios } from "@/content/provisorios";
 import { avisoCookies, metadados, site } from "@/content/site";
 import "./globals.css";
 
-/** Primária: títulos. Variável em peso, largura e tamanho óptico. */
-const bricolage = Bricolage_Grotesque({
+/** Primária: títulos. Montserrat variável (do guia de identidade da SA). */
+const montserrat = Montserrat({
   subsets: ["latin"],
-  axes: ["opsz", "wdth"],
   display: "swap",
-  variable: "--font-bricolage",
+  variable: "--font-titulo",
 });
 
 /** Secundária: textos, botões e rótulos. Mesma família da apresentação comercial. */
@@ -58,7 +57,7 @@ const estiloSemJs =
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={`${bricolage.variable} ${poppins.variable}`}>
+    <html lang="pt-BR" className={`${montserrat.variable} ${poppins.variable}`}>
       <head>
         <noscript>
           <style>{estiloSemJs}</style>

@@ -77,7 +77,7 @@
   --dur-hero: 600ms;
   --ease-saida: cubic-bezier(0.2, 0, 0, 1);
   /* Fonte */
-  --font-sans: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
   /* Secundária: Poppins nos textos corridos, botões e rótulos. */
   --font-texto: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -85,29 +85,29 @@
 /* Estilos de texto. A largura (font-stretch) e os tamanhos fluidos ficam aqui. */
 .display {
   font-family: var(--font-sans);
-  font-size: clamp(44px, 7.2vw, 104px);
+  font-size: clamp(34px, 6vw, 80px);
   line-height: 0.95;
   font-weight: 700;
   letter-spacing: -0.02em;
-  font-stretch: 78%;
+  font-stretch: 100%;
   text-wrap: balance;
 }
 .titulo-1 {
   font-family: var(--font-sans);
-  font-size: clamp(32px, 4.4vw, 56px);
+  font-size: clamp(26px, 3.6vw, 46px);
   line-height: 1.05;
   font-weight: 650;
   letter-spacing: -0.015em;
-  font-stretch: 84%;
+  font-stretch: 100%;
   text-wrap: balance;
 }
 .titulo-2 {
   font-family: var(--font-sans);
-  font-size: clamp(24px, 2.6vw, 34px);
+  font-size: clamp(21px, 2.2vw, 28px);
   line-height: 1.15;
   font-weight: 600;
   letter-spacing: -0.01em;
-  font-stretch: 90%;
+  font-stretch: 100%;
   text-wrap: balance;
 }
 .titulo-3 {

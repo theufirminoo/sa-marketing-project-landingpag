@@ -89,7 +89,7 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-bricolage), "SA Reserva 100", "SA Reserva Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: var(--font-titulo), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-texto: var(--font-poppins), system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --color-bg: var(--bg);
@@ -137,7 +137,7 @@
 
 @layer base {
   :root {
-    --font-sans: var(--font-bricolage), "SA Reserva 100", "SA Reserva Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-sans: var(--font-titulo), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-texto: var(--font-poppins), system-ui, -apple-system, "Segoe UI", sans-serif;
     /* Escalonamento das opções na entrada do hero, definido no prompt. */
     --atraso-opcao: 40ms;
@@ -235,16 +235,6 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Títulos condensados com a reserva calibrada para a mesma largura. */
-  .display {
-    font-family: "Bricolage Grotesque", "SA Reserva 78", "SA Reserva 78 Roboto", var(--font-sans);
-  }
-  .titulo-1 {
-    font-family: "Bricolage Grotesque", "SA Reserva 84", "SA Reserva 84 Roboto", var(--font-sans);
-  }
-  .titulo-2 {
-    font-family: "Bricolage Grotesque", "SA Reserva 90", "SA Reserva 90 Roboto", var(--font-sans);
-  }
 }
 
 @layer components {
