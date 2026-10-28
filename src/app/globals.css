@@ -2638,3 +2638,22 @@
     }
   }
 }
+
+/*
+ * iPhone: o Safari desenha <video> numa camada própria que ignora a opacidade
+ * do slide que está saindo e pode ficar por cima do slide novo. O slide ativo
+ * fica sempre acima, e o vídeo de um slide inativo some na hora.
+ */
+@layer components {
+  .sa-carrossel__slide {
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
+  }
+  .sa-carrossel__slide[data-ativo="true"] {
+    z-index: 2;
+  }
+  .sa-carrossel__slide:not([data-ativo="true"]) video {
+    visibility: hidden;
+  }
+}

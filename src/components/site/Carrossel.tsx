@@ -50,6 +50,17 @@ export function Carrossel({ slides, rotulos }: { slides: ReactNode[]; rotulos: R
 
   const ir = (n: number) => setAtual((n + total) % total);
 
+  // Só o vídeo do slide visível toca: no iPhone, vídeo tocando em slide
+  // escondido ainda pode aparecer por cima e gasta bateria.
+  useEffect(() => {
+    raiz.current?.querySelectorAll<HTMLElement>(".sa-carrossel__slide").forEach((slide, i) => {
+      slide.querySelectorAll("video").forEach((v) => {
+        if (i === atual) v.play().catch(() => {});
+        else v.pause();
+      });
+    });
+  }, [atual]);
+
   // Setas do teclado trocam o slide enquanto o carrossel ocupa o meio da tela.
   useEffect(() => {
     const aoTeclar = (e: KeyboardEvent) => {
