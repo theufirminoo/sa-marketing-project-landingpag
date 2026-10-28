@@ -2643,3 +2643,19 @@
     visibility: hidden;
   }
 }
+
+/* Autoplay bloqueado pelo navegador (economia de dados/bateria): o primeiro
+   quadro respira com um zoom lento até o primeiro toque liberar o vídeo. */
+@keyframes sa-respira {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+@layer components {
+  .sa-video-fundo[data-bloqueado] {
+    animation: sa-respira 9s ease-in-out infinite alternate;
+  }
+}

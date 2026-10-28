@@ -37,7 +37,18 @@ export function VideoFundo({ src, className, automatico = false }: Props) {
       if (!video.paused) return parar();
       // Slide escondido do carrossel: quem dá o play é o Carrossel ao mostrá-lo.
       if (video.closest('.sa-carrossel__slide[data-ativo="false"]')) return;
-      video.play().then(parar, () => {});
+      video.play().then(
+        () => {
+          delete video.dataset.bloqueado;
+          parar();
+        },
+        // Navegador com economia de dados ou bateria bloqueia o autoplay até o
+        // primeiro toque. Enquanto isso, o quadro parado ganha um zoom lento
+        // (CSS) para o fundo não parecer travado.
+        () => {
+          video.dataset.bloqueado = "";
+        },
+      );
     };
     eventos.forEach((e) => window.addEventListener(e, tentar, { passive: true }));
     // Também começa sozinho, logo depois que a página termina de carregar:
@@ -67,6 +78,7 @@ export function VideoFundo({ src, className, automatico = false }: Props) {
       disableRemotePlayback
       autoPlay={automatico}
       preload={automatico ? "auto" : "none"}
+      onPlaying={(e) => delete e.currentTarget.dataset.bloqueado}
       aria-hidden="true"
       tabIndex={-1}
     >
