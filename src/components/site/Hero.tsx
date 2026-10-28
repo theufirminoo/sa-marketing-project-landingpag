@@ -57,7 +57,7 @@ function SlidePergunta() {
   return (
     <div className="sa-slide sa-slide--pergunta">
       <div className="sa-brilho" aria-hidden="true" />
-        {fundos.hero ? <VideoFundo src={fundos.hero} className="sa-video-fundo--hero" /> : null}
+        {fundos.hero ? <VideoFundo src={fundos.hero} className="sa-video-fundo--hero" automatico /> : null}
         <div className="sa-veu" aria-hidden="true" />
         <div className="sa-container lg:grid lg:grid-cols-12 lg:gap-x-6">
           <div className="lg:col-span-7">

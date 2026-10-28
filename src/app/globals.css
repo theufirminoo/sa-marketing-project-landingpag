@@ -1297,10 +1297,6 @@
     height: 100%;
     object-fit: cover;
     pointer-events: none;
-    opacity: 0;
-    transition: opacity 1200ms var(--ease-saida);
-  }
-  .sa-video-fundo[data-tocando="true"] {
     opacity: var(--opacidade-video, 0.5);
   }
   .sa-video-fundo--hero {

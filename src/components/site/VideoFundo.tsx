@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -8,6 +8,8 @@ type Props = {
   src: string;
   /** Classe de opacidade e mistura, definida em globals.css. */
   className?: string;
+  /** Primeiro vídeo da página: `autoplay` nativo, que o Safari do iPhone respeita melhor que um play() por script. */
+  automatico?: boolean;
 };
 
 /**
@@ -16,12 +18,13 @@ type Props = {
  * primeira interação, o que vier antes).
  * Se o navegador recusar o play (economia de energia), tenta de novo no
  * próximo toque.
+ * Fica sempre visível (sem esperar o "playing" para aparecer): o Safari do
+ * iPhone não dá play automático em vídeo com opacidade zero, e o vídeo nunca
+ * chegava a aparecer. Antes de ter quadro, ele é só transparente.
  * Por decisão do cliente, toca também com movimento reduzido: é só fundo.
  */
-export function VideoFundo({ src, className }: Props) {
+export function VideoFundo({ src, className, automatico = false }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
-  // O primeiro quadro é desenhado ainda invisível; só depois o vídeo aparece.
-  const [visivel, setVisivel] = useState(false);
 
   useEffect(() => {
     // Tenta tocar a cada interação até conseguir. No iPhone em modo de
@@ -32,6 +35,8 @@ export function VideoFundo({ src, className }: Props) {
     const parar = () => eventos.forEach((e) => window.removeEventListener(e, tentar));
     const tentar = () => {
       if (!video.paused) return parar();
+      // Slide escondido do carrossel: quem dá o play é o Carrossel ao mostrá-lo.
+      if (video.closest('.sa-carrossel__slide[data-ativo="false"]')) return;
       video.play().then(parar, () => {});
     };
     eventos.forEach((e) => window.addEventListener(e, tentar, { passive: true }));
@@ -60,11 +65,10 @@ export function VideoFundo({ src, className }: Props) {
       controls={false}
       disablePictureInPicture
       disableRemotePlayback
-      preload="none"
+      autoPlay={automatico}
+      preload={automatico ? "auto" : "none"}
       aria-hidden="true"
       tabIndex={-1}
-      data-tocando={visivel ? "true" : "false"}
-      onPlaying={() => window.setTimeout(() => setVisivel(true), 300)}
     >
       {/* MP4 (H.264) primeiro: é o que o Safari do iPhone toca. O navegador
           que não decodifica H.264 passa para o WebM. */}
