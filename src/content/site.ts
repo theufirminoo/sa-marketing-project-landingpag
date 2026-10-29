@@ -394,6 +394,8 @@ export const secaoFrentes = {
   rotuloServicos: (nome: string) => `O que a ${nome} faz`,
   acao: "Começar por esta frente",
   rotuloIndice: "As quatro frentes",
+  /** Nome curto no indicador de progresso. */
+  nomeCurto: (nome: string) => nome.replace(/^SA /, ""),
 } as const;
 
 /* ------------------------------------------------------------------ */

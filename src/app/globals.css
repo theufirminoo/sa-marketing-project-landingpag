@@ -1253,10 +1253,9 @@
     bottom: calc(var(--alvo-toque) + 2 * var(--space-3) + var(--space-4) + env(safe-area-inset-bottom));
   }
   @media (max-width: 767px) {
-    /* No celular o aviso de cookies ocupa a largura; o botão espera a escolha. */
+    /* No celular o aviso de cookies ocupa a largura: o botão sobe e fica acima dele. */
     body:has(.sa-aviso-cookies) .sa-whats {
-      opacity: 0;
-      pointer-events: none;
+      transform: translateY(calc(-1 * var(--altura-aviso, 140px)));
     }
   }
   @media (min-width: 768px) {
@@ -2660,157 +2659,179 @@
   }
 }
 
+
 /*
- * Quatro frentes em rolagem guiada. Painéis sempre abertos; o que passa pela
- * faixa a 30% da tela fica em destaque (data-ativa) e o índice acompanha.
- * Nada muda de altura enquanto a pessoa rola.
+ * Quatro frentes em substituição. Sem JS: painéis um embaixo do outro.
+ * Com JS (html[data-frentes-js]): o palco ganha altura, a cena gruda abaixo
+ * do cabeçalho e só o painel da vez aparece; os outros saem para cima ou
+ * esperam embaixo, conforme o sentido da rolagem.
  */
 @layer components {
-  .sa-frentes-rolagem {
+  .sa-frentes-progresso ol {
     display: grid;
-    gap: var(--space-6);
-  }
-  .sa-frentes-indice ol {
-    display: flex;
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .sa-frentes-indice a {
+  .sa-frentes-progresso a {
     display: block;
+    padding: var(--space-2) 0;
+    border-top: 3px solid var(--border);
     color: var(--text-muted);
+    font: 600 14px/1.2 var(--font-texto);
     text-decoration: none;
     transition:
       color var(--dur-base) var(--ease-saida),
-      border-color var(--dur-base) var(--ease-saida),
-      background-color var(--dur-base) var(--ease-saida);
+      border-color var(--dur-base) var(--ease-saida);
   }
-  .sa-frentes-indice a[aria-current="true"] {
+  .sa-frentes-progresso a[data-feito] {
+    border-top-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .sa-frentes-progresso a[aria-current="true"] {
+    border-top-color: var(--accent);
     color: var(--text);
   }
-  .sa-frentes-indice__nome {
-    font-family: var(--font-sans);
-    font-weight: 600;
+  @media (hover: hover) {
+    .sa-frentes-progresso a:hover {
+      color: var(--text);
+    }
   }
   .sa-frentes-paineis {
     display: grid;
     gap: var(--space-6);
+    margin-top: var(--space-4);
   }
   .sa-frente-painel {
     display: grid;
     overflow: hidden;
-    scroll-margin-top: calc(var(--header-h) + 72px);
-    border: 1px solid var(--border);
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
     border-radius: var(--radius-sm);
-    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
-    transition:
-      opacity var(--dur-lenta) var(--ease-saida),
-      border-color var(--dur-lenta) var(--ease-saida);
   }
-  /* Com JavaScript: só o painel em foco fica aceso. Sem JS, todos iguais. */
-  html[data-frentes-js] .sa-frente-painel:not([data-ativa]) {
-    opacity: 0.45;
-  }
-  .sa-frente-painel[data-ativa] {
-    border-color: color-mix(in srgb, var(--accent) 70%, transparent);
-  }
-  .sa-frente-painel[data-ativa] h3 {
+  .sa-frente-painel h3 {
     color: var(--accent-text);
   }
   .sa-frente-painel__foto {
-    aspect-ratio: 21 / 9;
+    position: relative;
+    aspect-ratio: 16 / 9;
   }
   .sa-frente-painel__foto img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
   }
   .sa-frente-painel__corpo {
-    padding: var(--space-6);
+    padding: var(--space-4);
   }
-
-  /* Celular e tablet: índice vira faixa fixa de pílulas abaixo do cabeçalho. */
-  @media (max-width: 1023px) {
-    .sa-frentes-indice {
-      position: sticky;
-      top: var(--header-h);
-      z-index: 5;
-      margin-inline: calc(-1 * var(--space-4));
-      padding: var(--space-2) var(--space-4);
-      background: color-mix(in srgb, var(--bg) 85%, transparent);
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
+  .sa-frente-painel__servicos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sa-frente-painel__servicos li {
+    padding: 6px var(--space-3);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    line-height: 1.3;
+  }
+  @media (max-height: 760px) {
+    .sa-frente-painel__foto {
+      aspect-ratio: 3 / 1;
     }
-    .sa-frentes-indice ol {
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .sa-frentes-indice a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 40px;
-      padding: 0 var(--space-4);
-      border: 1px solid var(--border-control);
-      border-radius: var(--radius-pill);
-      font-size: 14px;
-      white-space: nowrap;
-    }
-    .sa-frentes-indice a[aria-current="true"] {
-      border-color: var(--accent);
-      background: var(--accent);
-      color: var(--on-accent);
-    }
-    .sa-frentes-indice__promessa {
+  }
+  /* Telas baixas (iPhone SE): sem foto, serviços menores. */
+  @media (max-height: 700px) and (max-width: 1023px) {
+    .sa-frente-painel__foto {
       display: none;
     }
+    .sa-frente-painel__corpo .corpo {
+      font-size: 14px;
+    }
+    .sa-frente-painel__servicos {
+      gap: 6px;
+      margin-top: var(--space-3);
+    }
+    .sa-frente-painel__servicos li {
+      padding: 4px var(--space-2);
+      font-size: 12px;
+    }
+    .sa-frente-painel__corpo .sa-btn {
+      margin-top: var(--space-4);
+    }
+  }
+  @media (min-width: 1024px) {
+    .sa-frente-painel {
+      grid-template-columns: 5fr 7fr;
+    }
+    .sa-frente-painel__foto {
+      aspect-ratio: auto;
+      min-height: 100%;
+    }
     .sa-frente-painel__corpo {
-      padding: var(--space-4);
+      padding: var(--space-8);
+    }
+    .sa-frente-painel__servicos li {
+      font-size: 15px;
     }
   }
 
-  /* Computador: índice fixo à esquerda, painéis à direita. */
-  @media (min-width: 1024px) {
-    .sa-frentes-rolagem {
-      grid-template-columns: 4fr 8fr;
-      gap: var(--space-16);
-      align-items: start;
+  /* Modo substituição (com JS). */
+  html[data-frentes-js] .sa-frentes-cena {
+    position: sticky;
+    top: var(--header-h);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: calc(100svh - var(--header-h));
+    padding-block: var(--space-4);
+  }
+  html[data-frentes-js] .sa-frentes-paineis {
+    gap: 0;
+  }
+  html[data-frentes-js] .sa-frente-painel {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(32px);
+    pointer-events: none;
+    transition:
+      opacity var(--dur-lenta) var(--ease-saida),
+      transform var(--dur-lenta) var(--ease-saida);
+  }
+  html[data-frentes-js] .sa-frente-painel[data-antes] {
+    transform: translateY(-32px);
+  }
+  html[data-frentes-js] .sa-frente-painel[data-ativa] {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+}
+
+/* Celular: a cena desconta a barra fixa de baixo; foto mais baixa e serviços menores. */
+@layer components {
+  @media (max-width: 1023px) {
+    html[data-frentes-js] .sa-frentes-cena {
+      height: calc(100svh - var(--header-h) - var(--alvo-toque) - 2 * var(--space-3));
+      padding-block: var(--space-2);
     }
-    .sa-frentes-indice {
-      position: sticky;
-      top: calc(var(--header-h) + var(--space-12));
+    .sa-frente-painel__foto {
+      aspect-ratio: 21 / 9;
     }
-    .sa-frentes-indice ol {
-      flex-direction: column;
-      gap: 0;
+    .sa-frente-painel__servicos {
+      gap: 6px;
     }
-    .sa-frentes-indice a {
-      padding: var(--space-4) 0 var(--space-4) var(--space-6);
-      border-left: 2px solid var(--border);
+    .sa-frente-painel__servicos li {
+      padding: 4px var(--space-2);
+      font-size: 12px;
     }
-    .sa-frentes-indice a[aria-current="true"] {
-      border-left-color: var(--accent);
-    }
-    .sa-frentes-indice__nome {
-      display: block;
-      font-size: 24px;
-    }
-    .sa-frentes-indice__promessa {
-      display: block;
-      margin-top: var(--space-1);
-    }
-    @media (hover: hover) {
-      .sa-frentes-indice a:hover {
-        color: var(--text);
-      }
-    }
-    .sa-frentes-paineis {
-      gap: var(--space-12);
-    }
-    .sa-frente-painel {
-      scroll-margin-top: calc(var(--header-h) + var(--space-12));
+    .sa-frente-painel__corpo .sa-btn {
+      margin-top: var(--space-4);
     }
   }
 }

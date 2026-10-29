@@ -95,7 +95,14 @@ export function AvisoCookies({ textos: avisoCookies }: { textos: Textos }) {
   return (
     <>
       {final === null && visto ? (
-        <section className="sa-aviso-cookies" aria-label={avisoCookies.rotulo}>
+        <section
+          className="sa-aviso-cookies"
+          aria-label={avisoCookies.rotulo}
+          ref={(el) => {
+            // O WhatsApp flutuante sobe exatamente a altura do aviso (+ folga).
+            if (el) document.documentElement.style.setProperty("--altura-aviso", `${el.offsetHeight + 16}px`);
+          }}
+        >
           <p className="pequeno">
             {avisoCookies.texto}{" "}
             <a href="/privacidade" className="sa-link">

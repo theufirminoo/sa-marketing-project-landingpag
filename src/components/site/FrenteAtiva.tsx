@@ -5,72 +5,122 @@ import { useEffect } from "react";
 import { registrarEvento } from "@/lib/analytics";
 import type { FrenteId } from "@/content/opcoes";
 
+/** Quanto de rolagem cada frente ocupa, em fração da altura da tela. */
+const PASSO = 0.7;
+
 /**
- * Marca qual frente está em foco enquanto a pessoa rola: o painel que cruza a
- * faixa logo abaixo do cabeçalho ganha `data-ativa`, e o link do índice,
- * `aria-current`. Não renderiza nada; o conteúdo vem do servidor.
+ * Liga o modo "substituição" das frentes: o palco ganha altura extra, a cena
+ * fica presa (sticky) e a posição da rolagem escolhe qual painel aparece.
+ * Desliga sozinho se algum painel não couber na cena (tela muito baixa):
+ * aí as frentes ficam uma embaixo da outra. Não renderiza nada.
  */
 export function FrenteAtiva() {
   useEffect(() => {
+    const palco = document.querySelector<HTMLElement>("[data-frentes-palco]");
+    const cena = palco?.querySelector<HTMLElement>(".sa-frentes-cena");
     const paineis = Array.from(document.querySelectorAll<HTMLElement>("[data-frente-painel]"));
     const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-frente-indice]"));
-    if (!paineis.length) return;
-    document.documentElement.dataset.frentesJs = "";
+    if (!palco || !cena || !paineis.length) return;
+    const raiz = document.documentElement;
     const vistas = new Set<string>();
-    // Enquanto a rolagem do clique no índice anda, o observador não troca a frente.
-    let travadoAte = 0;
+    let atual = -1;
+    let quadro = 0;
 
-    const ativar = (id: string) => {
-      paineis.forEach((p) => p.toggleAttribute("data-ativa", p.dataset.frentePainel === id));
-      links.forEach((l) => {
-        const atual = l.dataset.frenteIndice === id;
-        if (atual) {
-          l.setAttribute("aria-current", "true");
-          // No celular o índice é uma faixa que rola de lado: mantém o atual à vista.
-          const faixa = l.closest("ol");
-          if (faixa && faixa.scrollWidth > faixa.clientWidth) {
-            faixa.scrollTo({ left: l.offsetLeft - 16, behavior: "smooth" });
-          }
-        } else l.removeAttribute("aria-current");
+    const mostrar = (i: number) => {
+      if (i === atual) return;
+      atual = i;
+      paineis.forEach((p, k) => {
+        p.toggleAttribute("data-ativa", k === i);
+        p.toggleAttribute("data-antes", k < i);
       });
+      links.forEach((l, k) => {
+        if (k === i) l.setAttribute("aria-current", "true");
+        else l.removeAttribute("aria-current");
+        l.toggleAttribute("data-feito", k < i);
+      });
+      const id = paineis[i].dataset.frentePainel ?? "";
       if (!vistas.has(id)) {
         vistas.add(id);
         registrarEvento("frente_aberta", { frente: id as FrenteId });
       }
     };
-    ativar(paineis[0].dataset.frentePainel ?? "");
 
-    // Faixa estreita a 30% da altura da tela: o painel que passa por ela é o atual.
-    const observador = new IntersectionObserver(
-      (entradas) => {
-        for (const e of entradas) {
-          if (e.isIntersecting && performance.now() > travadoAte) ativar((e.target as HTMLElement).dataset.frentePainel ?? "");
-        }
-      },
-      { rootMargin: "-30% 0px -69% 0px" },
-    );
-    paineis.forEach((p) => observador.observe(p));
+    const passo = () => window.innerHeight * PASSO;
+    const topoFixo = () => parseFloat(getComputedStyle(cena).top) || 0;
+    // Rolagem a partir do momento em que a cena gruda no topo, em "passos".
+    const indiceDaRolagem = () => {
+      const p = -(palco.getBoundingClientRect().top - topoFixo()) / passo();
+      return Math.min(paineis.length - 1, Math.max(0, Math.floor(p + 0.5)));
+    };
 
-    // Clique no índice: rola até o painel descontando cabeçalho e faixa fixa.
+    const montar = () => {
+      raiz.removeAttribute("data-frentes-js");
+      palco.style.height = "";
+      // Só liga se cada painel couber na cena presa.
+      raiz.setAttribute("data-frentes-js", "");
+      const alturaCena = cena.clientHeight;
+      const conteudo = cena.scrollHeight;
+      if (conteudo > alturaCena + 2) {
+        raiz.removeAttribute("data-frentes-js");
+        paineis.forEach((p) => p.removeAttribute("data-ativa"));
+        atual = -1;
+        return;
+      }
+      palco.style.height = `${alturaCena + passo() * (paineis.length - 1)}px`;
+      mostrar(indiceDaRolagem());
+    };
+
+    const aoRolar = () => {
+      if (quadro || !raiz.hasAttribute("data-frentes-js")) return;
+      quadro = requestAnimationFrame(() => {
+        quadro = 0;
+        mostrar(indiceDaRolagem());
+      });
+    };
+
+    // Índice e foco do teclado levam à posição de rolagem de cada frente.
+    const irPara = (i: number) => {
+      const alvo = palco.getBoundingClientRect().top + window.scrollY - topoFixo() + i * passo();
+      const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: alvo, behavior: suave ? "smooth" : "auto" });
+    };
     const aoClicar = (e: MouseEvent) => {
       const link = (e.target as Element).closest<HTMLAnchorElement>("[data-frente-indice]");
-      const id = link?.dataset.frenteIndice;
-      const painel = paineis.find((p) => p.dataset.frentePainel === id);
-      if (!link || !id || !painel) return;
+      if (!link || !raiz.hasAttribute("data-frentes-js")) return;
       e.preventDefault();
-      const fixo = (document.querySelector("header")?.offsetHeight ?? 0) + (window.innerWidth < 1024 ? (link.closest("nav")?.offsetHeight ?? 0) : 48);
-      const destino = painel.getBoundingClientRect().top + window.scrollY - fixo - 16;
-      const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      travadoAte = performance.now() + (suave ? 900 : 100);
-      ativar(id);
-      window.scrollTo({ top: destino, behavior: suave ? "smooth" : "auto" });
-      history.replaceState(null, "", `#frente-${id}`);
+      irPara(links.indexOf(link));
     };
+    const aoFocar = (e: FocusEvent) => {
+      const painel = (e.target as Element).closest<HTMLElement>("[data-frente-painel]");
+      if (!painel || !raiz.hasAttribute("data-frentes-js")) return;
+      const i = paineis.indexOf(painel);
+      if (i !== atual) {
+        mostrar(i);
+        irPara(i);
+      }
+    };
+
+    // A barra de endereço do celular muda a altura ao rolar: só remonta se a largura mudar.
+    let largura = window.innerWidth;
+    const aoRedimensionar = () => {
+      if (window.innerWidth === largura) return;
+      largura = window.innerWidth;
+      montar();
+    };
+
+    montar();
+    window.addEventListener("scroll", aoRolar, { passive: true });
+    window.addEventListener("resize", aoRedimensionar);
     document.addEventListener("click", aoClicar);
+    document.addEventListener("focusin", aoFocar);
     return () => {
+      cancelAnimationFrame(quadro);
+      window.removeEventListener("scroll", aoRolar);
+      window.removeEventListener("resize", aoRedimensionar);
       document.removeEventListener("click", aoClicar);
-      observador.disconnect();
-      delete document.documentElement.dataset.frentesJs;
+      document.removeEventListener("focusin", aoFocar);
+      raiz.removeAttribute("data-frentes-js");
+      palco.style.height = "";
     };
   }, []);
 
