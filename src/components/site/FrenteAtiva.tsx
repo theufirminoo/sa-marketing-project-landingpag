@@ -56,11 +56,19 @@ export function FrenteAtiva() {
     const montar = () => {
       raiz.removeAttribute("data-frentes-js");
       palco.style.height = "";
-      // Só liga se cada painel couber na cena presa.
+      // Só liga se cada painel couber na cena presa. Em telas baixas (celular
+      // com barras do navegador), compacta em níveis até caber: foto mais
+      // baixa, sem foto, sem a promessa.
       raiz.setAttribute("data-frentes-js", "");
+      let nivel = 0;
+      palco.removeAttribute("data-compacto");
+      while (cena.scrollHeight > cena.clientHeight + 2 && nivel < 3) {
+        nivel += 1;
+        palco.setAttribute("data-compacto", String(nivel));
+      }
       const alturaCena = cena.clientHeight;
-      const conteudo = cena.scrollHeight;
-      if (conteudo > alturaCena + 2) {
+      if (cena.scrollHeight > alturaCena + 2) {
+        palco.removeAttribute("data-compacto");
         raiz.removeAttribute("data-frentes-js");
         paineis.forEach((p) => p.removeAttribute("data-ativa"));
         atual = -1;
@@ -108,13 +116,36 @@ export function FrenteAtiva() {
       montar();
     };
 
+    // Deslizar para o lado na cena também troca de frente (como no carrossel).
+    let toque: { x: number; y: number } | null = null;
+    const aoTocar = (e: TouchEvent) => {
+      toque = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    };
+    const aoSoltar = (e: TouchEvent) => {
+      const inicio = toque;
+      toque = null;
+      if (!inicio || !raiz.hasAttribute("data-frentes-js")) return;
+      const dx = e.changedTouches[0].clientX - inicio.x;
+      const dy = e.changedTouches[0].clientY - inicio.y;
+      if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      const destino = Math.min(paineis.length - 1, Math.max(0, atual + (dx < 0 ? 1 : -1)));
+      if (destino !== atual) {
+        mostrar(destino);
+        irPara(destino);
+      }
+    };
+
     montar();
+    cena.addEventListener("touchstart", aoTocar, { passive: true });
+    cena.addEventListener("touchend", aoSoltar, { passive: true });
     window.addEventListener("scroll", aoRolar, { passive: true });
     window.addEventListener("resize", aoRedimensionar);
     document.addEventListener("click", aoClicar);
     document.addEventListener("focusin", aoFocar);
     return () => {
       cancelAnimationFrame(quadro);
+      cena.removeEventListener("touchstart", aoTocar);
+      cena.removeEventListener("touchend", aoSoltar);
       window.removeEventListener("scroll", aoRolar);
       window.removeEventListener("resize", aoRedimensionar);
       document.removeEventListener("click", aoClicar);
