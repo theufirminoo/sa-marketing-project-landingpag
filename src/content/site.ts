@@ -52,7 +52,7 @@ export const faturamentos: readonly Opcao<Faturamento>[] = [
 
 export const site = {
   nome: "SA Marketing",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://samarketing.co.br",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://saagencia.com.br",
   idioma: "pt-BR",
   instagram: {
     usuario: "@samarketing.business",

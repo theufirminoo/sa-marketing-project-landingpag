@@ -14,7 +14,7 @@ valor provisório ou pendência que trava o lançamento.
 - [x] 4. Fotos dos sócios e dos parceiros: reais, recortadas sobre o mesmo fundo neutro (`public/socios/`).
 - [ ] 5. Vídeo vertical real para o hero e vídeos reais para os fundos (hero e Frentes: bastidor, gravação, cliente; mp4 e webm sem áudio, até 2,5 MB cada, caminhos em `fundos` no `src/content/site.ts`). Hoje são animações abstratas geradas com `ffmpeg` (ver "Origem dos vídeos provisórios" abaixo). Trocar `videoHero` em `src/content/provisorios.ts`. Ao trocar, conferir de novo o LCP no computador: um pôster com conteúdo real pode passar a ser o maior elemento da tela.
 - [ ] 6. Texto final da política de privacidade. Hoje: texto provisório curto em `/privacidade`. Trocar em `src/content/site.ts` (`privacidade`) e pôr `politicaProvisoria = false`.
-- [ ] 7. Domínio: saagencia.com.br. Ligar na hospedagem e trocar `NEXT_PUBLIC_SITE_URL` (hoje `https://samarketing.co.br`). Plano em `docs/ARQUITETURA.md`.
+- [x] 7. Domínio: saagencia.com.br (padrão no código; ligar na Vercel e no DNS).
 - [x] 8. Cargos pela apresentação comercial: Samuel CEO (gestor comercial), Malaquias CMO (gestor de tráfego). Matheus: CTO por pedido dele; a apresentação diz COO.
 
 ## Melhoram a página, mas não travam

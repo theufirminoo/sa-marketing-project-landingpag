@@ -72,7 +72,7 @@ describe("montarCorpoCrm", () => {
       faturamento: "20-50",
       frenteDeInteresse: "tech",
       utm: { source: "instagram", medium: "pago", campaign: "outubro" },
-      pagina: "https://samarketing.co.br/",
+      pagina: "https://saagencia.com.br/",
       referrer: "https://l.instagram.com/",
     });
     const corpo = montarCorpoCrm(lead, new Date("2026-10-07T14:03:00.000Z"));
@@ -89,7 +89,7 @@ describe("montarCorpoCrm", () => {
       frenteDeInteresse: "tech",
       frentesRecomendadas: ["tech", "consultoria", "social"],
       utm: { source: "instagram", medium: "pago", campaign: "outubro" },
-      pagina: "https://samarketing.co.br/",
+      pagina: "https://saagencia.com.br/",
       referrer: "https://l.instagram.com/",
     });
   });

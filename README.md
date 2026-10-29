@@ -1,6 +1,6 @@
 # SA Marketing: landing page
 
-Página única da SA Marketing (samarketing.co.br). O visitante responde 3
+Página única da SA Marketing (saagencia.com.br). O visitante responde 3
 perguntas, recebe a frente recomendada e abre uma conversa no WhatsApp com as
 respostas já preenchidas. O lead também vai para o CRM, quando houver webhook.
 
@@ -37,7 +37,7 @@ pnpm check:pendencias        # use --estrito antes do lançamento
 | Variável | Valor inicial | Para que serve |
 | --- | --- | --- |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | vazio (usa `5538998934902`, comercial da SA) | Número do WhatsApp, só dígitos. Preencha só para testar com outro número. |
-| `NEXT_PUBLIC_SITE_URL` | `https://samarketing.co.br` | Canônico, Open Graph e sitemap. |
+| `NEXT_PUBLIC_SITE_URL` | `https://saagencia.com.br` | Canônico, Open Graph e sitemap. |
 | `CRM_WEBHOOK_URL` | vazio | Recebe o lead (POST JSON). Vazio: em desenvolvimento o corpo aparece no console do servidor. |
 | `CRM_WEBHOOK_TOKEN` | vazio | Enviado como `Authorization: Bearer`. |
 | `NEXT_PUBLIC_GTM_ID` | vazio | Google Tag Manager. Só carrega depois do "Aceitar" no aviso de cookies. |
@@ -86,7 +86,7 @@ códigos do navegador.
   "frenteDeInteresse": "tech",
   "frentesRecomendadas": ["tech", "consultoria", "social"],
   "utm": { "source": "instagram", "medium": "pago", "campaign": "outubro", "fbclid": "…", "gclid": "…" },
-  "pagina": "https://samarketing.co.br/", "referrer": "https://l.instagram.com/"
+  "pagina": "https://saagencia.com.br/", "referrer": "https://l.instagram.com/"
 }
 ```
 

@@ -46,7 +46,7 @@ no GitHub Pages é estática e não roda essas rotas.
 
 | Item | Situação | Observação |
 |---|---|---|
-| Domínio próprio sob controle da SA | 🟡 | Pendente: samarketing.co.br, .com.br ou agenciasa.com.br |
+| Domínio próprio sob controle da SA | 🟡 | saagencia.com.br, registrado pela SA |
 | MFA no registro do domínio | ⚙️ | Conta da SA no Registro.br |
 | Renovação automática do domínio | ⚙️ | Conta da SA no Registro.br |
 | DNS correto | 🟡 | Na publicação: apontar para a Vercel |
