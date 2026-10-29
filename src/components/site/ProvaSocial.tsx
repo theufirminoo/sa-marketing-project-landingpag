@@ -36,7 +36,7 @@ export function ProvaSocial() {
   if (numeros.itens.length + depoimentos.itens.length + cases.itens.length === 0) return null;
 
   return (
-    <section id="prova" data-theme="dark" aria-labelledby="prova-titulo" className="sa-grao sa-secao">
+    <section id="prova" data-theme="dark" aria-labelledby="prova-titulo" className="sa-grao sa-secao sa-secao--prova">
       <div className="sa-container">
         <div className="sa-texto sa-revela">
           <h2 id="prova-titulo" className="titulo-1">

@@ -2869,3 +2869,16 @@
     font-size: 11px;
   }
 }
+
+/*
+ * Prova social: fundo mais fundo (#0E0E0E) e um brilho laranja suave no topo,
+ * para separar de "Quem faz" (#242424) logo acima. Só vale para esta seção.
+ */
+@layer components {
+  .sa-secao--prova {
+    background:
+      radial-gradient(ellipse 70% 320px at 50% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+      var(--bg-sunken);
+    border-top: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+}
