@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Montserrat, Poppins } from "next/font/google";
 
 import { AvisoCookies } from "@/components/site/AvisoCookies";
@@ -66,6 +67,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         {children}
         <AvisoCookies textos={avisoCookies} />
+        {/* Contagem de visitas da Vercel: sem cookie e sem dado pessoal, por isso
+            fica fora do aviso de cookies. Só envia dados quando hospedado na Vercel. */}
+        <Analytics />
       </body>
     </html>
   );

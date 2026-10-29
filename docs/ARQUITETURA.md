@@ -18,7 +18,7 @@ Agora, para o site:
 3. Leads do diagnóstico gravados no Supabase, projeto em São Paulo (plano grátis no início).
 4. Aviso de lead novo por e-mail pelo Resend (grátis até 3.000/mês).
 5. `contato@saagencia.com.br` encaminhado para um Gmail pela Cloudflare Email Routing (grátis).
-6. Visitas no PostHog (grátis), só depois do "Aceitar".
+6. Visitas: **Vercel Web Analytics** já ligado (anônimo, sem cookie, fora do aviso de cookies). PostHog entra depois, atrás do "Aceitar", para funis e gravação de sessão.
 
 Gatilhos:
 
@@ -59,7 +59,7 @@ As chaves vão direto nas variáveis de ambiente da Vercel, nunca em chat ou no 
 |---|---|---|---|---|
 | Domínio | Registro.br | Dono do `saagencia.com.br` | ~R$ 40/ano | — |
 | DNS, SSL, proteção | **Cloudflare** | DNS, DDoS, regras de firewall, redirecionamentos, e-mail de entrada | Sim, para o nosso caso | Pro US$ 20/mês (não precisa agora) |
-| Hospedagem dos apps | **Vercel Pro** | Site e sistemas Next.js | Hobby proíbe uso comercial | US$ 20 por desenvolvedor/mês (leitores grátis) |
+| Hospedagem dos apps | **Vercel Pro** (hoje o projeto está no Hobby, que não permite uso comercial: assinar o Pro) | Site e sistemas Next.js | Hobby proíbe uso comercial | US$ 20 por desenvolvedor/mês (leitores grátis) |
 | Banco, login, tempo real, arquivos | **Supabase** (região São Paulo) | Leads, clientes, usuários do sistema, realtime, uploads | 2 projetos, 500 MB, 50 mil usuários/mês; **pausa após 7 dias sem uso, sem backup** | Pro US$ 25/mês: 8 GB, 100 mil usuários, backup diário, sem pausa |
 | E-mail automático | **Resend** | Aviso de lead novo para a SA, confirmação para o cliente, e-mails do sistema | 3.000/mês, 100/dia | Pro US$ 20/mês, 50 mil e-mails |
 | Caixa de e-mail | Cloudflare Email Routing (grátis) ou Google Workspace | Receber em `contato@saagencia.com.br` | Encaminhamento grátis para um Gmail | Workspace ~R$ 30–40 por pessoa/mês |

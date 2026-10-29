@@ -721,7 +721,7 @@ export const privacidade = {
     {
       titulo: "Medição de visitas",
       paragrafos: [
-        "A página só mede visitas se você clicar em Aceitar no aviso de cookies. Se clicar em Recusar, nada é medido. A sua escolha fica salva no seu navegador e pode ser trocada a qualquer momento em Preferências de cookies, no rodapé.",
+        "A hospedagem do site (Vercel) conta as visitas de forma anônima, sem cookies e sem guardar seu endereço IP: só a página vista, o site de origem, o país e o tipo de aparelho. Qualquer outra medição só acontece se você clicar em Aceitar no aviso de cookies. Se clicar em Recusar, só a contagem anônima continua. A sua escolha fica salva no seu navegador e pode ser trocada a qualquer momento em Preferências de cookies, no rodapé.",
         "Com o aceite, a SA registra: a página e o horário da visita, o site e a campanha que trouxeram você (utm_source, utm_medium, utm_campaign e se o link tinha fbclid ou gclid), o idioma, o fuso horário, o tipo de aparelho, o sistema, o navegador, o tamanho da tela, a qualidade da conexão, o país, o estado e a cidade aproximados, as seções vistas e por quanto tempo, até onde você rolou, os botões clicados, as etapas do diagnóstico (sem nome, WhatsApp, empresa ou Instagram), o tempo de carregamento da página e erros técnicos.",
         "Para saber se é a primeira visita ou um retorno, o navegador guarda um código aleatório que não diz quem você é. O endereço IP não é guardado: vira um código que muda todo dia.",
         "Esses dados servem só para a SA entender quais campanhas e partes da página funcionam. Não são vendidos nem cedidos, ficam guardados por até 13 meses e são apagados depois. Recusar nas preferências apaga o código do seu navegador.",
