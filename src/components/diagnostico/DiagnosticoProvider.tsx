@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { FRENTES, ORIGENS, TRAVAS, type FrenteId } from "@/content/opcoes";
+import { FRENTES, ORIGENS, TRAVAS } from "@/content/opcoes";
 import { registrarEvento } from "@/lib/analytics";
 import { capturarOrigem } from "@/lib/utm";
 import type { Pedido } from "./estado";
@@ -54,18 +54,6 @@ export function DiagnosticoProvider() {
         setCarregar(true);
         setAberto(true);
         registrarEvento("diagnostico_aberto", { origem });
-        return;
-      }
-
-      const gatilho = alvo(evento, "[data-frente-gatilho]");
-      if (gatilho) {
-        // Lido depois do clique: "true" quer dizer que a linha acabou de abrir.
-        window.setTimeout(() => {
-          const frente = gatilho.dataset.frenteGatilho;
-          if (gatilho.getAttribute("aria-expanded") === "true" && pertence(FRENTES, frente)) {
-            registrarEvento("frente_aberta", { frente: frente as FrenteId });
-          }
-        }, 0);
         return;
       }
 

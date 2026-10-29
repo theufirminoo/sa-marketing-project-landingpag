@@ -2659,3 +2659,158 @@
     animation: sa-respira 9s ease-in-out infinite alternate;
   }
 }
+
+/*
+ * Quatro frentes em rolagem guiada. Painéis sempre abertos; o que passa pela
+ * faixa a 30% da tela fica em destaque (data-ativa) e o índice acompanha.
+ * Nada muda de altura enquanto a pessoa rola.
+ */
+@layer components {
+  .sa-frentes-rolagem {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .sa-frentes-indice ol {
+    display: flex;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sa-frentes-indice a {
+    display: block;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition:
+      color var(--dur-base) var(--ease-saida),
+      border-color var(--dur-base) var(--ease-saida),
+      background-color var(--dur-base) var(--ease-saida);
+  }
+  .sa-frentes-indice a[aria-current="true"] {
+    color: var(--text);
+  }
+  .sa-frentes-indice__nome {
+    font-family: var(--font-sans);
+    font-weight: 600;
+  }
+  .sa-frentes-paineis {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .sa-frente-painel {
+    display: grid;
+    overflow: hidden;
+    scroll-margin-top: calc(var(--header-h) + 72px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    transition:
+      opacity var(--dur-lenta) var(--ease-saida),
+      border-color var(--dur-lenta) var(--ease-saida);
+  }
+  /* Com JavaScript: só o painel em foco fica aceso. Sem JS, todos iguais. */
+  html[data-frentes-js] .sa-frente-painel:not([data-ativa]) {
+    opacity: 0.45;
+  }
+  .sa-frente-painel[data-ativa] {
+    border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  }
+  .sa-frente-painel[data-ativa] h3 {
+    color: var(--accent-text);
+  }
+  .sa-frente-painel__foto {
+    aspect-ratio: 21 / 9;
+  }
+  .sa-frente-painel__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .sa-frente-painel__corpo {
+    padding: var(--space-6);
+  }
+
+  /* Celular e tablet: índice vira faixa fixa de pílulas abaixo do cabeçalho. */
+  @media (max-width: 1023px) {
+    .sa-frentes-indice {
+      position: sticky;
+      top: var(--header-h);
+      z-index: 5;
+      margin-inline: calc(-1 * var(--space-4));
+      padding: var(--space-2) var(--space-4);
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+    .sa-frentes-indice ol {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .sa-frentes-indice a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 0 var(--space-4);
+      border: 1px solid var(--border-control);
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .sa-frentes-indice a[aria-current="true"] {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--on-accent);
+    }
+    .sa-frentes-indice__promessa {
+      display: none;
+    }
+    .sa-frente-painel__corpo {
+      padding: var(--space-4);
+    }
+  }
+
+  /* Computador: índice fixo à esquerda, painéis à direita. */
+  @media (min-width: 1024px) {
+    .sa-frentes-rolagem {
+      grid-template-columns: 4fr 8fr;
+      gap: var(--space-16);
+      align-items: start;
+    }
+    .sa-frentes-indice {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-12));
+    }
+    .sa-frentes-indice ol {
+      flex-direction: column;
+      gap: 0;
+    }
+    .sa-frentes-indice a {
+      padding: var(--space-4) 0 var(--space-4) var(--space-6);
+      border-left: 2px solid var(--border);
+    }
+    .sa-frentes-indice a[aria-current="true"] {
+      border-left-color: var(--accent);
+    }
+    .sa-frentes-indice__nome {
+      display: block;
+      font-size: 24px;
+    }
+    .sa-frentes-indice__promessa {
+      display: block;
+      margin-top: var(--space-1);
+    }
+    @media (hover: hover) {
+      .sa-frentes-indice a:hover {
+        color: var(--text);
+      }
+    }
+    .sa-frentes-paineis {
+      gap: var(--space-12);
+    }
+    .sa-frente-painel {
+      scroll-margin-top: calc(var(--header-h) + var(--space-12));
+    }
+  }
+}

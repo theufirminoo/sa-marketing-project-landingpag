@@ -29,7 +29,7 @@ pnpm check:pendencias --estrito  # falha se sobrar provisório ou pendência que
 
 Fonte da verdade: `docs/design-system/sa-tokens.css` (importado em `globals.css`) e `docs/design-system/sa-components.css` (portado para `@layer components` em `globals.css`).
 
-- Pílula é escolha. Retângulo de canto 4 px é ação. Linha de largura total é conteúdo que se abre.
+- Pílula é escolha. Retângulo de canto 4 px é ação. Linha de largura total é conteúdo que se abre (Dúvidas).
 - 60% escuro (`--bg` #1A1A1A), 30% claro (giz), âmbar no máximo 10%: botão principal, opção selecionada, etapa ativa, fundo do CTA final. "Quem faz" fica sobre `--surface`, parado e sem vídeo, para destacar as pessoas. Laranja forte (`--accent-forte` #D9531A, variação escura da base #FF751F) só em degradê, ícone e número grande, nunca em texto pequeno.
 - Tema por seção com `data-theme`. Não existe alternância de tema nem `prefers-color-scheme`.
 - Duas famílias (`next/font/google`): Montserrat (primária, do guia de identidade da SA) nos títulos `display` e `titulo-1/2/3`; Poppins (secundária, 400/500/600, `--font-texto`) em textos, botões e rótulos, por coerência com a apresentação comercial. Caixa normal sempre; nada de destacar palavra do título.
@@ -68,5 +68,6 @@ continua oculta enquanto a lista de Reels estiver vazia.
 - **Fontes de reserva.** `next/font` gera a reserva com `size-adjust` para Montserrat e Poppins (CLS 0). As faces "SA Reserva" em `globals.css` eram da Bricolage e ficaram sem uso.
 - **Cores puras.** #000000 e #FFFFFF só na logo; fundos e textos usam #1A1A1A e #F5F5F3 (decisão do cliente).
 - **Métricas próprias.** Só depois do "Aceitar": `AvisoCookies` importa `src/lib/metricas/coletor.ts` sob demanda (fora do bundle inicial). Lotes vão por `sendBeacon` para `POST /api/eventos`, que valida com zod (`esquema.ts`), acrescenta país/cidade dos cabeçalhos da Vercel e o aparelho pelo User-Agent, troca o IP por um código diário com sal e grava em Postgres (`EVENTOS_DATABASE_URL`, esquema e visões em `db/metricas.sql`). Ligar o banco está no `BACKLOG.md`. Nunca coletar o que a pessoa digita nem dado do lead. "Preferências de cookies" no rodapé reabre o aviso; recusar apaga os códigos do navegador. Ao coletar dado novo, atualize a política em `site.ts`.
+- **Frentes em rolagem guiada.** Painéis sempre abertos (sem acordeão); `FrenteAtiva` marca com `data-ativa` o painel que cruza a faixa a 30% da tela e o índice (lateral fixo no computador, faixa de pílulas fixa no celular) acompanha. Nada muda de altura ao rolar. O clique no índice rola com desconto do cabeçalho.
 - **Carrossel.** Setas, pontos, teclado (← →) e arrastar com o dedo (`touch-action: pan-y`: o gesto vertical continua rolando a página).
 - **Lead.** `POST /api/lead` valida com o mesmo esquema zod do formulário, responde na hora e encaminha ao CRM com `after()`, tempo limite de 5 s. Falha do webhook nunca bloqueia; nunca logar dado pessoal em produção.

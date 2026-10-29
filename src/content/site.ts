@@ -393,8 +393,7 @@ export const secaoFrentes = {
   abertura: "Cada frente cuida de uma parte do caminho até a venda. Entra primeiro a que resolve a sua trava.",
   rotuloServicos: (nome: string) => `O que a ${nome} faz`,
   acao: "Começar por esta frente",
-  /** A frente que carrega aberta. */
-  abertaAoCarregar: "consultoria" as FrenteId,
+  rotuloIndice: "As quatro frentes",
 } as const;
 
 /* ------------------------------------------------------------------ */
