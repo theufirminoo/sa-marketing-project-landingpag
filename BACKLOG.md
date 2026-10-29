@@ -45,3 +45,12 @@ que as respostas vão na mensagem, e não que a SA já recebeu.
 - [ ] Aviso para a SA a cada lead novo (e-mail ou WhatsApp interno).
 - [ ] Acesso restrito aos leads (painel protegido ou o próprio CRM) e prazo de retenção na política de privacidade.
 - [ ] Depois de ligado, voltar o texto do resultado para "A SA já recebeu suas respostas".
+
+## Arquitetura (decidida em 29/10/2026, ver `docs/ARQUITETURA.md`)
+
+Bloqueado até a SA criar as contas (Cloudflare, Vercel, Supabase, Resend, PostHog).
+
+- [ ] Ligar `/api/lead` ao Supabase (tabela `leads`) e ao Resend (aviso para a SA); voltar o texto "A SA já recebeu suas respostas".
+- [ ] Integrar PostHog (UE) atrás do aviso de cookies; aposentar ou manter como reserva o coletor de `src/lib/metricas`.
+- [ ] Trocar `NEXT_PUBLIC_SITE_URL` para `https://saagencia.com.br` e atualizar a política com Vercel, Supabase, Resend e PostHog.
+- [ ] Roteiro de DNS (Registro.br → Cloudflare → Vercel) e deploy da branch de produção.

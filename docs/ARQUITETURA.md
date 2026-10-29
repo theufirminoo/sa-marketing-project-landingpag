@@ -7,6 +7,41 @@ pessoas usando ao mesmo tempo em tempo real), sem migrações dolorosas depois.
 Preços conferidos em outubro de 2026 em fontes secundárias. Confirme na página
 de cada serviço antes de assinar.
 
+## Veredito (decisão de 29/10/2026)
+
+**Cloudflare + Vercel Pro + Supabase + Resend + PostHog.** Começa em ~US$ 20/mês.
+
+Agora, para o site:
+
+1. Domínio `saagencia.com.br` fica no Registro.br, com o DNS na Cloudflare (grátis).
+2. Site na Vercel Pro (US$ 20/mês; o Hobby não permite uso comercial).
+3. Leads do diagnóstico gravados no Supabase, projeto em São Paulo (plano grátis no início).
+4. Aviso de lead novo por e-mail pelo Resend (grátis até 3.000/mês).
+5. `contato@saagencia.com.br` encaminhado para um Gmail pela Cloudflare Email Routing (grátis).
+6. Visitas no PostHog (grátis), só depois do "Aceitar".
+
+Gatilhos:
+
+- **Primeiro lead real:** assinar o Supabase Pro (US$ 25/mês). Dado de cliente precisa de backup, e o grátis pausa sem uso.
+- **Começo do sistema:** `app.saagencia.com.br`, mesmo repositório (monorepo), mesmo Supabase, mesma Vercel. Sem migração.
+
+Fora por enquanto:
+
+- Contabo: servidor próprio sem necessidade.
+- Hospedar na Cloudflare: economia pequena, exige adaptar o site.
+- Umami: o PostHog cobre.
+- Google Workspace: só quando a equipe precisar de caixas próprias.
+
+Próximo passo: a SA cria as contas, no nome da empresa. Depois o desenvolvimento faz o seguinte:
+
+- liga o formulário ao Supabase e ao Resend;
+- integra o PostHog;
+- troca o domínio no código;
+- atualiza a política de privacidade;
+- passa o roteiro do DNS e do deploy.
+
+As chaves vão direto nas variáveis de ambiente da Vercel, nunca em chat ou no código.
+
 ## Princípios
 
 1. **Tudo em padrões abertos.** Banco é Postgres, apps são Next.js, e-mail é
