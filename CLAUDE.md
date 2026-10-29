@@ -25,6 +25,11 @@ pnpm check:pendencias --estrito  # falha se sobrar provisório ou pendência que
 - Pendências: `PENDENCIAS.md` (o script lê os `- [ ]`).
 - Melhorias futuras: `BACKLOG.md`. **Ao revisar o site inteiro, leia esse arquivo primeiro e execute o que estiver nele.**
 
+## Git
+
+- Commits e PRs sem marcas de IA: nada de `Co-Authored-By`, link de sessão ou "Generated with" no fim da mensagem (pedido do cliente).
+- Branch de produção: `main` (a Vercel publica a partir dela).
+
 ## Design system
 
 Fonte da verdade: `docs/design-system/sa-tokens.css` (importado em `globals.css`) e `docs/design-system/sa-components.css` (portado para `@layer components` em `globals.css`).
