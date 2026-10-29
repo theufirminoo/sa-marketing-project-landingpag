@@ -1593,7 +1593,9 @@
     object-fit: cover;
   }
   .sa-video-fundo--slide {
-    --opacidade-video: 1;
+    /* Abaixo de 1 de propósito: com opacidade 1 o Chrome do Android pode
+       promover o vídeo para uma camada de hardware que fica por cima do texto. */
+    --opacidade-video: 0.97;
   }
   .sa-slide__veu {
     position: absolute;
@@ -2832,6 +2834,19 @@
     }
     .sa-frente-painel__corpo .sa-btn {
       margin-top: var(--space-4);
+    }
+  }
+}
+
+/* Painéis das frentes nunca mais largos que a tela (o conteúdo quebra linha). */
+@layer components {
+  .sa-frentes-paineis,
+  .sa-frente-painel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 1024px) {
+    .sa-frente-painel {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     }
   }
 }
