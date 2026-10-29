@@ -15,9 +15,10 @@ const CNPJ_PROVISORIO = "00.000.000/0001-00";
 export const whatsappNumero: string =
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || WHATSAPP_SA;
 
+/** Dados da Receita (MEI, ativa desde 15/09/2026, Montes Claros/MG). */
 export const empresa = {
-  razaoSocial: "SA Marketing",
-  cnpj: CNPJ_PROVISORIO,
+  razaoSocial: "69.129.603 Samuel Cezar Nery Ribeiro",
+  cnpj: "69.129.603/0001-94",
 };
 
 /**
@@ -74,7 +75,7 @@ export const provisorios: ItemProvisorio[] = [
     item: "CNPJ",
     valorAtual: empresa.cnpj,
     trocaPor: "CNPJ e razão social reais",
-    ativo: empresa.cnpj === CNPJ_PROVISORIO,
+    ativo: (empresa.cnpj as string) === CNPJ_PROVISORIO,
   },
   {
     id: "logo",

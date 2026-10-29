@@ -60,7 +60,7 @@ export function Footer() {
         </ul>
         <div className="col-span-2 grid gap-2 border-t border-border pt-8 md:col-span-12 md:grid-cols-[1fr_auto] md:items-baseline md:gap-6">
           <p>
-            {rodape.empresa} <Provisorio />
+            {rodape.empresa}
             <br />
             {rodape.direitos(ano)}
           </p>

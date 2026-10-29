@@ -9,7 +9,7 @@ valor provisório ou pendência que trava o lançamento.
 ## Travam o lançamento
 
 - [x] 1. WhatsApp real: (38) 99893-4902 (`5538998934902`), padrão em `src/content/provisorios.ts`; `NEXT_PUBLIC_WHATSAPP_NUMBER` ainda pode sobrescrever.
-- [ ] 2. CNPJ e razão social reais. Hoje: `SA Marketing, CNPJ 00.000.000/0001-00` (fictício). Trocar em `src/content/provisorios.ts`.
+- [x] 2. CNPJ 69.129.603/0001-94 (MEI, razão social 69.129.603 Samuel Cezar Nery Ribeiro), conferido na Receita.
 - [ ] 3. Logo em SVG. Hoje cabeçalho e rodapé usam a logo extraída do portfólio (PDF do Canva) em imagem: `public/logo-sa.webp` e `public/logo-sa-completo.webp`. Com o SVG, salvar em `public/logo-sa.svg` e apontar `logoSvg` em `src/content/provisorios.ts`. Os ícones (favicon e Apple) também devem trocar.
 - [x] 4. Fotos dos sócios e dos parceiros: reais, recortadas sobre o mesmo fundo neutro (`public/socios/`).
 - [ ] 5. Vídeo vertical real para o hero e vídeos reais para os fundos (hero e Frentes: bastidor, gravação, cliente; mp4 e webm sem áudio, até 2,5 MB cada, caminhos em `fundos` no `src/content/site.ts`). Hoje são animações abstratas geradas com `ffmpeg` (ver "Origem dos vídeos provisórios" abaixo). Trocar `videoHero` em `src/content/provisorios.ts`. Ao trocar, conferir de novo o LCP no computador: um pôster com conteúdo real pode passar a ser o maior elemento da tela.

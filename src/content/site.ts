@@ -617,7 +617,7 @@ export const ctaFinal = {
 export const rodape = {
   instagram: "Instagram",
   whatsapp: "WhatsApp",
-  empresa: `${empresa.razaoSocial}, CNPJ ${empresa.cnpj}`,
+  empresa: `SA Marketing. ${empresa.razaoSocial}, CNPJ ${empresa.cnpj}`,
   politica: "Política de privacidade",
   preferencias: "Preferências de cookies",
   direitos: (ano: string) => `© ${ano} SA Marketing`,
