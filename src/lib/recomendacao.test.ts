@@ -24,7 +24,7 @@ describe("recomendarFrentes", () => {
 describe("formatarFrentes", () => {
   it("junta com vírgula e com e", () => {
     expect(formatarFrentes(["consultoria"])).toBe("SA Consultoria");
-    expect(formatarFrentes(["consultoria", "social"])).toBe("SA Consultoria e SA Social");
-    expect(formatarFrentes(["tech", "consultoria", "social"])).toBe("SA Tech, SA Consultoria e SA Social");
+    expect(formatarFrentes(["consultoria", "social"])).toBe("SA Consultoria e SA Digital");
+    expect(formatarFrentes(["tech", "consultoria", "social"])).toBe("SA Tech, SA Consultoria e SA Digital");
   });
 });

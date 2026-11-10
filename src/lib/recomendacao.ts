@@ -10,7 +10,7 @@ export function recomendarFrentes(trava: Trava, frenteDeInteresse?: FrenteId): F
   return [...new Set(lista)];
 }
 
-/** "SA Consultoria", "SA Consultoria e SA Social", "SA Tech, SA Consultoria e SA Social". */
+/** "SA Consultoria", "SA Consultoria e SA Digital", "SA Tech, SA Consultoria e SA Digital". */
 export function formatarFrentes(ids: readonly FrenteId[]): string {
   const nomes = ids.map(nomeDaFrente);
   if (nomes.length <= 1) return nomes[0] ?? "";

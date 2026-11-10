@@ -7,7 +7,7 @@ import type { Case, Depoimento, Numero } from "./site";
  * em provisorios.ts para deixar a seção em standby.
  */
 export const numerosExemplo: readonly Numero[] = [
-  { valor: "+38%", descricao: "de vendas pelo direct em 90 dias", fonte: "Média de clientes da SA Social" },
+  { valor: "+38%", descricao: "de vendas pelo direct em 90 dias", fonte: "Média de clientes da SA Digital" },
   { valor: "120", descricao: "Reels entregues por mês", fonte: "SA Studio" },
   { valor: "4,9", descricao: "nota média no Google", fonte: "Avaliações dos clientes" },
 ];
@@ -39,7 +39,7 @@ export const casesExemplo: readonly Case[] = [
     segmento: "Saúde",
     antes: "Dependia de indicação e tinha semanas com a agenda vazia.",
     depois: "Anúncio local e roteiro de atendimento: agenda cheia com três semanas de antecedência.",
-    fonte: "SA Consultoria e SA Social",
+    fonte: "SA Consultoria e SA Digital",
   },
   {
     cliente: "Loja Casa Norte",

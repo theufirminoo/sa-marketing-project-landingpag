@@ -75,7 +75,7 @@ function Vitrine({ tema }: { tema: "dark" | "light" }) {
             </RadioGroupItem>
           </RadioGroup>
           <ul className="sa-etiquetas" aria-label="Etiquetas">
-            <li className="sa-etiqueta rotulo">SA Social</li>
+            <li className="sa-etiqueta rotulo">SA Digital</li>
             <li className="sa-etiqueta rotulo">SA Studio</li>
           </ul>
         </div>

@@ -215,10 +215,10 @@ export const carrossel = {
       id: "social",
       formato: "foto",
       frente: "social",
-      chamada: "SA Social",
+      chamada: "SA Digital",
       titulo: "Seguidor que não compra é sinal de funil quebrado.",
       texto: "Conteúdo e anúncio trabalhando juntos até o direct virar pedido.",
-      acao: "Começar pela SA Social",
+      acao: "Começar pela SA Digital",
       destaques: [
         { texto: "Conteúdo que atrai" },
         { texto: "Anúncio que alcança" },
@@ -262,7 +262,7 @@ export type Etapa = {
 };
 
 export const metodo = {
-  titulo: "Marketing é simples: cinco etapas, nesta ordem.",
+  titulo: "Vender é simples: cinco etapas, nesta ordem.",
   abertura:
     "Quando a venda não acontece, uma destas etapas está falhando. O diagnóstico mostra qual.",
   rotuloFalha: "Quando falha:",
@@ -338,7 +338,7 @@ export const frentes: readonly Frente[] = [
   {
     id: "social",
     imagem: { src: "/imagens/frentes/social.webp", alt: "Mãos rolando uma rede social no celular, ao lado de um notebook" },
-    nome: "SA Social",
+    nome: "SA Digital",
     promessa: "Conteúdo e anúncios que levam o seguidor até a compra.",
     servicos: [
       "Tráfego pago na Meta e no Google",
@@ -536,9 +536,9 @@ export const duvidas = {
   titulo: "Dúvidas antes de começar.",
   itens: [
     {
-      pergunta: "O que a SA Marketing faz?",
+      pergunta: "O que a SA faz?",
       resposta:
-        "A SA descobre em qual etapa a sua venda trava e resolve esse ponto. São quatro frentes: SA Consultoria, SA Social, SA Studio e SA Tech.",
+        "A SA descobre em qual etapa a sua venda trava e resolve esse ponto. São quatro frentes: SA Consultoria, SA Digital, SA Studio e SA Tech.",
     },
     {
       pergunta: "Preciso contratar todas as frentes?",
@@ -558,7 +558,7 @@ export const duvidas = {
     {
       pergunta: "Em quanto tempo vejo resultado?",
       resposta:
-        "Os projetos têm no mínimo 3 meses, o tempo de montar a base, medir e ajustar. Anúncios costumam dar sinal nas primeiras semanas; conteúdo e posicionamento levam alguns meses. Você acompanha tudo por relatório com os números da sua empresa.",
+        "Os projetos têm no mínimo 6 meses, o tempo de montar a base, medir e ajustar. Anúncios costumam dar sinal nas primeiras semanas; conteúdo e posicionamento levam alguns meses. Você acompanha tudo por relatório com os números da sua empresa.",
     },
     {
       pergunta: "Quem vai cuidar do meu negócio?",
@@ -588,7 +588,7 @@ export const duvidas = {
     {
       pergunta: "O que a SA faz com os dados que eu informo aqui?",
       resposta:
-        "Usa só para falar com você sobre o diagnóstico. Os detalhes estão na política de privacidade.",
+        "Usamos apenas para uma análise técnica da sua empresa e só para uso profissional, sempre preservando seus dados. Os detalhes estão na política de privacidade.",
       link: { texto: "política de privacidade", href: "/privacidade" },
     },
   ],
@@ -604,7 +604,7 @@ export const ctaFinal = {
   linkDireto: "Prefere falar direto?",
   rotuloBeneficios: "O que você leva do diagnóstico",
   beneficios: [
-    { titulo: "A etapa que trava", texto: "Você sai sabendo se o problema está em atrair, educar, qualificar, converter ou fidelizar." },
+    { titulo: "Descobrir a trava do seu negócio", texto: "Você sai sabendo se o problema está em atrair, educar, qualificar, converter ou fidelizar." },
     { titulo: "Por onde começar", texto: "A frente certa para o seu momento, sem contratar o que você não precisa." },
     { titulo: "Conversa já adiantada", texto: "Suas respostas chegam escritas no WhatsApp da SA. Você não repete a história." },
   ],

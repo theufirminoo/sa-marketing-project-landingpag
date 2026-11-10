@@ -1383,7 +1383,7 @@
     display: block;
     width: 100%;
     max-width: 320px;
-    margin-top: var(--space-12);
+    margin: var(--space-12) auto 0;
     overflow: visible;
   }
   .sa-funil__faixa path {
@@ -2033,7 +2033,7 @@
     }
   }
 
-  /* Cadeia do slide de foto (SA Social): do conteúdo ao pedido. */
+  /* Cadeia do slide de foto (SA Digital): do conteúdo ao pedido. */
   .sa-cadeia {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
