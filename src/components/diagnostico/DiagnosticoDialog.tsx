@@ -5,7 +5,10 @@ import { AnimatePresence, LazyMotion, domAnimation, m, useReducedMotion } from "
 
 import { Dialog, DialogContent, DialogFechar } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { diagnostico, faturamentos, fases, travas } from "@/content/site";
+import { diagnostico, faturamentos, fases, nomeDaFrente, travas } from "@/content/site";
+
+const rotuloDe = <T extends string>(lista: readonly { id: T; rotulo: string }[], id: T) =>
+  lista.find((o) => o.id === id)?.rotulo ?? id;
 import { registrarEvento } from "@/lib/analytics";
 import type { Contato } from "@/lib/lead";
 import { formatarFrentes, recomendarFrentes } from "@/lib/recomendacao";
@@ -152,7 +155,9 @@ export default function DiagnosticoDialog({ aberto, pedido, aoMudarAberto }: Pro
         return <TelaContato {...comum} inicial={contato} aoEnviar={concluir} />;
       case 5: {
         if (!trava || !fase || !faturamento || !contato) return null;
+        const indicadas = recomendarFrentes(trava, frenteDeInteresse);
         const mensagem = montarMensagemDiagnostico({
+          frentes: formatarFrentes(indicadas),
           nome: contato.nome,
           empresa: contato.empresa,
           trava,
@@ -162,7 +167,13 @@ export default function DiagnosticoDialog({ aberto, pedido, aoMudarAberto }: Pro
         return (
           <TelaResultado
             tituloRef={tituloRef}
-            frentes={formatarFrentes(recomendarFrentes(trava, frenteDeInteresse))}
+            nome={contato.nome.trim().split(/\s+/)[0]}
+            frentes={indicadas.map(nomeDaFrente)}
+            respostas={[
+              [diagnostico.telas.resultado.respostas.trava, rotuloDe(travas, trava)],
+              [diagnostico.telas.resultado.respostas.fase, rotuloDe(fases, fase)],
+              [diagnostico.telas.resultado.respostas.faturamento, rotuloDe(faturamentos, faturamento)],
+            ]}
             urlWhatsapp={urlWhatsapp(mensagem)}
             aoRefazer={() => despachar({ tipo: "refazer" })}
           />

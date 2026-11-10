@@ -40,14 +40,14 @@ Fonte da verdade: `docs/design-system/sa-tokens.css` (importado em `globals.css`
 - Duas famílias (`next/font/google`): Montserrat (primária, do guia de identidade da SA) nos títulos `display` e `titulo-1/2/3`; Poppins (secundária, 400/500/600, `--font-texto`) em textos, botões e rótulos, por coerência com a apresentação comercial. Caixa normal sempre; nada de destacar palavra do título.
 - `@theme` zera a paleta do Tailwind: só existem as cores, raios e sombras dos tokens. No shadcn, `accent` é o âmbar; hover usa `--surface-hover`.
 - Anime só `opacity`, `transform`, `background-color`, `border-color` e `color`. Nunca `transition: all`. Hover dentro de `@media (hover: hover)`.
-- Movimento (pedido do cliente depois da primeira versão): vídeos de fundo com transparência no hero e em Frentes (`VideoFundo`), brilho âmbar em CSS no hero, funil animado no Método, formas que andam no CTA final, números da prova social que sobem contando (`Contador`) e revelação ao rolar só em CSS (`.sa-revela`, `animation-timeline: view()`). Tudo desliga com `prefers-reduced-motion`, menos os vídeos de fundo e o `Contador` (decisão do cliente; o contador só troca o texto). O contador anima toda vez que entra na tela.
+- Movimento (pedido do cliente depois da primeira versão): vídeos de fundo com transparência no hero (`VideoFundo`); Frentes tem fundo escuro parado com brilho laranja, brilho âmbar em CSS no hero, funil animado no Método, formas que andam no CTA final, números da prova social que sobem contando (`Contador`) e revelação ao rolar só em CSS (`.sa-revela`, `animation-timeline: view()`). Tudo desliga com `prefers-reduced-motion`, menos os vídeos de fundo e o `Contador` (decisão do cliente; o contador só troca o texto). O contador anima toda vez que entra na tela.
 - Vídeo de fundo: o do primeiro slide tem `autoplay` nativo (`automatico`); os demais começam 400 ms depois do `load` (ou na primeira interação). Nunca esconder o vídeo com opacidade 0 esperando o `playing`: o Safari do iPhone não dá autoplay em vídeo invisível. Pedido do cliente: antes esperava a interação para não disputar o LCP no celular; se o LCP piorar, é aqui. Sem botão de pausa e tocando mesmo com movimento reduzido (decisão do cliente: é só fundo, roda em laço), MP4 (H.264) primeiro, porque é o que o iPhone toca, e WebM de reserva. Se o play for recusado (economia de dados no Opera/Chrome, bateria no iPhone), o vídeo ganha `data-bloqueado` (zoom lento no quadro parado) e tenta de novo a cada toque; rolar a página não libera, só toque ou clique.
 
 ## Regras de copy
 
 - Frase curta, segunda pessoa ("você"), sobre vender. "A SA" ou "a gente" para a empresa.
 - Proibido: soluções, potencializar, alavancar, transformar, jornada, ecossistema, 360, inovador, alto impacto, de ponta.
-- Sem travessão, sem emoji, sem ponto de exclamação, sem "não é X, é Y", sem trio de adjetivos.
+- Sem travessão, sem emoji, sem ponto de exclamação, sem "não é X, é Y", sem trio de adjetivos. Exceção: as mensagens pré-preenchidas do WhatsApp (são da pessoa para a SA) usam emoji e tom de conversa, por pedido do cliente.
 - Botão diz o que acontece. Nunca "Saiba mais", "Enviar" ou "Clique aqui".
 - Erro diz o que falta e como corrigir, sem pedir desculpa.
 

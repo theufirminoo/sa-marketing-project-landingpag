@@ -1,11 +1,10 @@
 import Image from "next/image";
 import { ArrowRightIcon } from "lucide-react";
 
-import { comum, frentes, fundos, secaoFrentes } from "@/content/site";
+import { comum, frentes, secaoFrentes } from "@/content/site";
 import { urlWhatsapp } from "@/lib/whatsapp";
 import { BotaoDiagnostico } from "./BotaoDiagnostico";
 import { FrenteAtiva } from "./FrenteAtiva";
-import { VideoFundo } from "./VideoFundo";
 
 /**
  * As quatro frentes em "substituição": a cena fica presa na tela e, conforme
@@ -15,8 +14,7 @@ import { VideoFundo } from "./VideoFundo";
  */
 export function Frentes() {
   return (
-    <section id="frentes" data-theme="dark" aria-labelledby="frentes-titulo" className="sa-grao sa-secao">
-      {fundos.frentes ? <VideoFundo src={fundos.frentes} className="sa-video-fundo--suave" /> : null}
+    <section id="frentes" data-theme="dark" aria-labelledby="frentes-titulo" className="sa-grao sa-secao sa-secao--frentes">
       <div className="sa-container">
         <div className="sa-texto sa-revela">
           <h2 id="frentes-titulo" className="titulo-1">

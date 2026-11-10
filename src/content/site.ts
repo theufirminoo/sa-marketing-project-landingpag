@@ -82,11 +82,12 @@ export const comum = {
   navRodape: "Seções da página, no rodapé",
   inicio: "SA Marketing, início da página",
   novaAba: "(abre em nova aba)",
-  mensagemWhatsappDireta: "Oi, vim pelo site da SA e quero conversar.",
+  // Mensagens do WhatsApp: são da pessoa para a SA, por isso levam emoji (pedido do cliente).
+  mensagemWhatsappDireta: "Oi, tudo bem? 😊 Vim pelo site da SA e quero entender como vocês podem me ajudar a vender mais 🚀",
   whatsappFlutuante: "Conversar com a SA no WhatsApp (abre em nova aba)",
   /** Mensagem do link que substitui uma opção quando não há JavaScript. */
   mensagemWhatsappSemJs: (trava: string) =>
-    `Oi, vim pelo site da SA e quero conversar.\nTrava: ${trava}`,
+    `Oi, tudo bem? 😊 Vim pelo site da SA e quero entender como vocês podem me ajudar a vender mais 🚀\n\nHoje o que mais trava é: ${trava}`,
 } as const;
 
 export const ancoras = [
@@ -242,11 +243,9 @@ export const carrossel = {
  */
 export const fundos: {
   hero?: string;
-  frentes?: string;
 } = {
   // Provisórios do Mixkit (licença gratuita, uso comercial, sem atribuição).
   hero: videoHero.src,
-  frentes: "/video/fundo/reuniao.mp4",
 };
 
 /* ------------------------------------------------------------------ */
@@ -666,18 +665,25 @@ export const diagnostico = {
     },
     resultado: {
       anuncio: "Resultado do diagnóstico",
-      titulo: (frentes: string) => `Pelo que você contou, o começo é pela ${frentes}.`,
-      texto: "Suas respostas já vão escritas na mensagem. Abra a conversa com a SA para combinar o diagnóstico.",
-      abrirWhatsapp: "Abrir conversa no WhatsApp",
+      rotulo: "Seu diagnóstico está pronto",
+      titulo: (nome: string) => `${nome}, já sabemos por onde começar.`,
+      rotuloFrentes: "Frentes indicadas para você",
+      rotuloRespostas: "O que você contou",
+      respostas: { trava: "O que mais trava", fase: "Momento", faturamento: "Faturamento" },
+      texto: "Suas respostas já vão escritas na mensagem. É só enviar e a SA continua a conversa a partir daqui.",
+      abrirWhatsapp: "Enviar no WhatsApp",
       refazer: "Refazer o diagnóstico",
     },
   },
   /** Linhas da mensagem pré-preenchida do WhatsApp. */
   mensagem: {
     abertura: (nome: string, empresaNome?: string) =>
-      `Oi, aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}. Fiz o diagnóstico no site da SA.`,
-    trava: "Trava",
-    fase: "Fase",
+      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}.`,
+    pedido: (frentes: string) =>
+      `Fiz o diagnóstico pelo site e quero saber mais sobre como a SA pode me ajudar 🚀🙌\nO resultado indicou começar pela ${frentes}.`,
+    respostas: "Minhas respostas:",
+    trava: "O que mais trava",
+    fase: "Momento",
     faturamento: "Faturamento",
   },
 } as const;

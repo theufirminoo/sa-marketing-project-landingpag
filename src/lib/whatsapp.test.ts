@@ -80,15 +80,20 @@ describe("mensagem e URL do wa.me", () => {
     trava: "seguidores-nao-vendem",
     fase: "constancia",
     faturamento: "20-50",
+    frentes: "SA Consultoria e SA Digital",
   });
 
   it("segue o modelo do diagnóstico", () => {
     expect(mensagem).toBe(
       [
-        "Oi, aqui é Ana, da Padaria Pão Bom. Fiz o diagnóstico no site da SA.",
-        "Trava: Tenho seguidores, mas não vendo",
-        "Fase: Já vendo e quero constância",
-        "Faturamento: De R$ 20 mil a R$ 50 mil",
+        "Oi, tudo bem? 😊 Aqui é Ana, da Padaria Pão Bom.",
+        "Fiz o diagnóstico pelo site e quero saber mais sobre como a SA pode me ajudar 🚀🙌",
+        "O resultado indicou começar pela SA Consultoria e SA Digital.",
+        "",
+        "Minhas respostas:",
+        "• O que mais trava: Tenho seguidores, mas não vendo",
+        "• Momento: Já vendo e quero constância",
+        "• Faturamento: De R$ 20 mil a R$ 50 mil",
       ].join("\n"),
     );
   });
@@ -100,8 +105,9 @@ describe("mensagem e URL do wa.me", () => {
       trava: "processos-manuais",
       fase: "comecando",
       faturamento: "nao-informado",
+      frentes: "SA Tech",
     });
-    expect(semEmpresa.split("\n")[0]).toBe("Oi, aqui é Ana. Fiz o diagnóstico no site da SA.");
+    expect(semEmpresa.split("\n")[0]).toBe("Oi, tudo bem? 😊 Aqui é Ana.");
   });
 
   it("monta a URL com o número e o texto codificado", () => {

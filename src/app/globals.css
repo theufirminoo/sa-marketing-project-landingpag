@@ -2882,3 +2882,57 @@
     border-top: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
   }
 }
+
+/* Tela de resultado do diagnóstico. */
+@layer components {
+  .sa-resultado__selo {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, var(--accent), var(--accent-forte));
+    color: var(--on-accent);
+  }
+  .sa-resultado__rotulo {
+    margin-top: var(--space-6);
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .sa-resultado__frentes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sa-resultado__frentes li {
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-pill);
+    background: var(--accent-tint);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .sa-resultado__respostas {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-2) 0 0;
+    padding: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-sunken);
+  }
+}
+
+/* Frentes: fundo parado, escuro com dois brilhos laranja suaves (sem vídeo). */
+@layer components {
+  .sa-secao--frentes {
+    background:
+      radial-gradient(ellipse 60% 45% at 85% 15%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 10% 90%, color-mix(in srgb, var(--accent-forte) 10%, transparent), transparent 70%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-sunken) 100%);
+  }
+}

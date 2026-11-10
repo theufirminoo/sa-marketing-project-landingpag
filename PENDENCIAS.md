@@ -64,7 +64,6 @@ SA quando houver.
 | `public/video/fundo/estudio.*` (slide SA Studio) | Mixkit 23267, "Woman doing video editing with headphones" |
 | `public/video/fundo/criador-provisorio.*` (fundo do slide 1) | Mixkit 23485, "A young man recording himself with a camera" |
 | `public/imagens/hero/*.webp` (slides do carrossel) | quadros dos Mixkit 22998, 9069, 41638 e 4908 |
-| `public/video/fundo/reuniao.*` (Frentes) | Mixkit 46680, "Brainstorming over the meeting table" |
 | `public/imagens/frentes/consultoria.webp` | quadro do Mixkit 9069, "Digital marketing team leader explains strategy on whiteboard" |
 | `public/imagens/frentes/social.webp` | quadro do Mixkit 4908, "Person working while scrolling on social networks" |
 | `public/imagens/frentes/studio.webp` | quadro do Mixkit 22016, "Cameraman filming in the city" |

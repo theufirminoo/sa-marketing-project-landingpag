@@ -63,6 +63,8 @@ export type DadosMensagem = {
   trava: Trava;
   fase: Fase;
   faturamento: Faturamento;
+  /** "SA Digital e SA Studio", já formatado. */
+  frentes: string;
 };
 
 export function montarMensagemDiagnostico(dados: DadosMensagem): string {
@@ -70,9 +72,12 @@ export function montarMensagemDiagnostico(dados: DadosMensagem): string {
   const empresa = dados.empresa?.trim() || undefined;
   return [
     m.abertura(dados.nome.trim(), empresa),
-    `${m.trava}: ${rotulo(travas, dados.trava)}`,
-    `${m.fase}: ${rotulo(fases, dados.fase)}`,
-    `${m.faturamento}: ${rotulo(faturamentos, dados.faturamento)}`,
+    m.pedido(dados.frentes),
+    "",
+    m.respostas,
+    `• ${m.trava}: ${rotulo(travas, dados.trava)}`,
+    `• ${m.fase}: ${rotulo(fases, dados.fase)}`,
+    `• ${m.faturamento}: ${rotulo(faturamentos, dados.faturamento)}`,
   ].join("\n");
 }
 
