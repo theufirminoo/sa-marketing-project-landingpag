@@ -65,6 +65,10 @@ export function montarMensagemDiagnostico(dados: DadosMensagem): string {
   ].join("\n");
 }
 
+/**
+ * Link direto para api.whatsapp.com: o wa.me redireciona para lá e, no
+ * caminho, alguns navegadores recodificam o texto e os emojis viram "?".
+ */
 export function urlWhatsapp(mensagem: string, numero: string = whatsappNumero): string {
-  return `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+  return `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`;
 }

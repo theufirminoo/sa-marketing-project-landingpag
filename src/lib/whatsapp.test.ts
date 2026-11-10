@@ -73,7 +73,7 @@ describe("whatsappInternacional", () => {
   });
 });
 
-describe("mensagem e URL do wa.me", () => {
+describe("mensagem e URL do WhatsApp", () => {
   const mensagem = montarMensagemDiagnostico({
     nome: "Ana",
     empresa: "Padaria Pão Bom",
@@ -107,7 +107,7 @@ describe("mensagem e URL do wa.me", () => {
 
   it("monta a URL com o número e o texto codificado", () => {
     const url = urlWhatsapp(mensagem, "5500000000000");
-    expect(url.startsWith("https://wa.me/5500000000000?text=")).toBe(true);
+    expect(url.startsWith("https://api.whatsapp.com/send?phone=5500000000000&text=")).toBe(true);
     expect(decodeURIComponent(url.split("?text=")[1])).toBe(mensagem);
     expect(url).not.toMatch(/[\s\n]/);
   });

@@ -233,7 +233,7 @@ function observarCliques() {
         diagnostico: alvo.getAttribute("data-diagnostico"),
         trava: alvo.getAttribute("data-trava"),
         frente: alvo.getAttribute("data-frente") || alvo.getAttribute("data-frente-indice"),
-        whatsapp: alvo.getAttribute("data-whatsapp-origem") || (destino === "wa.me" ? "link" : null),
+        whatsapp: alvo.getAttribute("data-whatsapp-origem") || (destino === "wa.me" || destino === "api.whatsapp.com" ? "link" : null),
         secao: nomeDaSecao(alvo),
         x: Math.round((e.clientX / window.innerWidth) * 100),
         y: Math.round(window.scrollY + e.clientY),
