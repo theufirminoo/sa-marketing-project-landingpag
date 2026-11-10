@@ -681,7 +681,6 @@ export const diagnostico = {
       `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}.`,
     pedido: (frentes: string) =>
       `Fiz o diagnóstico pelo site e quero saber mais sobre como a SA pode me ajudar 🚀🙌\nO resultado indicou começar pela ${frentes}.`,
-    respostas: "Minhas respostas:",
     trava: "O que mais trava",
     fase: "Momento",
     faturamento: "Faturamento",

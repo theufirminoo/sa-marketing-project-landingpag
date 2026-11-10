@@ -74,7 +74,6 @@ export function montarMensagemDiagnostico(dados: DadosMensagem): string {
     m.abertura(dados.nome.trim(), empresa),
     m.pedido(dados.frentes),
     "",
-    m.respostas,
     `• ${m.trava}: ${rotulo(travas, dados.trava)}`,
     `• ${m.fase}: ${rotulo(fases, dados.fase)}`,
     `• ${m.faturamento}: ${rotulo(faturamentos, dados.faturamento)}`,
