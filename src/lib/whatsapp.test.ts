@@ -89,10 +89,6 @@ describe("mensagem e URL do wa.me", () => {
         "Oi, tudo bem? 😊 Aqui é Ana, da Padaria Pão Bom.",
         "Fiz o diagnóstico pelo site e quero saber mais sobre como a SA pode me ajudar 🚀🙌",
         "O resultado indicou começar pela SA Consultoria e SA Digital.",
-        "",
-        "• O que mais trava: Tenho seguidores, mas não vendo",
-        "• Momento: Já vendo e quero constância",
-        "• Faturamento: De R$ 20 mil a R$ 50 mil",
       ].join("\n"),
     );
   });

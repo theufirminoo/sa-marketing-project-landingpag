@@ -1,13 +1,5 @@
 import { whatsappNumero } from "@/content/provisorios";
-import {
-  diagnostico,
-  faturamentos,
-  fases,
-  travas,
-  type Faturamento,
-  type Fase,
-  type Trava,
-} from "@/content/site";
+import { diagnostico, type Faturamento, type Fase, type Trava } from "@/content/site";
 
 /** DDDs em uso no Brasil (Anatel). */
 const DDDS = new Set([
@@ -54,9 +46,6 @@ export function whatsappInternacional(entrada: string): string {
   return `55${normalizarWhatsapp(entrada)}`;
 }
 
-const rotulo = <T extends string>(lista: readonly { id: T; rotulo: string }[], id: T) =>
-  lista.find((o) => o.id === id)?.rotulo ?? id;
-
 export type DadosMensagem = {
   nome: string;
   empresa?: string;
@@ -73,10 +62,6 @@ export function montarMensagemDiagnostico(dados: DadosMensagem): string {
   return [
     m.abertura(dados.nome.trim(), empresa),
     m.pedido(dados.frentes),
-    "",
-    `• ${m.trava}: ${rotulo(travas, dados.trava)}`,
-    `• ${m.fase}: ${rotulo(fases, dados.fase)}`,
-    `• ${m.faturamento}: ${rotulo(faturamentos, dados.faturamento)}`,
   ].join("\n");
 }
 
