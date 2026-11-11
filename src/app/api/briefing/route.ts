@@ -50,8 +50,8 @@ export async function POST(request: NextRequest) {
     const esgotou = new Promise<never>((_, rejeita) => {
       relogio = setTimeout(() => rejeita(new Error("tempo esgotado")), TEMPO_LIMITE_MS);
     });
-    await Promise.race([gravarBriefing(sql, resultado.data, calcularFit(resultado.data)), esgotou]);
-    return Response.json({ ok: true, salvo: true });
+    const codigo = await Promise.race([gravarBriefing(sql, resultado.data, calcularFit(resultado.data)), esgotou]);
+    return Response.json({ ok: true, salvo: true, codigo });
   } catch (erro) {
     // Só o tipo do erro e o código do Postgres: nunca os dados da pessoa.
     const motivo = erro instanceof Error ? `${erro.name}${"code" in erro ? ` ${String(erro.code)}` : ""}` : "desconhecido";

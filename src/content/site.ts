@@ -720,17 +720,18 @@ export const briefingOpcoes = {
     { id: "loja-fisica", rotulo: "Loja física ou passagem" },
     { id: "outro", rotulo: "Outro canal" },
   ] satisfies Opcao<OrigemCliente>[],
-  // Cada desafio aponta para uma frente: dois da Consultoria, dois da
-  // Digital, um do Studio e um da Tech.
+  // Vários podem ser marcados. Cada desafio aponta para a frente que cuida
+  // dele (regra em `indicarFrentes`, src/lib/briefing.ts); "Outro" vai para a
+  // Consultoria, que investiga o caso.
   desafio: [
-    { id: "sem-plano", rotulo: "Não tenho um plano claro para vender mais" }, // Consultoria
-    { id: "converter", rotulo: "Muita conversa e pouca venda fechada" }, // Consultoria
-    { id: "atrair-clientes", rotulo: "Atrair clientes novos todo mês" }, // Digital
-    { id: "seguidores-nao-compram", rotulo: "Tenho seguidores, mas eles não compram" }, // Digital
-    { id: "imagem-da-marca", rotulo: "Fotos e vídeos não mostram o nível da marca" }, // Studio
-    { id: "processos-manuais", rotulo: "Atendimento e vendas no manual, sem sistema" }, // Tech
-    { id: "outro", rotulo: "Outro desafio" },
-  ] satisfies Opcao<Desafio>[],
+    { id: "sem-plano", rotulo: "Não tenho um plano claro para vender mais", frente: "consultoria" },
+    { id: "converter", rotulo: "Muita conversa e pouca venda fechada", frente: "consultoria" },
+    { id: "atrair-clientes", rotulo: "Atrair clientes novos todo mês", frente: "social" },
+    { id: "seguidores-nao-compram", rotulo: "Tenho seguidores, mas eles não compram", frente: "social" },
+    { id: "imagem-da-marca", rotulo: "Fotos e vídeos não mostram o nível da marca", frente: "studio" },
+    { id: "processos-manuais", rotulo: "Atendimento e vendas no manual, sem sistema", frente: "tech" },
+    { id: "outro", rotulo: "Outro desafio", frente: "consultoria" },
+  ] satisfies (Opcao<Desafio> & { frente: FrenteId })[],
   marketing: [
     { id: "ninguem", rotulo: "Ninguém cuida" },
     { id: "eu-mesmo", rotulo: "Eu mesmo, quando dá tempo" },
@@ -760,7 +761,7 @@ export type PerguntaBriefing = keyof typeof briefingOpcoes;
 export const briefing = {
   metadados: {
     titulo: "Briefing | SA Marketing & Business",
-    descricao: "Oito perguntas rápidas antes da conversa com a SA.",
+    descricao: "Oito perguntas rápidas antes da conversa com um consultor da SA.",
   },
   progresso: "Progresso do briefing",
   contador: (etapa: number, total: number) => `${etapa} de ${total}`,
@@ -769,14 +770,24 @@ export const briefing = {
   abertura: {
     rotulo: "Antes da conversa",
     titulo: "Conte um pouco do seu negócio.",
-    texto: "São 8 perguntas rápidas e leva uns 2 minutos. Assim a SA chega na conversa já sabendo onde você está.",
+    texto: "São 8 perguntas rápidas e leva uns 2 minutos. Assim o consultor da SA chega na conversa já sabendo onde você está.",
+    aceite: {
+      antes: "Aceito que a SA use minhas respostas e meu contato para preparar a conversa comigo, como descreve a ",
+      link: "política de privacidade",
+      depois: ".",
+    },
+    aceiteErro: "Marque a caixa acima para começar.",
     comecar: "Começar o briefing",
   },
   perguntas: {
     segmento: { pergunta: "Qual é o ramo do negócio?" },
     faturamento: { pergunta: "Quanto o negócio fatura por mês?" },
     origem: { pergunta: "De onde vem a maioria dos clientes hoje?" },
-    desafio: { pergunta: "Qual é o maior desafio do negócio hoje?" },
+    desafio: {
+      pergunta: "Quais são os maiores desafios do negócio hoje?",
+      ajuda: "Marque quantos quiser.",
+      erro: "Marque pelo menos um desafio para continuar.",
+    },
     marketing: { pergunta: "Quem cuida do marketing hoje?" },
     decisao: { pergunta: "Quem decide sobre contratar a SA?" },
     prazo: { pergunta: "Quando você quer começar?" },
@@ -784,7 +795,7 @@ export const briefing = {
       pergunta: "Quanto você pode investir por mês na SA?",
       ajuda: "Só o serviço. A verba de anúncios fica à parte.",
     },
-  } satisfies Record<PerguntaBriefing, { pergunta: string; ajuda?: string }>,
+  } satisfies Record<PerguntaBriefing, { pergunta: string; ajuda?: string; erro?: string }>,
   /** Campo que aparece quando a pessoa escolhe "Outro". */
   outro: {
     segmento: { rotulo: "Qual é o ramo?", exemplo: "Ex.: oficina mecânica" },
@@ -801,31 +812,42 @@ export const briefing = {
   },
   contato: {
     pergunta: "Quem está respondendo?",
+    nome: {
+      rotulo: "Nome completo",
+      erro: "Informe nome e sobrenome, como Ana Souza.",
+    },
+    empresa: { rotulo: "Empresa (opcional)" },
+    instagram: { rotulo: "Instagram da empresa (opcional)", exemplo: "@suaempresa" },
+    lembrete: "Você aceitou o uso destes dados no início do briefing. Veja a ",
     concluir: "Concluir o briefing",
     enviando: "Guardando suas respostas…",
   },
+  /** Tela final: a pessoa chama um consultor para marcar a primeira conversa. */
   concluido: {
     anuncio: "Briefing concluído",
-    rotulo: "Briefing recebido",
-    titulo: (nome: string) => `Obrigado, ${nome}. A SA recebeu tudo.`,
-    texto: "Agora a SA estuda suas respostas e chama você no WhatsApp para marcar a conversa.",
-    whatsapp: "Falar com a SA no WhatsApp",
+    rotulo: "Briefing concluído",
+    titulo: (nome: string) => `Tudo pronto, ${nome}.`,
+    texto: "Suas respostas já estão com a SA. Último passo: chame um consultor no WhatsApp e marque a primeira conversa. Ele já começa sabendo do seu negócio.",
+    rotuloFrentes: "Pelo que você contou, a conversa começa por",
+    whatsapp: "Chamar um consultor no WhatsApp",
   },
   falhou: {
     rotulo: "Falta um passo",
-    titulo: (nome: string) => `${nome}, suas respostas não chegaram à SA.`,
-    texto: "Mande pelo WhatsApp: as respostas já vão escritas na mensagem.",
-    whatsapp: "Enviar no WhatsApp",
+    titulo: (nome: string) => `${nome}, falta só enviar suas respostas.`,
+    texto: "Elas não chegaram ao sistema da SA. Chame um consultor no WhatsApp: as respostas já vão escritas na mensagem.",
+    whatsapp: "Chamar um consultor no WhatsApp",
   },
-  /** Mensagem do WhatsApp quando o briefing não foi gravado. É da pessoa para a SA. */
+  /** Mensagens do WhatsApp. São da pessoa para a SA, por isso levam emoji. */
   mensagem: {
+    agendar: (nome: string, empresaNome?: string) =>
+      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}.\nAcabei de responder o briefing no site e quero marcar a primeira conversa com um consultor da SA 📅`,
     abertura: (nome: string, empresaNome?: string) =>
-      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}. Respondi o briefing pelo site:`,
+      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}. Respondi o briefing pelo site e quero marcar a primeira conversa 📅`,
     rotulos: {
       segmento: "Ramo",
       faturamento: "Faturamento",
       origem: "Clientes vêm de",
-      desafio: "Maior desafio",
+      desafio: "Desafios",
       marketing: "Marketing",
       decisao: "Decisão",
       prazo: "Começar",

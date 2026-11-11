@@ -2,9 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { Montserrat, Poppins } from "next/font/google";
 
-import { AvisoCookies } from "@/components/site/AvisoCookies";
 import { temProvisorios } from "@/content/provisorios";
-import { avisoCookies, metadados, site } from "@/content/site";
+import { metadados, site } from "@/content/site";
 import "./globals.css";
 
 /** Primária: títulos. Montserrat variável (do guia de identidade da SA). */
@@ -66,7 +65,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body>
         {children}
-        <AvisoCookies textos={avisoCookies} />
         {/* Contagem de visitas da Vercel: sem cookie e sem dado pessoal, por isso
             fica fora do aviso de cookies. Só envia dados quando hospedado na Vercel. */}
         <Analytics />

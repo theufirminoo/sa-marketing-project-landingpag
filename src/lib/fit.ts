@@ -11,7 +11,9 @@ import type { RespostasBriefing } from "./briefing";
  */
 export const FIT_VERSAO = 2;
 
-type Pesos = { [K in keyof RespostasBriefing]?: Partial<Record<RespostasBriefing[K], number>> };
+/** Os desafios não pontuam: servem para indicar a frente, não o FIT. */
+type Pontuaveis = Omit<RespostasBriefing, "desafio">;
+type Pesos = { [K in keyof Pontuaveis]?: Partial<Record<Pontuaveis[K], number>> };
 
 const PESOS: Pesos = {
   // Porte: quem fatura mais sustenta o serviço por mais tempo.
@@ -32,7 +34,7 @@ export type Fit = { fit: "alto" | "medio" | "baixo"; pontos: number; versao: num
 
 export function calcularFit(respostas: RespostasBriefing): Fit {
   let pontos = 0;
-  for (const chave of Object.keys(PESOS) as (keyof RespostasBriefing)[]) {
+  for (const chave of Object.keys(PESOS) as (keyof Pontuaveis)[]) {
     const tabela = PESOS[chave] as Record<string, number> | undefined;
     pontos += tabela?.[respostas[chave]] ?? 0;
   }

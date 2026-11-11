@@ -45,6 +45,8 @@ refazer atualiza a linha e soma em `vezes`. Falta ligar o banco.
 - [ ] Criar o projeto no Supabase (São Paulo), rodar a migração no SQL Editor e pôr `DATABASE_URL` (pooler, porta 6543) na Vercel.
 - [ ] Domínio `briefing.saagencia.com.br` na Vercel (mesmo projeto) e CNAME `briefing` no Registro.br.
 - [ ] Aviso para a SA a cada lead novo: Resend lendo `comercial.avisos` (linhas com `processado_em` nulo).
+- [ ] Alerta de lead esfriando: e-mail ou WhatsApp interno para quem aparece em `comercial.leads_esfriando` (2 h ou mais em "pendente-conversa" ou "abriu-whatsapp").
+- [ ] Confirmar que a mensagem chegou: hoje o site só sabe que a pessoa abriu o WhatsApp; com a API do WhatsApp Business, a mensagem recebida pode mover o status para "em-atendimento" sozinha.
 - [ ] Acesso restrito aos leads (painel protegido ou o próprio CRM) e prazo de retenção na política de privacidade.
 - [ ] Depois de ligado, voltar o texto do resultado para "A SA já recebeu suas respostas".
 

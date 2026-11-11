@@ -38,7 +38,7 @@ create table if not exists comercial.contatos (
   nome           text not null check (char_length(nome) between 2 and 80),
   empresa        text check (char_length(empresa) <= 120),
   instagram      text check (char_length(instagram) <= 81), -- @ + até 80
-  -- Etapa no funil comercial. O sistema futuro move o contato entre elas.
+  -- Etapa no funil comercial (lista atual em 20261111210000_status_e_desafios.sql).
   status         text not null default 'novo'
                  check (status in ('novo', 'em-contato', 'reuniao-marcada', 'proposta', 'cliente', 'perdido')),
   -- Quem da SA cuida do contato (futuro: id do Supabase Auth).

@@ -2997,10 +2997,6 @@
       box-shadow: var(--shadow-dialog);
     }
   }
-  /* Com o aviso de cookies aberto, os botões do cartão não ficam embaixo dele. */
-  :root[data-aviso-cookies="aberto"] .sa-briefing {
-    padding-bottom: var(--altura-aviso, 140px);
-  }
   .sa-input--area {
     min-height: 120px;
     resize: vertical;
@@ -3010,5 +3006,35 @@
 @media (prefers-reduced-motion: reduce) {
   .sa-briefing__tela {
     animation: none;
+  }
+}
+
+/* Briefing: aceite na abertura e botão final de largura total. */
+@layer components {
+  .sa-aceite {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-sunken);
+  }
+  .sa-aceite input {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .sa-aceite label {
+    cursor: pointer;
+  }
+  .sa-aceite:has(input[aria-invalid="true"]) {
+    border-color: var(--danger);
+  }
+  .sa-briefing__acao-final {
+    justify-content: stretch;
   }
 }
