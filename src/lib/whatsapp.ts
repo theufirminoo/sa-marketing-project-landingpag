@@ -29,7 +29,7 @@ export function whatsappValido(entrada: string): boolean {
   return d.length === 11 ? d[2] === "9" : /[2-5]/.test(d[2]);
 }
 
-/** Máscara aplicada enquanto a pessoa digita: (11) 91234-5678. */
+/** Máscara aplicada enquanto a pessoa digita: (11) 98765-4321. */
 export function mascararWhatsapp(entrada: string): string {
   const d = normalizarWhatsapp(entrada).slice(0, 11);
   if (d.length === 0) return "";

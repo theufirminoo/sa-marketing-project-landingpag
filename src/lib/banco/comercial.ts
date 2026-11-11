@@ -1,4 +1,4 @@
-import type { Briefing } from "@/lib/briefing";
+import type { Briefing, PerguntaComOutro } from "@/lib/briefing";
 import type { Fit } from "@/lib/fit";
 import { normalizarInstagram, type Lead } from "@/lib/lead";
 import { recomendarFrentes } from "@/lib/recomendacao";
@@ -79,18 +79,24 @@ export async function gravarDiagnostico(sql: Sql, lead: Lead): Promise<void> {
 }
 
 export async function gravarBriefing(sql: Sql, dados: Briefing, fit: Fit): Promise<void> {
+  // O texto do "Outro" só vale quando a resposta é "outro".
+  const outro = (chave: PerguntaComOutro) => (dados[chave] === "outro" ? ouNulo(dados.outros[chave]) : null);
   await sql.begin(async (tx) => {
     await limitarTempo(tx as unknown as Sql);
     const contatoId = await salvarContato(tx as unknown as Sql, dados);
     await tx`
       insert into comercial.briefings
-        (contato_id, segmento, faturamento, origem_clientes, marketing, decisao, prazo, investimento,
-         objetivo, fit, fit_pontos, fit_versao, utm, pagina, referrer)
+        (contato_id, segmento, segmento_outro, faturamento, origem_clientes, origem_outro, desafio, desafio_outro,
+         marketing, decisao, prazo, investimento, objetivo, fit, fit_pontos, fit_versao, utm, pagina, referrer)
       values (
         ${contatoId},
         ${dados.segmento},
+        ${outro("segmento")},
         ${dados.faturamento},
         ${dados.origem},
+        ${outro("origem")},
+        ${dados.desafio},
+        ${outro("desafio")},
         ${dados.marketing},
         ${dados.decisao},
         ${dados.prazo},
@@ -105,8 +111,12 @@ export async function gravarBriefing(sql: Sql, dados: Briefing, fit: Fit): Promi
       )
       on conflict (contato_id) do update set
         segmento = excluded.segmento,
+        segmento_outro = excluded.segmento_outro,
         faturamento = excluded.faturamento,
         origem_clientes = excluded.origem_clientes,
+        origem_outro = excluded.origem_outro,
+        desafio = excluded.desafio,
+        desafio_outro = excluded.desafio_outro,
         marketing = excluded.marketing,
         decisao = excluded.decisao,
         prazo = excluded.prazo,

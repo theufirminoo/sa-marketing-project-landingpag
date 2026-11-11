@@ -2997,6 +2997,10 @@
       box-shadow: var(--shadow-dialog);
     }
   }
+  /* Com o aviso de cookies aberto, os botões do cartão não ficam embaixo dele. */
+  :root[data-aviso-cookies="aberto"] .sa-briefing {
+    padding-bottom: var(--altura-aviso, 140px);
+  }
   .sa-input--area {
     min-height: 120px;
     resize: vertical;

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type RefObject } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { CheckIcon } from "lucide-react";
 
@@ -16,8 +17,11 @@ import { briefing, briefingOpcoes, comum, diagnostico } from "@/content/site";
 import {
   montarMensagemBriefing,
   objetivoSchema,
+  outroSchema,
   PERGUNTAS_BRIEFING,
   respostasBriefingSchema,
+  temOutro,
+  type Outros,
   type RespostasBriefing,
 } from "@/lib/briefing";
 import { contatoSchema, type Contato } from "@/lib/lead";
@@ -26,13 +30,14 @@ import { mascararWhatsapp, urlWhatsapp } from "@/lib/whatsapp";
 
 /**
  * Briefing antes da reunião. Página própria (briefing.saagencia.com.br), no
- * visual do diagnóstico: abertura, 7 perguntas de um toque, objetivo
+ * visual do diagnóstico: abertura, 8 perguntas de um toque (com "Outro"
+ * abrindo um campo para escrever), objetivo
  * opcional e contato. Este componente só existe nesta rota, por isso pode
  * importar site.ts sem pesar na página principal.
  */
 
 const TOTAL_PERGUNTAS = PERGUNTAS_BRIEFING.length;
-/** Telas: 0 abertura, 1 a 7 perguntas, 8 objetivo, 9 contato, 10 fim. */
+/** Telas: 0 abertura, 1 a 8 perguntas, 9 objetivo, 10 contato, 11 fim. */
 const TELA_OBJETIVO = TOTAL_PERGUNTAS + 1;
 const TELA_CONTATO = TOTAL_PERGUNTAS + 2;
 const TELA_FIM = TOTAL_PERGUNTAS + 3;
@@ -43,6 +48,7 @@ const CHAVE = "sa:briefing";
 type Estado = {
   tela: number;
   respostas: Partial<RespostasBriefing>;
+  outros: Outros;
   objetivo: string;
   contato?: Pick<Contato, "nome" | "whatsapp" | "empresa" | "instagram">;
   salvo?: boolean;
@@ -50,7 +56,11 @@ type Estado = {
 
 const contatoSalvoSchema = contatoSchema.pick({ nome: true, whatsapp: true, empresa: true, instagram: true });
 
-const INICIAL: Estado = { tela: 0, respostas: {}, objetivo: "" };
+const INICIAL: Estado = { tela: 0, respostas: {}, outros: {}, objetivo: "" };
+
+const outrosSalvosSchema = z
+  .object({ segmento: z.string().max(80), origem: z.string().max(80), desafio: z.string().max(80) })
+  .partial();
 
 function lerEstado(): Estado {
   try {
@@ -62,6 +72,7 @@ function lerEstado(): Estado {
     const estado: Estado = {
       tela: Number.isInteger(salvo.tela) ? Math.min(Math.max(Number(salvo.tela), 0), TELA_FIM) : 0,
       respostas: respostas.success ? respostas.data : {},
+      outros: outrosSalvosSchema.safeParse(salvo.outros ?? {}).data ?? {},
       objetivo: objetivo.success ? objetivo.data : "",
       contato: contatoSalvoSchema.safeParse(salvo.contato).data,
       salvo: salvo.salvo === true,
@@ -74,7 +85,11 @@ function lerEstado(): Estado {
 
 /** Nunca deixa a pessoa numa tela sem as respostas anteriores. */
 function coerente(estado: Estado): Estado {
-  const faltando = PERGUNTAS_BRIEFING.findIndex((chave) => !estado.respostas[chave]);
+  const faltando = PERGUNTAS_BRIEFING.findIndex(
+    (chave) =>
+      !estado.respostas[chave] ||
+      (temOutro(chave) && estado.respostas[chave] === "outro" && !outroSchema.safeParse(estado.outros[chave] ?? "").success),
+  );
   if (faltando >= 0 && estado.tela > faltando + 1) return { ...estado, tela: faltando + 1 };
   if (estado.tela === TELA_FIM && !estado.contato) return { ...estado, tela: TELA_CONTATO };
   return estado;
@@ -146,6 +161,7 @@ export function BriefingFormulario() {
     const salvo = await enviarBriefing({
       ...contato,
       ...respostas.data,
+      outros: estado.outros,
       objetivo: estado.objetivo,
       utm: origem.utm,
       pagina: origem.pagina,
@@ -185,6 +201,13 @@ export function BriefingFormulario() {
     if (tela >= 1 && tela <= TOTAL_PERGUNTAS) {
       const chave = PERGUNTAS_BRIEFING[tela - 1];
       const pergunta = briefing.perguntas[chave];
+      const outro = temOutro(chave)
+        ? {
+            ...briefing.outro[chave],
+            valor: estado.outros[chave] ?? "",
+            aoMudar: (texto: string) => setEstado((e) => ({ ...e, outros: { ...e.outros, [chave]: texto } })),
+          }
+        : undefined;
       return (
         <TelaPergunta
           key={chave}
@@ -192,6 +215,7 @@ export function BriefingFormulario() {
           ajuda={"ajuda" in pergunta ? pergunta.ajuda : undefined}
           opcoes={briefingOpcoes[chave]}
           valor={estado.respostas[chave]}
+          outro={outro}
           tituloRef={tituloRef}
           aoResponder={(valor) => responder(chave, valor)}
           aoAvancar={(valor) => {
@@ -227,6 +251,7 @@ export function BriefingFormulario() {
           nome: estado.contato.nome,
           empresa: estado.contato.empresa,
           respostas: respostas.data,
+          outros: estado.outros,
           objetivo: estado.objetivo,
         })
       : comum.mensagemWhatsappDireta;
@@ -294,30 +319,55 @@ type PropsPergunta = {
   ajuda?: string;
   opcoes: readonly { id: string; rotulo: string }[];
   valor?: string;
+  /** Campo para escrever quando a escolha é "outro". */
+  outro?: { rotulo: string; exemplo: string; valor: string; aoMudar: (texto: string) => void };
   tituloRef: RefObject<HTMLHeadingElement | null>;
   aoResponder: (valor: string) => void;
   aoAvancar: (valor: string) => void;
   aoVoltar: () => void;
 };
 
-/** Um toque responde e avança depois de 200 ms, como no diagnóstico. */
-function TelaPergunta({ pergunta, ajuda, opcoes, valor, tituloRef, aoResponder, aoAvancar, aoVoltar }: PropsPergunta) {
+/**
+ * Um toque responde e avança depois de 200 ms, como no diagnóstico. "Outro"
+ * não avança: abre o campo para escrever e espera o Continuar.
+ */
+function TelaPergunta({ pergunta, ajuda, opcoes, valor, outro, tituloRef, aoResponder, aoAvancar, aoVoltar }: PropsPergunta) {
   const espera = useRef<number | undefined>(undefined);
+  const campoOutro = useRef<HTMLInputElement>(null);
+  const [erro, setErro] = useState<string | null>(null);
+  const abreOutro = Boolean(outro) && valor === "outro";
   useEffect(() => () => window.clearTimeout(espera.current), []);
+
+  const avancar = (escolha: string) => {
+    if (outro && escolha === "outro") {
+      const resultado = outroSchema.safeParse(outro.valor);
+      if (!resultado.success) {
+        setErro(resultado.error.issues[0]?.message ?? null);
+        campoOutro.current?.focus();
+        return;
+      }
+    }
+    aoAvancar(escolha);
+  };
 
   const aoTocar = (novo: string) => {
     aoResponder(novo);
     window.clearTimeout(espera.current);
+    if (outro && novo === "outro") {
+      // Espera o campo aparecer para levar o foco até ele.
+      espera.current = window.setTimeout(() => campoOutro.current?.focus(), 50);
+      return;
+    }
     espera.current = window.setTimeout(() => aoAvancar(novo), 200);
   };
   const enviar = (evento: FormEvent) => {
     evento.preventDefault();
-    if (valor) aoAvancar(valor);
+    if (valor) avancar(valor);
   };
   const teclado = (evento: KeyboardEvent) => {
     if (evento.key === "Enter" && valor) {
       evento.preventDefault();
-      aoAvancar(valor);
+      avancar(valor);
     }
   };
 
@@ -340,6 +390,32 @@ function TelaPergunta({ pergunta, ajuda, opcoes, valor, tituloRef, aoResponder, 
             <OpcaoChip key={opcao.id} valor={opcao.id} rotulo={opcao.rotulo} aoTocar={aoTocar} />
           ))}
         </RadioGroup>
+        {outro && abreOutro ? (
+          <div className="mt-4 grid gap-2">
+            <label htmlFor="briefing-outro" className="rotulo">
+              {outro.rotulo}
+            </label>
+            <Input
+              ref={campoOutro}
+              id="briefing-outro"
+              value={outro.valor}
+              onChange={(e) => {
+                outro.aoMudar(e.target.value);
+                if (erro) setErro(null);
+              }}
+              maxLength={80}
+              placeholder={outro.exemplo}
+              enterKeyHint="next"
+              aria-invalid={erro ? true : undefined}
+              aria-describedby={erro ? "briefing-outro-erro" : undefined}
+            />
+            {erro ? (
+              <p id="briefing-outro-erro" className="sa-erro pequeno" role="alert">
+                {erro}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
       </div>
       <div className="sa-diag__acoes">
         <Button variant="secundario" onClick={aoVoltar}>

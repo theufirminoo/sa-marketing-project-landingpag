@@ -22,6 +22,8 @@ export {
 } from "./opcoes";
 import type {
   Decisao,
+  Desafio,
+  FaturamentoBriefing,
   Faturamento,
   Fase,
   FrenteId,
@@ -666,8 +668,8 @@ export const diagnostico = {
         },
         whatsapp: {
           rotulo: "WhatsApp com DDD",
-          exemplo: "(11) 91234-5678",
-          erro: "Faltam dígitos. Informe o DDD e os 9 números, como (11) 91234-5678.",
+          exemplo: "(11) 98765-4321",
+          erro: "Faltam dígitos. Informe o DDD e os 9 números, como (11) 98765-4321.",
         },
         empresa: { rotulo: "Empresa (opcional)" },
         instagram: { rotulo: "Instagram da empresa (opcional)", exemplo: "@suaempresa" },
@@ -710,7 +712,13 @@ export const briefingOpcoes = {
     { id: "industria", rotulo: "Indústria" },
     { id: "outro", rotulo: "Outro ramo" },
   ] satisfies Opcao<Segmento>[],
-  faturamento: faturamentos,
+  faturamento: [
+    { id: "ate-10", rotulo: "Até R$ 10 mil" },
+    { id: "10-20", rotulo: "De R$ 10 mil a R$ 20 mil" },
+    { id: "20-50", rotulo: "De R$ 20 mil a R$ 50 mil" },
+    { id: "50-200", rotulo: "De R$ 50 mil a R$ 200 mil" },
+    { id: "acima-200", rotulo: "Acima de R$ 200 mil" },
+  ] satisfies Opcao<FaturamentoBriefing>[],
   origem: [
     { id: "indicacao", rotulo: "Indicação" },
     { id: "redes-sociais", rotulo: "Instagram e outras redes" },
@@ -719,6 +727,14 @@ export const briefingOpcoes = {
     { id: "loja-fisica", rotulo: "Loja física ou passagem" },
     { id: "outro", rotulo: "Outro canal" },
   ] satisfies Opcao<OrigemCliente>[],
+  desafio: [
+    { id: "atrair-clientes", rotulo: "Atrair mais clientes" },
+    { id: "converter", rotulo: "Transformar conversa em venda" },
+    { id: "constancia", rotulo: "Vender todo mês, sem altos e baixos" },
+    { id: "recompra", rotulo: "Fazer o cliente voltar a comprar" },
+    { id: "processos", rotulo: "Organizar processos e equipe" },
+    { id: "outro", rotulo: "Outro desafio" },
+  ] satisfies Opcao<Desafio>[],
   marketing: [
     { id: "ninguem", rotulo: "Ninguém cuida" },
     { id: "eu-mesmo", rotulo: "Eu mesmo, quando dá tempo" },
@@ -740,7 +756,6 @@ export const briefingOpcoes = {
     { id: "1500-3000", rotulo: "De R$ 1.500 a R$ 3.000" },
     { id: "3000-6000", rotulo: "De R$ 3.000 a R$ 6.000" },
     { id: "acima-6000", rotulo: "Acima de R$ 6.000" },
-    { id: "nao-sei", rotulo: "Ainda não sei" },
   ] satisfies Opcao<Investimento>[],
 } as const;
 
@@ -749,7 +764,7 @@ export type PerguntaBriefing = keyof typeof briefingOpcoes;
 export const briefing = {
   metadados: {
     titulo: "Briefing | SA Marketing & Business",
-    descricao: "Sete perguntas rápidas antes da conversa com a SA.",
+    descricao: "Oito perguntas rápidas antes da conversa com a SA.",
   },
   progresso: "Progresso do briefing",
   contador: (etapa: number, total: number) => `${etapa} de ${total}`,
@@ -758,13 +773,14 @@ export const briefing = {
   abertura: {
     rotulo: "Antes da conversa",
     titulo: "Conte um pouco do seu negócio.",
-    texto: "São 7 perguntas de um toque e leva uns 2 minutos. Assim a SA chega na conversa já sabendo onde você está.",
+    texto: "São 8 perguntas rápidas e leva uns 2 minutos. Assim a SA chega na conversa já sabendo onde você está.",
     comecar: "Começar o briefing",
   },
   perguntas: {
     segmento: { pergunta: "Qual é o ramo do negócio?" },
     faturamento: { pergunta: "Quanto o negócio fatura por mês?" },
     origem: { pergunta: "De onde vem a maioria dos clientes hoje?" },
+    desafio: { pergunta: "Qual é o maior desafio do negócio hoje?" },
     marketing: { pergunta: "Quem cuida do marketing hoje?" },
     decisao: { pergunta: "Quem decide sobre contratar a SA?" },
     prazo: { pergunta: "Quando você quer começar?" },
@@ -773,6 +789,13 @@ export const briefing = {
       ajuda: "Só o serviço. A verba de anúncios fica à parte.",
     },
   } satisfies Record<PerguntaBriefing, { pergunta: string; ajuda?: string }>,
+  /** Campo que aparece quando a pessoa escolhe "Outro". */
+  outro: {
+    segmento: { rotulo: "Qual é o ramo?", exemplo: "Ex.: oficina mecânica" },
+    origem: { rotulo: "De onde eles vêm?", exemplo: "Ex.: feiras e eventos" },
+    desafio: { rotulo: "Qual é o desafio?", exemplo: "Ex.: precificar os serviços" },
+    erro: "Escreva em poucas palavras para continuar.",
+  },
   objetivo: {
     pergunta: "O que você quer ter conquistado daqui a 6 a 12 meses?",
     rotulo: "Uma ou duas frases bastam. Opcional.",
@@ -806,6 +829,7 @@ export const briefing = {
       segmento: "Ramo",
       faturamento: "Faturamento",
       origem: "Clientes vêm de",
+      desafio: "Maior desafio",
       marketing: "Marketing",
       decisao: "Decisão",
       prazo: "Começar",

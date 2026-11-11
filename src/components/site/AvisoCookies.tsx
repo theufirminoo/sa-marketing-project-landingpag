@@ -99,8 +99,15 @@ export function AvisoCookies({ textos: avisoCookies }: { textos: Textos }) {
           className="sa-aviso-cookies"
           aria-label={avisoCookies.rotulo}
           ref={(el) => {
+            if (!el) return;
             // O WhatsApp flutuante sobe exatamente a altura do aviso (+ folga).
-            if (el) document.documentElement.style.setProperty("--altura-aviso", `${el.offsetHeight + 16}px`);
+            const raiz = document.documentElement;
+            raiz.style.setProperty("--altura-aviso", `${el.offsetHeight + 16}px`);
+            // Marca o aviso aberto: o briefing abre espaço embaixo só enquanto ele aparece.
+            raiz.dataset.avisoCookies = "aberto";
+            return () => {
+              delete raiz.dataset.avisoCookies;
+            };
           }}
         >
           <p className="pequeno">

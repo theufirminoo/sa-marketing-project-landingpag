@@ -25,7 +25,7 @@ describe("contatoSchema", () => {
     const r = contatoSchema.safeParse({ ...contatoValido, whatsapp: "91234-5678" });
     expect(r.success).toBe(false);
     expect(r.error?.issues[0].message).toBe(
-      "Faltam dígitos. Informe o DDD e os 9 números, como (11) 91234-5678.",
+      "Faltam dígitos. Informe o DDD e os 9 números, como (11) 98765-4321.",
     );
   });
 });

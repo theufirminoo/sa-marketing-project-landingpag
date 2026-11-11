@@ -7,6 +7,7 @@ const respostas: RespostasBriefing = {
   segmento: "saude-estetica",
   faturamento: "50-200",
   origem: "indicacao",
+  desafio: "converter",
   marketing: "eu-mesmo",
   decisao: "eu",
   prazo: "agora",
@@ -15,7 +16,7 @@ const respostas: RespostasBriefing = {
 
 const corpo = {
   nome: "Ana Souza",
-  whatsapp: "(11) 91234-5678",
+  whatsapp: "(11) 98765-4321",
   empresa: "Clínica Ana",
   instagram: "",
   site: "",
@@ -40,6 +41,20 @@ describe("briefingSchema", () => {
     expect(r.error?.issues[0].message).toBe("Use até 500 caracteres.");
   });
 
+  it("Outro exige o texto escrito", () => {
+    const sem = briefingSchema.safeParse({ ...corpo, segmento: "outro" });
+    expect(sem.success).toBe(false);
+    expect(sem.error?.issues[0].path).toEqual(["outros", "segmento"]);
+    expect(sem.error?.issues[0].message).toBe("Escreva em poucas palavras para continuar.");
+    const com = briefingSchema.safeParse({ ...corpo, segmento: "outro", outros: { segmento: "Oficina" } });
+    expect(com.success).toBe(true);
+  });
+
+  it("recusa faixas que saíram do briefing", () => {
+    expect(briefingSchema.safeParse({ ...corpo, faturamento: "nao-informado" }).success).toBe(false);
+    expect(briefingSchema.safeParse({ ...corpo, investimento: "nao-sei" }).success).toBe(false);
+  });
+
   it("exige WhatsApp com DDD", () => {
     expect(briefingSchema.safeParse({ ...corpo, whatsapp: "91234-5678" }).success).toBe(false);
   });
@@ -47,7 +62,7 @@ describe("briefingSchema", () => {
 
 describe("calcularFit", () => {
   it("dono com verba, porte e prazo é alto", () => {
-    expect(calcularFit(respostas)).toEqual({ fit: "alto", pontos: 13, versao: 1 });
+    expect(calcularFit(respostas)).toEqual({ fit: "alto", pontos: 13, versao: 2 });
   });
 
   it("pontuação máxima bate com FIT_MAXIMO", () => {
@@ -66,19 +81,20 @@ describe("calcularFit", () => {
   });
 
   it("sem verba e sem porte é baixo", () => {
-    expect(calcularFit({ ...respostas, faturamento: "ate-20", investimento: "ate-1500" }).fit).toBe("baixo");
+    expect(calcularFit({ ...respostas, faturamento: "ate-10", investimento: "ate-1500" }).fit).toBe("baixo");
+    expect(calcularFit({ ...respostas, faturamento: "10-20", investimento: "ate-1500" }).fit).toBe("baixo");
   });
 
   it("pontuação baixa é baixo", () => {
     const r = calcularFit({
       ...respostas,
-      faturamento: "ate-20",
+      faturamento: "ate-10",
       marketing: "equipe-interna",
       decisao: "outra-pessoa",
       prazo: "pesquisando",
-      investimento: "nao-sei",
+      investimento: "1500-3000",
     });
-    expect(r).toEqual({ fit: "baixo", pontos: 2, versao: 1 });
+    expect(r).toEqual({ fit: "baixo", pontos: 2, versao: 2 });
   });
 });
 
@@ -90,12 +106,23 @@ describe("montarMensagemBriefing", () => {
       "• Ramo: Saúde e estética",
       "• Faturamento: De R$ 50 mil a R$ 200 mil",
       "• Clientes vêm de: Indicação",
+      "• Maior desafio: Transformar conversa em venda",
       "• Marketing: Eu mesmo, quando dá tempo",
       "• Decisão: Eu decido",
       "• Começar: Ainda este mês",
       "• Investimento: De R$ 3.000 a R$ 6.000",
       "• Objetivo: Agenda cheia",
     ]);
+  });
+
+  it("no Outro, mostra o que a pessoa escreveu", () => {
+    const m = montarMensagemBriefing({
+      nome: "Ana",
+      respostas: { ...respostas, segmento: "outro", desafio: "outro" },
+      outros: { segmento: "Oficina mecânica", desafio: "Precificar" },
+    });
+    expect(m).toContain("• Ramo: Oficina mecânica");
+    expect(m).toContain("• Maior desafio: Precificar");
   });
 
   it("sem empresa e sem objetivo", () => {
