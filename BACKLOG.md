@@ -33,16 +33,18 @@ banco ligado. Para ativar:
 - [ ] Revisão trimestral: links quebrados, acessos à Vercel/GitHub/Registro.br/CRM, ex-prestadores, política de privacidade e dados comerciais.
 - [ ] Definir o responsável pela manutenção (SA ou M9 Studio Tech).
 
-## Diagnóstico: receber os leads no site
+## Diagnóstico e briefing: receber os leads no site
 
-Hoje `POST /api/lead` valida e só encaminha para `CRM_WEBHOOK_URL`, que ainda
-não existe: sem ela, o lead é descartado. O que chega de fato é a mensagem que
-a pessoa envia no WhatsApp (se ela enviar). Por isso a tela de resultado diz
-que as respostas vão na mensagem, e não que a SA já recebeu.
+O código já grava no Supabase (esquema `comercial`, migração em
+`supabase/migrations/`): `/api/lead` grava o diagnóstico com `after()` e
+`/api/briefing` grava o briefing antes de responder. Um contato por WhatsApp;
+refazer atualiza a linha e soma em `vezes`. Falta ligar o banco.
 
-- [ ] Banco de dados para os leads (tabela `leads` no mesmo Postgres das métricas, ou um CRM com webhook).
-- [ ] Gravar em `/api/lead` com `after()`: nome, WhatsApp, empresa, Instagram, respostas, frentes recomendadas, origem (utm) e data.
-- [ ] Aviso para a SA a cada lead novo (e-mail ou WhatsApp interno).
+- [x] Banco de dados para os leads (Supabase, esquema `comercial`).
+- [x] Gravar em `/api/lead` com `after()`: nome, WhatsApp, empresa, Instagram, respostas, frentes recomendadas, origem (utm) e data.
+- [ ] Criar o projeto no Supabase (São Paulo), rodar a migração no SQL Editor e pôr `DATABASE_URL` (pooler, porta 6543) na Vercel.
+- [ ] Domínio `briefing.saagencia.com.br` na Vercel (mesmo projeto) e CNAME `briefing` no Registro.br.
+- [ ] Aviso para a SA a cada lead novo: Resend lendo `comercial.avisos` (linhas com `processado_em` nulo).
 - [ ] Acesso restrito aos leads (painel protegido ou o próprio CRM) e prazo de retenção na política de privacidade.
 - [ ] Depois de ligado, voltar o texto do resultado para "A SA já recebeu suas respostas".
 
@@ -50,7 +52,7 @@ que as respostas vão na mensagem, e não que a SA já recebeu.
 
 Bloqueado até a SA criar as contas (Cloudflare, Vercel, Supabase, Resend, PostHog).
 
-- [ ] Ligar `/api/lead` ao Supabase (tabela `leads`) e ao Resend (aviso para a SA); voltar o texto "A SA já recebeu suas respostas".
+- [x] Ligar `/api/lead` ao Supabase (esquema `comercial`). Falta o Resend (aviso para a SA) e voltar o texto "A SA já recebeu suas respostas" depois de o banco estar ligado.
 - [ ] Integrar PostHog (UE) atrás do aviso de cookies; aposentar ou manter como reserva o coletor de `src/lib/metricas`.
 - [ ] Trocar `NEXT_PUBLIC_SITE_URL` para `https://saagencia.com.br` e atualizar a política com Vercel, Supabase, Resend e PostHog.
 - [ ] Roteiro de DNS (Registro.br → Cloudflare → Vercel) e deploy da branch de produção.

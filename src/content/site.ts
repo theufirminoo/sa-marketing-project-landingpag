@@ -20,7 +20,18 @@ export {
   type OrigemDiagnostico,
   type Trava,
 } from "./opcoes";
-import type { Faturamento, Fase, FrenteId, Trava } from "./opcoes";
+import type {
+  Decisao,
+  Faturamento,
+  Fase,
+  FrenteId,
+  Investimento,
+  Marketing,
+  OrigemCliente,
+  Prazo,
+  Segmento,
+  Trava,
+} from "./opcoes";
 
 export type Opcao<T extends string> = { id: T; rotulo: string };
 
@@ -685,6 +696,126 @@ export const diagnostico = {
 } as const;
 
 /* ------------------------------------------------------------------ */
+/* Briefing antes da reunião (briefing.saagencia.com.br)               */
+/* ------------------------------------------------------------------ */
+
+/** Opções do briefing. As faixas de investimento são provisórias (ver PENDENCIAS). */
+export const briefingOpcoes = {
+  segmento: [
+    { id: "servicos", rotulo: "Serviços" },
+    { id: "comercio", rotulo: "Comércio e varejo" },
+    { id: "saude-estetica", rotulo: "Saúde e estética" },
+    { id: "alimentacao", rotulo: "Alimentação" },
+    { id: "educacao", rotulo: "Educação" },
+    { id: "industria", rotulo: "Indústria" },
+    { id: "outro", rotulo: "Outro ramo" },
+  ] satisfies Opcao<Segmento>[],
+  faturamento: faturamentos,
+  origem: [
+    { id: "indicacao", rotulo: "Indicação" },
+    { id: "redes-sociais", rotulo: "Instagram e outras redes" },
+    { id: "google", rotulo: "Google" },
+    { id: "anuncios", rotulo: "Anúncios pagos" },
+    { id: "loja-fisica", rotulo: "Loja física ou passagem" },
+    { id: "outro", rotulo: "Outro canal" },
+  ] satisfies Opcao<OrigemCliente>[],
+  marketing: [
+    { id: "ninguem", rotulo: "Ninguém cuida" },
+    { id: "eu-mesmo", rotulo: "Eu mesmo, quando dá tempo" },
+    { id: "agencia-ou-freela", rotulo: "Agência ou freelancer" },
+    { id: "equipe-interna", rotulo: "Uma equipe interna" },
+  ] satisfies Opcao<Marketing>[],
+  decisao: [
+    { id: "eu", rotulo: "Eu decido" },
+    { id: "com-socio", rotulo: "Decido com sócio" },
+    { id: "outra-pessoa", rotulo: "Outra pessoa decide" },
+  ] satisfies Opcao<Decisao>[],
+  prazo: [
+    { id: "agora", rotulo: "Ainda este mês" },
+    { id: "tres-meses", rotulo: "Nos próximos 3 meses" },
+    { id: "pesquisando", rotulo: "Ainda estou pesquisando" },
+  ] satisfies Opcao<Prazo>[],
+  investimento: [
+    { id: "ate-1500", rotulo: "Até R$ 1.500" },
+    { id: "1500-3000", rotulo: "De R$ 1.500 a R$ 3.000" },
+    { id: "3000-6000", rotulo: "De R$ 3.000 a R$ 6.000" },
+    { id: "acima-6000", rotulo: "Acima de R$ 6.000" },
+    { id: "nao-sei", rotulo: "Ainda não sei" },
+  ] satisfies Opcao<Investimento>[],
+} as const;
+
+export type PerguntaBriefing = keyof typeof briefingOpcoes;
+
+export const briefing = {
+  metadados: {
+    titulo: "Briefing | SA Marketing & Business",
+    descricao: "Sete perguntas rápidas antes da conversa com a SA.",
+  },
+  progresso: "Progresso do briefing",
+  contador: (etapa: number, total: number) => `${etapa} de ${total}`,
+  voltar: "Voltar",
+  continuar: "Continuar",
+  abertura: {
+    rotulo: "Antes da conversa",
+    titulo: "Conte um pouco do seu negócio.",
+    texto: "São 7 perguntas de um toque e leva uns 2 minutos. Assim a SA chega na conversa já sabendo onde você está.",
+    comecar: "Começar o briefing",
+  },
+  perguntas: {
+    segmento: { pergunta: "Qual é o ramo do negócio?" },
+    faturamento: { pergunta: "Quanto o negócio fatura por mês?" },
+    origem: { pergunta: "De onde vem a maioria dos clientes hoje?" },
+    marketing: { pergunta: "Quem cuida do marketing hoje?" },
+    decisao: { pergunta: "Quem decide sobre contratar a SA?" },
+    prazo: { pergunta: "Quando você quer começar?" },
+    investimento: {
+      pergunta: "Quanto você pode investir por mês na SA?",
+      ajuda: "Só o serviço. A verba de anúncios fica à parte.",
+    },
+  } satisfies Record<PerguntaBriefing, { pergunta: string; ajuda?: string }>,
+  objetivo: {
+    pergunta: "O que você quer ter conquistado daqui a 6 a 12 meses?",
+    rotulo: "Uma ou duas frases bastam. Opcional.",
+    exemplo: "Vender todo dia pelo Instagram e depender menos de indicação",
+    pular: "Pular esta pergunta",
+    erro: "Use até 500 caracteres.",
+  },
+  contato: {
+    pergunta: "Quem está respondendo?",
+    concluir: "Concluir o briefing",
+    enviando: "Guardando suas respostas…",
+  },
+  concluido: {
+    anuncio: "Briefing concluído",
+    rotulo: "Briefing recebido",
+    titulo: (nome: string) => `Obrigado, ${nome}. A SA recebeu tudo.`,
+    texto: "Agora a SA estuda suas respostas e chama você no WhatsApp para marcar a conversa.",
+    whatsapp: "Falar com a SA no WhatsApp",
+  },
+  falhou: {
+    rotulo: "Falta um passo",
+    titulo: (nome: string) => `${nome}, suas respostas não chegaram à SA.`,
+    texto: "Mande pelo WhatsApp: as respostas já vão escritas na mensagem.",
+    whatsapp: "Enviar no WhatsApp",
+  },
+  /** Mensagem do WhatsApp quando o briefing não foi gravado. É da pessoa para a SA. */
+  mensagem: {
+    abertura: (nome: string, empresaNome?: string) =>
+      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}. Respondi o briefing pelo site:`,
+    rotulos: {
+      segmento: "Ramo",
+      faturamento: "Faturamento",
+      origem: "Clientes vêm de",
+      marketing: "Marketing",
+      decisao: "Decisão",
+      prazo: "Começar",
+      investimento: "Investimento",
+    } satisfies Record<PerguntaBriefing, string>,
+    objetivo: "Objetivo",
+  },
+} as const;
+
+/* ------------------------------------------------------------------ */
 /* Aviso de cookies                                                    */
 /* ------------------------------------------------------------------ */
 
@@ -712,13 +843,15 @@ export const privacidade = {
       paragrafos: [
         "No diagnóstico, o formulário pede seu nome e seu WhatsApp. Empresa e Instagram são opcionais.",
         "Junto vão as três respostas do diagnóstico, a página por onde você entrou, o site que trouxe você até aqui e os parâmetros de campanha do link, como utm_source, fbclid e gclid.",
+        "No briefing antes da reunião, além do contato, vão as respostas sobre o negócio: ramo, faturamento, de onde vêm os clientes, quem cuida do marketing, quem decide, quando quer começar, quanto pode investir e, se você escrever, o seu objetivo.",
       ],
     },
     {
       titulo: "Para que servem",
       paragrafos: [
         "A SA usa esses dados para falar com você sobre o diagnóstico e para saber quais campanhas trazem visitas.",
-        "As respostas ficam no sistema de atendimento da SA. Durante a sua visita, elas também ficam guardadas no seu navegador, para você retomar o diagnóstico de onde parou. Fechar a aba apaga essa cópia.",
+        "As respostas ficam no banco de dados da SA, no Supabase, com servidores em São Paulo. Seu WhatsApp identifica o cadastro: se você responder de novo, a SA atualiza o que já tem em vez de criar outro. Com as respostas do briefing, a SA prepara a conversa e avalia como pode ajudar.",
+        "Quando a SA usar um sistema de atendimento (CRM), o contato e as respostas do diagnóstico também seguem para ele. Só a equipe da SA acessa esses dados. Durante a sua visita, as respostas também ficam guardadas no seu navegador, para você retomar o diagnóstico ou o briefing de onde parou. Fechar a aba apaga essa cópia.",
       ],
     },
     {
@@ -733,7 +866,7 @@ export const privacidade = {
     {
       titulo: "Como pedir a exclusão",
       paragrafos: [
-        "Mande uma mensagem pelo WhatsApp da SA ou pelo Instagram @samarketing.business pedindo a exclusão dos seus dados. A SA apaga os dados do sistema de atendimento.",
+        "Mande uma mensagem pelo WhatsApp da SA ou pelo Instagram @samarketing.business pedindo a exclusão dos seus dados. A SA apaga seu cadastro e suas respostas do banco de dados.",
       ],
     },
   ],

@@ -1,37 +1,33 @@
 import { after, type NextRequest } from "next/server";
 
-import { leadSchema, montarCorpoCrm, type CorpoCrm } from "@/lib/lead";
+import { gravarDiagnostico } from "@/lib/banco/comercial";
+import { bancoComercial } from "@/lib/banco/conexao";
+import { leadSchema, montarCorpoCrm, type CorpoCrm, type Lead } from "@/lib/lead";
+import { criarLimite, ipDe } from "@/lib/limite";
 
 /**
- * Recebe o lead do diagnóstico, valida de novo com o mesmo esquema zod e
- * encaminha ao CRM depois de responder. A falha do webhook nunca bloqueia a
+ * Recebe o lead do diagnóstico, valida de novo com o mesmo esquema zod e,
+ * depois de responder, grava no banco comercial (um diagnóstico por WhatsApp)
+ * e encaminha ao CRM. A falha do webhook nunca bloqueia a
  * pessoa: o resultado aparece e o WhatsApp leva os dados na mensagem.
  * Nunca registra dado pessoal em log de produção.
  */
 
-const LIMITE_POR_MINUTO = 5;
-const JANELA_MS = 60_000;
 const TEMPO_LIMITE_MS = 5_000;
 const emProducao = process.env.NODE_ENV === "production";
+const passouDoLimite = criarLimite(5);
 
-/** Limite simples por IP, em memória. Em várias instâncias, vale por instância. */
-const envios = new Map<string, number[]>();
-
-function passouDoLimite(ip: string, agora: number): boolean {
-  const recentes = (envios.get(ip) ?? []).filter((t) => agora - t < JANELA_MS);
-  recentes.push(agora);
-  envios.set(ip, recentes);
-  if (envios.size > 5_000) {
-    for (const [chave, tempos] of envios) {
-      if (tempos.every((t) => agora - t >= JANELA_MS)) envios.delete(chave);
-    }
+/** Grava no banco comercial. Sem DATABASE_URL, segue só com o CRM. */
+async function gravarNoBanco(lead: Lead): Promise<void> {
+  const sql = await bancoComercial();
+  if (!sql) return;
+  try {
+    await gravarDiagnostico(sql, lead);
+  } catch (erro) {
+    // Só o tipo do erro e o código do Postgres: nunca os dados da pessoa.
+    const motivo = erro instanceof Error ? `${erro.name}${"code" in erro ? ` ${String(erro.code)}` : ""}` : "desconhecido";
+    console.error(`[lead] Falha ao gravar o diagnóstico (${motivo}).`);
   }
-  return recentes.length > LIMITE_POR_MINUTO;
-}
-
-function ipDe(request: NextRequest): string {
-  const encaminhado = request.headers.get("x-forwarded-for");
-  return encaminhado?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "desconhecido";
 }
 
 async function encaminharAoCrm(corpo: CorpoCrm): Promise<void> {
@@ -61,7 +57,7 @@ async function encaminharAoCrm(corpo: CorpoCrm): Promise<void> {
 }
 
 export async function POST(request: NextRequest) {
-  if (passouDoLimite(ipDe(request), Date.now())) {
+  if (passouDoLimite(ipDe(request))) {
     return Response.json({ ok: false, erro: "limite" }, { status: 429 });
   }
 
@@ -84,6 +80,6 @@ export async function POST(request: NextRequest) {
   }
 
   const corpo = montarCorpoCrm(resultado.data);
-  after(() => encaminharAoCrm(corpo));
+  after(() => Promise.all([gravarNoBanco(resultado.data), encaminharAoCrm(corpo)]));
   return Response.json({ ok: true });
 }

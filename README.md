@@ -41,6 +41,7 @@ pnpm check:pendencias        # use --estrito antes do lançamento
 | `CRM_WEBHOOK_URL` | vazio | Recebe o lead (POST JSON). Vazio: em desenvolvimento o corpo aparece no console do servidor. |
 | `CRM_WEBHOOK_TOKEN` | vazio | Enviado como `Authorization: Bearer`. |
 | `NEXT_PUBLIC_GTM_ID` | vazio | Google Tag Manager. Só carrega depois do "Aceitar" no aviso de cookies. |
+| `DATABASE_URL` | vazio | Banco comercial no Supabase (pooler, porta 6543). Grava diagnósticos e briefings no esquema `comercial` (`supabase/migrations/`). Vazio: o briefing pede o envio pelo WhatsApp. |
 | `EVENTOS_DATABASE_URL` | vazio | Postgres das métricas próprias (rode `db/metricas.sql` antes). Vazio: eventos descartados em produção. |
 | `EVENTOS_SAL` | vazio | Sal secreto do código diário do IP. Texto longo e aleatório. |
 

@@ -31,3 +31,31 @@ export const ORIGENS = [
   "barra-fixa",
 ] as const;
 export type OrigemDiagnostico = (typeof ORIGENS)[number];
+
+/* Briefing antes da reunião (briefing.saagencia.com.br). */
+
+export const SEGMENTOS = [
+  "servicos",
+  "comercio",
+  "saude-estetica",
+  "alimentacao",
+  "educacao",
+  "industria",
+  "outro",
+] as const;
+export type Segmento = (typeof SEGMENTOS)[number];
+
+export const ORIGENS_CLIENTE = ["indicacao", "redes-sociais", "google", "anuncios", "loja-fisica", "outro"] as const;
+export type OrigemCliente = (typeof ORIGENS_CLIENTE)[number];
+
+export const MARKETINGS = ["ninguem", "eu-mesmo", "agencia-ou-freela", "equipe-interna"] as const;
+export type Marketing = (typeof MARKETINGS)[number];
+
+export const DECISOES = ["eu", "com-socio", "outra-pessoa"] as const;
+export type Decisao = (typeof DECISOES)[number];
+
+export const PRAZOS = ["agora", "tres-meses", "pesquisando"] as const;
+export type Prazo = (typeof PRAZOS)[number];
+
+export const INVESTIMENTOS = ["ate-1500", "1500-3000", "3000-6000", "acima-6000", "nao-sei"] as const;
+export type Investimento = (typeof INVESTIMENTOS)[number];

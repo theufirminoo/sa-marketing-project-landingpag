@@ -2936,3 +2936,75 @@
       linear-gradient(180deg, var(--bg) 0%, var(--bg-sunken) 100%);
   }
 }
+
+/* Briefing (briefing.saagencia.com.br): o cartão do diagnóstico, numa página própria. */
+@layer components {
+  .sa-briefing {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    background:
+      radial-gradient(ellipse 60% 40% at 80% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
+      radial-gradient(ellipse 50% 35% at 10% 100%, color-mix(in srgb, var(--accent-forte) 8%, transparent), transparent 70%),
+      var(--bg);
+    color: var(--text);
+  }
+  .sa-briefing__topo {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-4);
+  }
+  .sa-briefing__palco {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .sa-briefing__cartao {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    background: var(--surface);
+  }
+  .sa-briefing__tela {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+    animation: sa-esmaece var(--dur-lenta) var(--ease-saida);
+  }
+  .sa-briefing__rodape {
+    padding: var(--space-4);
+    color: var(--text-muted);
+    text-align: center;
+  }
+  /* No celular o cartão ocupa a tela; a barra de ações fica no fim. */
+  .sa-briefing .sa-diag__corpo {
+    overflow: visible;
+  }
+  @media (min-width: 768px) {
+    .sa-briefing__topo {
+      padding: var(--space-8) var(--space-6) var(--space-6);
+    }
+    .sa-briefing__palco {
+      align-items: center;
+      justify-content: center;
+      padding: 0 var(--space-6) var(--space-8);
+    }
+    .sa-briefing__cartao {
+      flex: 0 0 auto;
+      width: min(560px, 100%);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-dialog);
+    }
+  }
+  .sa-input--area {
+    min-height: 120px;
+    resize: vertical;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-briefing__tela {
+    animation: none;
+  }
+}

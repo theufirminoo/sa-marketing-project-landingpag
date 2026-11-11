@@ -19,7 +19,7 @@ type Props = {
   aoRefazer: () => void;
 };
 
-function IconeWhatsapp() {
+export function IconeWhatsapp() {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
       <path

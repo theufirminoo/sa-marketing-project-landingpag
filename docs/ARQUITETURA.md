@@ -87,6 +87,7 @@ As chaves vão direto nas variáveis de ambiente da Vercel, nunca em chat ou no 
 |---|---|
 | `saagencia.com.br` | Site (esta landing page) |
 | `www.saagencia.com.br` | Redireciona para o principal |
+| `briefing.saagencia.com.br` | Briefing antes da reunião (mesmo projeto, `src/proxy.ts`) |
 | `app.saagencia.com.br` | Sistema interno (futuro) |
 | `contato@saagencia.com.br` | E-mail de entrada |
 | `envio.saagencia.com.br` | Subdomínio de envio do Resend (SPF/DKIM) |
@@ -105,8 +106,12 @@ commit do sistema; é mover pastas, sem reescrever.
 
 ## Dados
 
-- **Leads do diagnóstico:** tabela `leads` no Supabase + e-mail pelo Resend
-  para a SA. Hoje o lead só chega se a pessoa enviar o WhatsApp (ver BACKLOG).
+- **Leads (diagnóstico e briefing):** esquema `comercial` no Supabase
+  (`supabase/migrations/`): `contatos` (WhatsApp único, `status` do funil,
+  `responsavel_id` para o sistema), `diagnosticos`, `briefings` (com FIT) e
+  `avisos` (fila para o Resend e o sistema). Visão `comercial.leads` para o
+  painel. O sistema futuro lê as mesmas tabelas e cria as políticas de RLS
+  para a equipe com Supabase Auth.
 - **Visitas e metadados:** PostHog, só depois do "Aceitar" (mesmo aviso de
   cookies de hoje). O coletor próprio (`src/lib/metricas`) vira reserva ou é
   removido para não medir em dobro.

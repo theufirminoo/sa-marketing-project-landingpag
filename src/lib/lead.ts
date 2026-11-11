@@ -39,12 +39,8 @@ export type Contato = z.infer<typeof contatoSchema>;
 
 const textoCurto = z.string().trim().max(300).optional();
 
-/** Corpo do POST /api/lead. */
-export const leadSchema = contatoSchema.extend({
-  trava: z.enum(TRAVAS),
-  fase: z.enum(FASES),
-  faturamento: z.enum(FATURAMENTOS),
-  frenteDeInteresse: z.enum(FRENTES).optional(),
+/** Origem da visita: parâmetros de campanha, página e site anterior. */
+export const origemSchema = z.object({
   utm: z
     .object({
       source: textoCurto,
@@ -58,6 +54,14 @@ export const leadSchema = contatoSchema.extend({
     .default({}),
   pagina: z.string().trim().max(2000).optional(),
   referrer: z.string().trim().max(2000).optional(),
+});
+
+/** Corpo do POST /api/lead. */
+export const leadSchema = contatoSchema.extend(origemSchema.shape).extend({
+  trava: z.enum(TRAVAS),
+  fase: z.enum(FASES),
+  faturamento: z.enum(FATURAMENTOS),
+  frenteDeInteresse: z.enum(FRENTES).optional(),
 });
 export type Lead = z.infer<typeof leadSchema>;
 export type LeadEntrada = z.input<typeof leadSchema>;
