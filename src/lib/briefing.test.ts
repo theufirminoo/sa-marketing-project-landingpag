@@ -106,7 +106,7 @@ describe("montarMensagemBriefing", () => {
       "• Ramo: Saúde e estética",
       "• Faturamento: De R$ 50 mil a R$ 200 mil",
       "• Clientes vêm de: Indicação",
-      "• Maior desafio: Transformar conversa em venda",
+      "• Maior desafio: Muita conversa e pouca venda fechada",
       "• Marketing: Eu mesmo, quando dá tempo",
       "• Decisão: Eu decido",
       "• Começar: Ainda este mês",

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    {
+      "path": "/api/manter-banco",
+      "schedule": "17 12 */6 * *"
+    }
+  ]
+}

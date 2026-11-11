@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   DECISOES,
   DESAFIOS,
-  FATURAMENTOS_BRIEFING,
+  FATURAMENTOS,
   INVESTIMENTOS,
   MARKETINGS,
   ORIGENS_CLIENTE,
@@ -16,7 +16,7 @@ import { contatoSchema, origemSchema } from "./lead";
 /** Respostas de um toque, na ordem em que aparecem. */
 export const respostasBriefingSchema = z.object({
   segmento: z.enum(SEGMENTOS),
-  faturamento: z.enum(FATURAMENTOS_BRIEFING),
+  faturamento: z.enum(FATURAMENTOS),
   origem: z.enum(ORIGENS_CLIENTE),
   desafio: z.enum(DESAFIOS),
   marketing: z.enum(MARKETINGS),

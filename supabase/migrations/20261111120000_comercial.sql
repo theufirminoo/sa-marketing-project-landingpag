@@ -65,7 +65,7 @@ create table if not exists comercial.diagnosticos (
   contato_id           bigint not null unique references comercial.contatos (id) on delete cascade,
   trava                text not null,
   fase                 text not null,
-  faturamento          text not null,
+  faturamento          text not null check (faturamento in ('ate-10', '10-20', '20-50', '50-200', 'acima-200')),
   frente_de_interesse  text,
   frentes_recomendadas text[] not null default '{}',
   utm                  jsonb not null default '{}',
@@ -93,7 +93,7 @@ create table if not exists comercial.briefings (
   faturamento    text not null check (faturamento in ('ate-10', '10-20', '20-50', '50-200', 'acima-200')),
   origem_clientes text not null check (origem_clientes in ('indicacao','redes-sociais','google','anuncios','loja-fisica','outro')),
   origem_outro text check (char_length(origem_outro) <= 80),
-  desafio text not null check (desafio in ('atrair-clientes','converter','constancia','recompra','processos','outro')),
+  desafio text not null check (desafio in ('sem-plano','converter','atrair-clientes','seguidores-nao-compram','imagem-da-marca','processos-manuais','outro')),
   desafio_outro text check (char_length(desafio_outro) <= 80),
   marketing text not null check (marketing in ('ninguem','eu-mesmo','agencia-ou-freela','equipe-interna')),
   decisao text not null check (decisao in ('eu','com-socio','outra-pessoa')),
@@ -173,6 +173,17 @@ create trigger briefings_aviso_refeito
   execute function comercial.registrar_aviso('briefing');
 
 -- ------------------------------------------------------------------
+-- Sinal de vida: o Cron da Vercel grava aqui a cada 6 dias para o plano
+-- grátis do Supabase não pausar o projeto (pausa com 7 dias sem uso).
+-- Uma linha só; `ultimo_sinal` mostra se o Cron está funcionando.
+-- ------------------------------------------------------------------
+create table if not exists comercial.manutencao (
+  id           smallint primary key check (id = 1),
+  ultimo_sinal timestamptz not null default now(),
+  sinais       integer not null default 1
+);
+
+-- ------------------------------------------------------------------
 -- Visão para o painel do Supabase: um contato por linha, com o que ele
 -- respondeu. Mais quentes primeiro.
 -- ------------------------------------------------------------------
@@ -216,6 +227,7 @@ alter table comercial.contatos enable row level security;
 alter table comercial.diagnosticos enable row level security;
 alter table comercial.briefings enable row level security;
 alter table comercial.avisos enable row level security;
+alter table comercial.manutencao enable row level security;
 
 do $$
 begin

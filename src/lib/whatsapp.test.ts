@@ -99,7 +99,7 @@ describe("mensagem e URL do WhatsApp", () => {
       empresa: " ",
       trava: "processos-manuais",
       fase: "comecando",
-      faturamento: "nao-informado",
+      faturamento: "ate-10",
       frentes: "SA Tech",
     });
     expect(semEmpresa.split("\n")[0]).toBe("Oi, tudo bem? 😊 Aqui é Ana.");

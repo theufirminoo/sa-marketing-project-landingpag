@@ -23,7 +23,6 @@ export {
 import type {
   Decisao,
   Desafio,
-  FaturamentoBriefing,
   Faturamento,
   Fase,
   FrenteId,
@@ -52,11 +51,11 @@ export const fases: readonly Opcao<Fase>[] = [
 ];
 
 export const faturamentos: readonly Opcao<Faturamento>[] = [
-  { id: "ate-20", rotulo: "Até R$ 20 mil" },
+  { id: "ate-10", rotulo: "Até R$ 10 mil" },
+  { id: "10-20", rotulo: "De R$ 10 mil a R$ 20 mil" },
   { id: "20-50", rotulo: "De R$ 20 mil a R$ 50 mil" },
   { id: "50-200", rotulo: "De R$ 50 mil a R$ 200 mil" },
   { id: "acima-200", rotulo: "Acima de R$ 200 mil" },
-  { id: "nao-informado", rotulo: "Prefiro não informar" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -712,13 +711,7 @@ export const briefingOpcoes = {
     { id: "industria", rotulo: "Indústria" },
     { id: "outro", rotulo: "Outro ramo" },
   ] satisfies Opcao<Segmento>[],
-  faturamento: [
-    { id: "ate-10", rotulo: "Até R$ 10 mil" },
-    { id: "10-20", rotulo: "De R$ 10 mil a R$ 20 mil" },
-    { id: "20-50", rotulo: "De R$ 20 mil a R$ 50 mil" },
-    { id: "50-200", rotulo: "De R$ 50 mil a R$ 200 mil" },
-    { id: "acima-200", rotulo: "Acima de R$ 200 mil" },
-  ] satisfies Opcao<FaturamentoBriefing>[],
+  faturamento: faturamentos,
   origem: [
     { id: "indicacao", rotulo: "Indicação" },
     { id: "redes-sociais", rotulo: "Instagram e outras redes" },
@@ -727,12 +720,15 @@ export const briefingOpcoes = {
     { id: "loja-fisica", rotulo: "Loja física ou passagem" },
     { id: "outro", rotulo: "Outro canal" },
   ] satisfies Opcao<OrigemCliente>[],
+  // Cada desafio aponta para uma frente: dois da Consultoria, dois da
+  // Digital, um do Studio e um da Tech.
   desafio: [
-    { id: "atrair-clientes", rotulo: "Atrair mais clientes" },
-    { id: "converter", rotulo: "Transformar conversa em venda" },
-    { id: "constancia", rotulo: "Vender todo mês, sem altos e baixos" },
-    { id: "recompra", rotulo: "Fazer o cliente voltar a comprar" },
-    { id: "processos", rotulo: "Organizar processos e equipe" },
+    { id: "sem-plano", rotulo: "Não tenho um plano claro para vender mais" }, // Consultoria
+    { id: "converter", rotulo: "Muita conversa e pouca venda fechada" }, // Consultoria
+    { id: "atrair-clientes", rotulo: "Atrair clientes novos todo mês" }, // Digital
+    { id: "seguidores-nao-compram", rotulo: "Tenho seguidores, mas eles não compram" }, // Digital
+    { id: "imagem-da-marca", rotulo: "Fotos e vídeos não mostram o nível da marca" }, // Studio
+    { id: "processos-manuais", rotulo: "Atendimento e vendas no manual, sem sistema" }, // Tech
     { id: "outro", rotulo: "Outro desafio" },
   ] satisfies Opcao<Desafio>[],
   marketing: [

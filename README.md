@@ -42,6 +42,7 @@ pnpm check:pendencias        # use --estrito antes do lançamento
 | `CRM_WEBHOOK_TOKEN` | vazio | Enviado como `Authorization: Bearer`. |
 | `NEXT_PUBLIC_GTM_ID` | vazio | Google Tag Manager. Só carrega depois do "Aceitar" no aviso de cookies. |
 | `DATABASE_URL` | vazio | Banco comercial no Supabase (pooler, porta 6543). Grava diagnósticos e briefings no esquema `comercial` (`supabase/migrations/`). Vazio: o briefing pede o envio pelo WhatsApp. |
+| `CRON_SECRET` | vazio | Senha do Cron da Vercel que chama `/api/manter-banco` a cada 6 dias (o Supabase grátis pausa com 7 dias sem uso). Sem ela, a rota recusa tudo. |
 | `EVENTOS_DATABASE_URL` | vazio | Postgres das métricas próprias (rode `db/metricas.sql` antes). Vazio: eventos descartados em produção. |
 | `EVENTOS_SAL` | vazio | Sal secreto do código diário do IP. Texto longo e aleatório. |
 
