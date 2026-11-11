@@ -26,7 +26,7 @@ valor provisório ou pendência que trava o lançamento.
 - [ ] 13. Região de atendimento presencial, para o FAQ. (Fidelidade resolvida: projeto mínimo de 3 meses, como no portfólio, já está em "Em quanto tempo vejo resultado?".)
 - [x] 14. Nomes completos: Samuel Cezar, Matheus Firmino, Malaquias, Nayara Kelly e Lunna Rodrigues.
 - [ ] 16. Faixas de investimento do briefing (`briefingOpcoes.investimento` em `src/content/site.ts`) e pesos do FIT (`src/lib/fit.ts`): conferir com o Samuel. Mudou peso ou corte, suba `FIT_VERSAO`.
-- [ ] 17. Banco comercial: projeto Supabase em São Paulo, migração `supabase/migrations/20261111120000_comercial.sql`, `DATABASE_URL` e `CRON_SECRET` na Vercel. Sem isso o briefing pede o envio pelo WhatsApp.
+- [x] 17. Banco comercial: projeto Supabase em São Paulo, migração `supabase/migrations/20261111120000_comercial.sql`, `DATABASE_URL` e `CRON_SECRET` na Vercel. Sem isso o briefing pede o envio pelo WhatsApp.
 - [ ] 15. Primeiros cases, depoimentos e números reais em `provaSocial` (`src/content/site.ts`). Hoje o bloco mostra exemplos fictícios; para deixar em standby, `provasExemplo = false` em `src/content/provisorios.ts`.
 
 ## Origem dos vídeos provisórios
