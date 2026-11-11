@@ -295,9 +295,6 @@ export function TelaObjetivo({ inicial, tituloRef, aoVoltar, aoAvancar }: PropsO
             {erro}
           </p>
         ) : null}
-        <button type="button" className="sa-link pequeno mt-4" onClick={() => aoAvancar("")}>
-          {t.pular}
-        </button>
       </div>
       <Acoes aoVoltar={aoVoltar} />
     </form>

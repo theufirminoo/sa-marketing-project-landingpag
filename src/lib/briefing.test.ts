@@ -125,7 +125,7 @@ describe("montarMensagemBriefing", () => {
   it("lista as respostas pelos rótulos e inclui o objetivo", () => {
     const m = montarMensagemBriefing({ nome: " Ana ", empresa: "Clínica Ana", respostas, objetivo: "Agenda cheia" });
     expect(m.split("\n")).toEqual([
-      "Oi, tudo bem? 😊 Aqui é Ana, da Clínica Ana. Respondi o briefing pelo site e quero marcar a primeira conversa 📅",
+      "Oi, tudo bem? 😊 Aqui é Ana, da Clínica Ana. Respondi o briefing pelo site e quero marcar a primeira conversa.",
       "• Ramo: Saúde e estética",
       "• Faturamento: De R$ 50 mil a R$ 200 mil",
       "• Clientes vêm de: Indicação",
@@ -171,7 +171,7 @@ describe("indicarFrentes", () => {
 describe("montarMensagemAgendar", () => {
   it("pede a primeira conversa com um consultor", () => {
     expect(montarMensagemAgendar({ nome: "Ana Souza", empresa: "Clínica Ana" })).toBe(
-      "Oi, tudo bem? 😊 Aqui é Ana Souza, da Clínica Ana.\nAcabei de responder o briefing no site e quero marcar a primeira conversa com um consultor da SA 📅",
+      "Oi, tudo bem? 😊 Aqui é Ana Souza, da Clínica Ana.\nAcabei de responder o briefing no site e quero marcar a primeira conversa com um consultor da SA.",
     );
   });
 });

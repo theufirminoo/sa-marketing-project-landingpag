@@ -804,10 +804,9 @@ export const briefing = {
     erro: "Escreva em poucas palavras para continuar.",
   },
   objetivo: {
-    pergunta: "O que você quer ter conquistado daqui a 6 a 12 meses?",
-    rotulo: "Uma ou duas frases bastam. Opcional.",
+    pergunta: "O que você deseja ter daqui a 6 a 12 meses?",
+    rotulo: "Opcional. Uma ou duas frases bastam.",
     exemplo: "Vender todo dia pelo Instagram e depender menos de indicação",
-    pular: "Pular esta pergunta",
     erro: "Use até 500 caracteres.",
   },
   contato: {
@@ -828,7 +827,7 @@ export const briefing = {
     rotulo: "Briefing concluído",
     titulo: (nome: string) => `Tudo pronto, ${nome}.`,
     texto: "Suas respostas já estão com a SA. Último passo: chame um consultor no WhatsApp e marque a primeira conversa. Ele já começa sabendo do seu negócio.",
-    rotuloFrentes: "Pelo que você contou, a conversa começa por",
+    rotuloFrentes: "Pelo que você nos contou, os serviços indicados para o seu negócio são",
     whatsapp: "Chamar um consultor no WhatsApp",
   },
   falhou: {
@@ -840,9 +839,9 @@ export const briefing = {
   /** Mensagens do WhatsApp. São da pessoa para a SA, por isso levam emoji. */
   mensagem: {
     agendar: (nome: string, empresaNome?: string) =>
-      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}.\nAcabei de responder o briefing no site e quero marcar a primeira conversa com um consultor da SA 📅`,
+      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}.\nAcabei de responder o briefing no site e quero marcar a primeira conversa com um consultor da SA.`,
     abertura: (nome: string, empresaNome?: string) =>
-      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}. Respondi o briefing pelo site e quero marcar a primeira conversa 📅`,
+      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}. Respondi o briefing pelo site e quero marcar a primeira conversa.`,
     rotulos: {
       segmento: "Ramo",
       faturamento: "Faturamento",
