@@ -1,16 +1,19 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * briefing.saagencia.com.br abre o formulário de briefing na raiz. O resto
- * (arquivos, /api, /privacidade) passa direto, no mesmo projeto da Vercel.
+ * Subdomínios do mesmo projeto da Vercel, cada um abrindo uma página na raiz:
+ * briefing.saagencia.com.br abre o briefing e bio.saagencia.com.br, a página
+ * da bio do Instagram. O resto (arquivos, /api, /ir, /privacidade) passa direto.
  */
-const HOST_BRIEFING = "briefing.saagencia.com.br";
+const SUBDOMINIOS: Record<string, string> = {
+  "briefing.saagencia.com.br": "/briefing",
+  "bio.saagencia.com.br": "/bio",
+};
 
 export function proxy(request: NextRequest) {
   const host = (request.headers.get("host") ?? "").split(":")[0].toLowerCase();
-  if (host === HOST_BRIEFING) {
-    return NextResponse.rewrite(new URL("/briefing", request.url));
-  }
+  const destino = SUBDOMINIOS[host];
+  if (destino) return NextResponse.rewrite(new URL(destino, request.url));
   return NextResponse.next();
 }
 

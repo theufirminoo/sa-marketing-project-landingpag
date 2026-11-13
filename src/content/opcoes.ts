@@ -30,8 +30,19 @@ export const ORIGENS = [
   "como-comeca",
   "cta-final",
   "barra-fixa",
+  // Aberto por link (?diagnostico na URL), como o botão da bio do Instagram.
+  "link",
 ] as const;
 export type OrigemDiagnostico = (typeof ORIGENS)[number];
+
+/* Página da bio (bio.saagencia.com.br): destinos e origens dos cliques. */
+
+export const DESTINOS_LINK = ["diagnostico", "whatsapp", "site"] as const;
+export type DestinoLink = (typeof DESTINOS_LINK)[number];
+
+/** De onde veio o clique (`?de=` na rota /ir). Novos canais entram aqui. */
+export const ORIGENS_LINK = ["bio"] as const;
+export type OrigemLink = (typeof ORIGENS_LINK)[number];
 
 /* Briefing antes da reunião (briefing.saagencia.com.br). */
 

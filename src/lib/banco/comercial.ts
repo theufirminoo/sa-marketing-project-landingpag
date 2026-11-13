@@ -161,3 +161,12 @@ export async function registrarWhatsappAberto(sql: Sql, codigo: string): Promise
   `;
   return linhas.length > 0;
 }
+
+/** Soma 1 aos cliques do dia (horário de Brasília) para essa origem e destino. */
+export async function contarClique(sql: Sql, origem: string, destino: string): Promise<void> {
+  await sql`
+    insert into comercial.cliques (dia, origem, destino, total)
+    values ((now() at time zone 'America/Sao_Paulo')::date, ${origem}, ${destino}, 1)
+    on conflict (dia, origem, destino) do update set total = comercial.cliques.total + 1
+  `;
+}

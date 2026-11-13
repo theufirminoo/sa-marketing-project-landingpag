@@ -3038,3 +3038,45 @@
     justify-content: stretch;
   }
 }
+
+/* Página da bio do Instagram: coluna estreita, botões grandes de toque. */
+@layer components {
+  .sa-bio__palco {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    width: min(480px, 100%);
+    margin: 0 auto;
+    padding: var(--space-12) var(--space-4) var(--space-8);
+  }
+  .sa-bio__topo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .sa-bio__lista {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sa-bio__botao {
+    justify-content: space-between;
+    min-height: 72px;
+    padding: var(--space-4) var(--space-5, 20px);
+    text-align: left;
+  }
+  .sa-bio__texto {
+    display: grid;
+    flex: 1;
+    gap: 2px;
+  }
+  .sa-bio__detalhe {
+    font-size: 14px;
+    font-weight: 400;
+    opacity: 0.8;
+  }
+}

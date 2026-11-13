@@ -33,6 +33,20 @@ export function DiagnosticoProvider() {
   useEffect(() => {
     capturarOrigem();
 
+    // Link com ?diagnostico (ex.: botão da bio): abre o diagnóstico na tela 1.
+    // O parâmetro sai do endereço para não reabrir ao recarregar.
+    const busca = new URLSearchParams(window.location.search);
+    if (busca.has("diagnostico")) {
+      busca.delete("diagnostico");
+      const resto = busca.toString();
+      window.history.replaceState(window.history.state, "", `${window.location.pathname}${resto ? `?${resto}` : ""}${window.location.hash}`);
+      contador.current += 1;
+      setPedido({ id: contador.current, origem: "link", abridor: null });
+      setCarregar(true);
+      setAberto(true);
+      registrarEvento("diagnostico_aberto", { origem: "link" });
+    }
+
     const precarregar = (evento: Event) => {
       if (alvo(evento, "[data-diagnostico]")) setCarregar(true);
     };
