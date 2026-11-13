@@ -34,18 +34,11 @@ pnpm check:pendencias --estrito  # falha se sobrar provisório ou pendência que
 - Commits e PRs sem marcas de IA: nada de `Co-Authored-By`, link de sessão ou "Generated with" no fim da mensagem (pedido do cliente).
 - Branch de produção: `main` (a Vercel publica a partir dela).
 
-## Design system
+## Design system (resumo; detalhe em `docs/DECISOES.md`)
 
-Fonte da verdade: `docs/design-system/sa-tokens.css` (importado em `globals.css`) e `docs/design-system/sa-components.css` (portado para `@layer components` em `globals.css`).
-
-- Pílula é escolha. Retângulo de canto 4 px é ação. Linha de largura total é conteúdo que se abre (Dúvidas).
-- 60% escuro (`--bg` #1A1A1A), 30% claro (giz), âmbar no máximo 10%: botão principal, opção selecionada, etapa ativa, fundo do CTA final. "Quem faz" fica sobre `--surface`, parado e sem vídeo, para destacar as pessoas. Laranja forte (`--accent-forte` #D9531A, variação escura da base #FF751F) só em degradê, ícone e número grande, nunca em texto pequeno.
-- Tema por seção com `data-theme`. Não existe alternância de tema nem `prefers-color-scheme`.
-- Duas famílias (`next/font/google`): Montserrat (primária, do guia de identidade da SA) nos títulos `display` e `titulo-1/2/3`; Poppins (secundária, 400/500/600, `--font-texto`) em textos, botões e rótulos, por coerência com a apresentação comercial. Caixa normal sempre; nada de destacar palavra do título.
-- `@theme` zera a paleta do Tailwind: só existem as cores, raios e sombras dos tokens. No shadcn, `accent` é o âmbar; hover usa `--surface-hover`.
-- Anime só `opacity`, `transform`, `background-color`, `border-color` e `color`. Nunca `transition: all`. Hover dentro de `@media (hover: hover)`.
-- Movimento (pedido do cliente depois da primeira versão): vídeos de fundo com transparência no hero (`VideoFundo`); Frentes tem fundo escuro parado com brilho laranja, brilho âmbar em CSS no hero, funil animado no Método, formas que andam no CTA final, números da prova social que sobem contando (`Contador`) e revelação ao rolar só em CSS (`.sa-revela`, `animation-timeline: view()`). Tudo desliga com `prefers-reduced-motion`, menos os vídeos de fundo e o `Contador` (decisão do cliente; o contador só troca o texto). O contador anima toda vez que entra na tela.
-- Vídeo de fundo: o do primeiro slide tem `autoplay` nativo (`automatico`); os demais começam 400 ms depois do `load` (ou na primeira interação). Nunca esconder o vídeo com opacidade 0 esperando o `playing`: o Safari do iPhone não dá autoplay em vídeo invisível. Pedido do cliente: antes esperava a interação para não disputar o LCP no celular; se o LCP piorar, é aqui. Sem botão de pausa e tocando mesmo com movimento reduzido (decisão do cliente: é só fundo, roda em laço), MP4 (H.264) primeiro, porque é o que o iPhone toca, e WebM de reserva. Se o play for recusado (economia de dados no Opera/Chrome, bateria no iPhone), o vídeo ganha `data-bloqueado` (zoom lento no quadro parado) e tenta de novo a cada toque; rolar a página não libera, só toque ou clique.
+- Tokens em `docs/design-system/sa-tokens.css`; componentes em `@layer components` no `globals.css`. Só existem as cores, raios e sombras dos tokens.
+- Pílula é escolha, retângulo de 4 px é ação. 60% escuro, 30% claro, âmbar no máximo 10%. Laranja forte só em degradê, ícone e número grande.
+- Montserrat nos títulos, Poppins no resto. Anime só `opacity`, `transform` e cores; hover dentro de `@media (hover: hover)`; tudo respeita `prefers-reduced-motion` (exceções em `docs/DECISOES.md`).
 
 ## Regras de copy
 
@@ -55,33 +48,28 @@ Fonte da verdade: `docs/design-system/sa-tokens.css` (importado em `globals.css`
 - Botão diz o que acontece. Nunca "Saiba mais", "Enviar" ou "Clique aqui".
 - Erro diz o que falta e como corrigir, sem pedir desculpa.
 
-## Prova social: exemplos só para posicionar
+## Regras que não podem falhar
 
-A SA ainda não tem depoimentos, números, logos de clientes nem cases reais.
-Por pedido do cliente, o bloco `ProvaSocial` mostra exemplos fictícios de
-`src/content/provas-exemplo.ts` (marcados com a etiqueta "Exemplo") enquanto
-`provasExemplo` estiver `true` em `provisorios.ts`. Prova real entra em
-`provaSocial` (site.ts) e substitui os exemplos sozinha. Com `provasExemplo`
-em `false` e as listas vazias, a seção some (standby). Nunca misture exemplo
-com dado real nem tire a etiqueta dos exemplos. Número real só com fonte;
-depoimento real só com nome, empresa e autorização. "O que a SA publica"
-continua oculta enquanto a lista de Reels estiver vazia.
+- Componente de cliente não importa `@/content/site` (textos por props). Exceções: o diálogo do diagnóstico e o briefing, que só existem nas suas rotas.
+- Nunca logar dado pessoal em produção. Nunca mostrar o FIT ao cliente.
+- Prova social: exemplos fictícios só com a etiqueta "Exemplo"; nunca misturar com dado real.
+- Ao coletar dado novo, atualizar a política em `site.ts` (`privacidade`).
+- Banco: mudanças só por migração nova em `supabase/migrations/` (as já aplicadas não se editam); o site entra como `sa_site`.
 
-## Decisões de arquitetura que não são óbvias
+## Onde está cada decisão (`docs/DECISOES.md`)
 
-- **Hero.** A primeira pergunta aparece num cartão que é um botão só (`.sa-hero-cta`); ele abre o diagnóstico na tela 1, com as opções.
-- **CTAs por delegação.** Os botões que abrem o diagnóstico são HTML do servidor com `data-diagnostico`. Um único cliente, `DiagnosticoProvider`, escuta cliques, foco e ponteiro no documento e carrega o diálogo com `next/dynamic` na primeira intenção ou no ócio do navegador. Sem JavaScript, os botões somem e links para o WhatsApp entram no lugar (`<noscript>`).
-- **Conteúdo fora do bundle.** Componentes de cliente recebem textos por props; só o diálogo (carregado sob demanda) importa `site.ts`. Ao criar componente de cliente, não importe `@/content/site`.
-- **Acordeão legível sem JS.** O `AccordionContent` do shadcn foi reescrito para manter o conteúdo fechado no HTML (escondido por CSS); o do Radix desmonta o conteúdo.
-- **LCP.** O `h1` é um bloco de texto só (linhas separadas por `<br>`) e entra só com `transform`. Esmaecer o texto ou animar cada linha em bloco tira o título da disputa de LCP no Chrome.
-- **Fontes de reserva.** `next/font` gera a reserva com `size-adjust` para Montserrat e Poppins (CLS 0). As faces "SA Reserva" em `globals.css` eram da Bricolage e ficaram sem uso.
-- **Cores puras.** #000000 e #FFFFFF só na logo; fundos e textos usam #1A1A1A e #F5F5F3 (decisão do cliente).
-- **Métricas próprias.** Só depois do "Aceitar": `AvisoCookies` importa `src/lib/metricas/coletor.ts` sob demanda (fora do bundle inicial). Lotes vão por `sendBeacon` para `POST /api/eventos`, que valida com zod (`esquema.ts`), acrescenta país/cidade dos cabeçalhos da Vercel e o aparelho pelo User-Agent, troca o IP por um código diário com sal e grava em Postgres (`EVENTOS_DATABASE_URL`, esquema e visões em `db/metricas.sql`). Ligar o banco está no `BACKLOG.md`. Nunca coletar o que a pessoa digita nem dado do lead. "Preferências de cookies" no rodapé reabre o aviso; recusar apaga os códigos do navegador. Ao coletar dado novo, atualize a política em `site.ts`.
-- **Frentes em substituição.** `FrenteAtiva` dá altura ao palco (`data-frentes-palco`), a cena gruda abaixo do cabeçalho e a posição da rolagem escolhe o painel (`data-ativa`; os anteriores ganham `data-antes` e saem para cima). Cada frente ocupa 70% da altura da tela de rolagem. No celular a cena desconta a barra fixa. Em telas baixas compacta em níveis (`data-compacto` 1 a 3: foto menor, sem foto, sem promessa) até caber; só se ainda não couber o modo desliga e as frentes ficam empilhadas. Deslizar para o lado na cena também troca de frente. Sem JS, empilhadas.
-- **WhatsApp flutuante.** Nunca some: com o aviso de cookies no celular, sobe a altura do aviso (`--altura-aviso`).
-- **Carrossel.** Setas, pontos, teclado (← →) e arrastar com o dedo (`touch-action: pan-y`: o gesto vertical continua rolando a página).
-- **Banco comercial.** Supabase (projeto "SA Marketing", `yzarinssfqttxiqmkveo`, São Paulo), esquema `comercial` fora da Data API, RLS ligado: as chaves públicas não têm acesso; o site entra como `sa_site` (sem DELETE, só o esquema `comercial`, políticas em `20261111190000_usuario_site.sql`) pela `DATABASE_URL` (pooler `aws-1-sa-east-1`, porta 6543, driver `postgres` com `prepare: false`). Funções da Vercel em `gru1` (`vercel.json`), perto do banco. Migrações em `supabase/migrations/` (rode no SQL Editor). Um contato por WhatsApp (`55` + DDD + número, `unique`): refazer diagnóstico ou briefing atualiza a linha e soma em `vezes`. `comercial.avisos` é a fila para o Resend e o sistema futuro; `comercial.leads` é a visão para o painel. Nunca guarde o FIT em lugar que o cliente veja.
-- **Banco sempre acordado.** O Supabase grátis pausa com 7 dias sem uso. O Cron da Vercel (`vercel.json`) chama `/api/manter-banco` nos dias 1, 7, 13, 19, 25 e 31 (maior intervalo: 6 dias); a rota exige `Authorization: Bearer CRON_SECRET` e grava uma linha em `comercial.manutencao`. Cron só roda na produção. Ao assinar o Supabase Pro, pode ficar (não custa) ou sair.
-- **Briefing.** `briefing.saagencia.com.br` (reescrito para `/briefing` em `src/proxy.ts`), noindex, para quem já falou com a SA. Abertura com aceite obrigatório (LGPD; sem marcar, não começa; gravado em `consentimento_em`), 8 perguntas (desafios com várias escolhas, cada uma apontando para uma frente por `indicarFrentes`; ramo, origem e desafio têm "Outro", que abre um campo, gravado em `*_outro`), objetivo opcional e contato com nome completo (nome e sobrenome; iniciais maiúsculas e "@" do Instagram automáticos, `src/lib/formatar.ts`), no visual do diagnóstico (`src/components/briefing/`). Faturamento usa as mesmas faixas do diagnóstico (`FATURAMENTOS`, de "até R$ 10 mil" a "acima de R$ 200 mil", sem "prefiro não informar"). Cada desafio aponta para uma frente (comentário em `briefingOpcoes.desafio`). O aviso de cookies sai junto com o `Footer` (página principal e política); o briefing não mede visitas e não mostra o aviso. Esse componente importa `site.ts` porque só existe nessa rota. `/api/briefing` grava antes de responder e devolve um código; a tela final mostra as frentes indicadas e leva a pessoa a chamar um consultor no WhatsApp para marcar a primeira conversa (o clique vai para `/api/briefing/whatsapp` com o código). Sem banco, a mensagem do WhatsApp leva as respostas. Status do lead em `comercial.contatos.status` (novo, pendente-conversa, abriu-whatsapp, em-atendimento, reuniao-marcada, proposta, cliente, perdido): o site só move até "abriu-whatsapp"; o resto é da equipe. `comercial.leads_esfriando` lista quem está há 2 h ou mais sem atendimento. FIT (alto, médio, baixo) em `src/lib/fit.ts`, só no servidor; ao mudar pesos, suba `FIT_VERSAO`.
-- **Bio do Instagram.** `bio.saagencia.com.br` (reescrito para `/bio` em `src/proxy.ts`, junto com o briefing em `SUBDOMINIOS`). Página só de servidor, sem JS próprio; textos em `bio` (site.ts). Botões, em ordem: diagnóstico (abre o site já no diálogo por `?diagnostico`, que o `DiagnosticoProvider` lê e tira do endereço, origem "link"), consultor no WhatsApp e o site. Cada botão passa por `/ir/<destino>?de=bio` (`src/lib/ir.ts`), que redireciona na hora e soma o clique em `comercial.cliques` (só dia, origem, destino e total; robôs de prévia não contam). Diagnóstico e site levam `utm_source=instagram&utm_medium=bio`. O briefing não entra na bio: é o link que o consultor manda depois do primeiro contato.
-- **Lead.** `POST /api/lead` valida com o mesmo esquema zod do formulário, responde na hora e encaminha ao CRM com `after()`, tempo limite de 5 s. Falha do webhook nunca bloqueia; nunca logar dado pessoal em produção.
+| Mexeu em | Leia a seção |
+|---|---|
+| Hero, CTAs, diagnóstico, LCP, fontes | Decisões: Hero, CTAs por delegação, LCP, Fontes |
+| Frentes, carrossel, WhatsApp flutuante, vídeos | Decisões: Frentes, Carrossel, WhatsApp flutuante; Design system: Movimento e Vídeo |
+| Cookies e métricas | Decisões: Métricas próprias |
+| Banco, leads, status do lead, Cron | Decisões: Banco comercial, Banco sempre acordado, Lead |
+| Briefing (`briefing.saagencia.com.br`) | Decisões: Briefing |
+| Bio do Instagram (`bio.saagencia.com.br`) | Decisões: Bio do Instagram |
+| Prova social | Prova social |
+
+## Economia de tokens
+
+- Uma sessão por tarefa; ao terminar uma entrega, comece outra conversa.
+- Captura de tela, teste no navegador e subagente só quando a mudança for visual ou de risco; prefira `pnpm lint`, `pnpm typecheck` e `pnpm test`.
+- Leia trechos de arquivo (offset/limit, grep), não arquivos inteiros.
