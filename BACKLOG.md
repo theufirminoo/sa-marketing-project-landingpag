@@ -45,7 +45,7 @@ refazer atualiza a linha e soma em `vezes`. Falta ligar o banco.
 - [ ] Criar o projeto no Supabase (São Paulo), rodar a migração no SQL Editor e pôr `DATABASE_URL` (pooler, porta 6543) na Vercel.
 - [ ] Domínio `briefing.saagencia.com.br` na Vercel (mesmo projeto) e CNAME `briefing` no Registro.br.
 - [x] E-mail para a SA a cada briefing (código pronto em `src/lib/email/aviso-briefing.ts`).
-- [ ] Ligar o e-mail: caixa `contato@saagencia.com.br`, conta no Resend com `envio.saagencia.com.br` verificado e `RESEND_API_KEY` na Vercel.
+- [x] E-mail ligado (18/11/2026): Resend, domínio `envio.saagencia.com.br` (região São Paulo) verificado, chave "site-sa (Vercel produção)" só de envio e só por esse domínio, em `RESEND_API_KEY` na Vercel. Teste entregue em `contato@saagencia.com.br`.
 - [ ] E-mail também para cada diagnóstico do site (mesmo envio, outro modelo).
 - [ ] Alerta de lead esfriando: e-mail ou WhatsApp interno para quem aparece em `comercial.leads_esfriando` (2 h ou mais em "pendente-conversa" ou "abriu-whatsapp").
 - [ ] Confirmar que a mensagem chegou: hoje o site só sabe que a pessoa abriu o WhatsApp; com a API do WhatsApp Business, a mensagem recebida pode mover o status para "em-atendimento" sozinha.
