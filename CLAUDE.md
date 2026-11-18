@@ -56,6 +56,10 @@ pnpm check:pendencias --estrito  # falha se sobrar provisório ou pendência que
 - Ao coletar dado novo, atualizar a política em `site.ts` (`privacidade`).
 - Banco: mudanças só por migração nova em `supabase/migrations/` (as já aplicadas não se editam); o site entra como `sa_site`.
 
+## Documentação técnica
+
+`docs/tecnico/` (índice no README): visão geral, arquitetura, especificação funcional e técnica, banco, operação, infraestrutura e histórico. Ao mudar algo, atualize o documento da área e o `08-historico.md`.
+
 ## Onde está cada decisão (`docs/DECISOES.md`)
 
 | Mexeu em | Leia a seção |
