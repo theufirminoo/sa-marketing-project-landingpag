@@ -6,7 +6,7 @@ português, sem marcas de IA). Ao mudar algo, acrescente uma linha aqui.
 ## 18/11/2026
 - **Briefing v3:** conversa em quatro capítulos; perguntas novas (tempo de mercado, produto que mais vende, estratégia de marketing com "quem cuida" condicional, impacto dos problemas); novas listas de canais, problemas e investimento (com "Ainda não sei"); etapas guardadas pelo nome; FIT versão 3. Migração `briefing_v3`.
 - **E-mail do briefing ligado:** Resend com `envio.saagencia.com.br` (São Paulo), chave só de envio na Vercel, teste entregue em `contato@`. DMARC criado. Tentativa de passar o DNS para a Vercel não foi possível (o DNS segue no Registro.br). `docs/DNS.md`.
-- Documentação técnica completa (`docs/tecnico/`).
+- Documentação técnica completa (`docs/tecnico/`), com modelo de dados (MER, DER, relacional) e integrações.
 
 ## 13/11/2026
 - **Bio do Instagram** em `bio.saagencia.com.br`: três botões, diagnóstico abre por `?diagnostico`, cliques contados em `comercial.cliques` (migração `cliques`).

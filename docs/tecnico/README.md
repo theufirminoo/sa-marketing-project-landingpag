@@ -17,6 +17,7 @@ antes e atualize este conjunto depois (e o `CHANGELOG`).
 | 06 | [Operação e manutenção](06-operacao.md) | Como publicar, variáveis, tarefas comuns, LGPD, problemas e soluções |
 | 07 | [Infraestrutura e DNS](07-infraestrutura.md) | Vercel, Supabase, Resend, Registro.br, Google Workspace |
 | 08 | [Histórico (CHANGELOG)](08-historico.md) | Tudo o que mudou, por data |
+| 09 | [Modelo de dados e integrações](09-modelo-de-dados-e-integracoes.md) | MER, DER, modelo relacional, arquitetura de dados e como as ferramentas conversam, passo a passo |
 
 Outros documentos do repositório:
 
