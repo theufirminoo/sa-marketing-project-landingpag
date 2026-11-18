@@ -1,14 +1,16 @@
-import type { NextRequest } from "next/server";
+import { after, type NextRequest } from "next/server";
 
-import { gravarBriefing } from "@/lib/banco/comercial";
+import { gravarBriefing, marcarAvisoEnviado } from "@/lib/banco/comercial";
 import { bancoComercial } from "@/lib/banco/conexao";
 import { briefingSchema } from "@/lib/briefing";
+import { montarEmailBriefing, enviarEmail } from "@/lib/email/aviso-briefing";
 import { calcularFit } from "@/lib/fit";
 import { criarLimite, ipDe } from "@/lib/limite";
 
 /**
  * Recebe o briefing, valida com o mesmo esquema do formulário, calcula o FIT
- * (só para a SA) e grava antes de responder: a tela de agradecimento só diz
+ * (só para a SA), grava antes de responder e, depois, manda o e-mail de aviso
+ * para a SA (src/lib/email/aviso-briefing.ts): a tela de agradecimento só diz
  * "a SA recebeu" quando o banco confirmou. Sem banco ou com falha, responde
  * `salvo: false` e a pessoa envia pelo WhatsApp. Nunca registra dado pessoal.
  */
@@ -50,7 +52,13 @@ export async function POST(request: NextRequest) {
     const esgotou = new Promise<never>((_, rejeita) => {
       relogio = setTimeout(() => rejeita(new Error("tempo esgotado")), TEMPO_LIMITE_MS);
     });
-    const codigo = await Promise.race([gravarBriefing(sql, resultado.data, calcularFit(resultado.data)), esgotou]);
+    const fit = calcularFit(resultado.data);
+    const codigo = await Promise.race([gravarBriefing(sql, resultado.data, fit), esgotou]);
+    // Depois de responder: e-mail para a SA e, se aceito, a fila marcada como enviada.
+    after(async () => {
+      const enviado = await enviarEmail(montarEmailBriefing(resultado.data, fit));
+      if (enviado) await marcarAvisoEnviado(sql, codigo).catch(() => {});
+    });
     return Response.json({ ok: true, salvo: true, codigo });
   } catch (erro) {
     // Só o tipo do erro e o código do Postgres: nunca os dados da pessoa.

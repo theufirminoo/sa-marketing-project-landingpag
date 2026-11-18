@@ -57,20 +57,39 @@ export const SEGMENTOS = [
 ] as const;
 export type Segmento = (typeof SEGMENTOS)[number];
 
-export const ORIGENS_CLIENTE = ["indicacao", "redes-sociais", "google", "anuncios", "loja-fisica", "outro"] as const;
+export const ORIGENS_CLIENTE = [
+  "indicacao",
+  "redes-sociais",
+  "google",
+  "trafego-pago",
+  "prospeccao",
+  "vendedores",
+  "loja-fisica",
+  "outro",
+] as const;
 export type OrigemCliente = (typeof ORIGENS_CLIENTE)[number];
 
-/** Um desafio por frente da SA (ver `briefingOpcoes.desafio` em site.ts). */
+/** Problemas marcados no briefing; cada um aponta para uma frente (site.ts). */
 export const DESAFIOS = [
-  "sem-plano",
-  "converter",
-  "atrair-clientes",
-  "seguidores-nao-compram",
-  "imagem-da-marca",
-  "processos-manuais",
+  "poucas-vendas",
+  "poucos-clientes",
+  "gerar-leads",
+  "instagram-sem-resultado",
+  "presenca-digital",
+  "posicionamento",
+  "trafego-sem-resultado",
+  "site-inadequado",
+  "processo-comercial",
+  "falta-estrategia",
   "outro",
 ] as const;
 export type Desafio = (typeof DESAFIOS)[number];
+
+export const TEMPOS_MERCADO = ["menos-1", "1-3", "3-5", "mais-5"] as const;
+export type TempoMercado = (typeof TEMPOS_MERCADO)[number];
+
+export const ESTRATEGIAS = ["sim", "nao", "nao-mas-pretendo"] as const;
+export type Estrategia = (typeof ESTRATEGIAS)[number];
 
 export const MARKETINGS = ["ninguem", "eu-mesmo", "agencia-ou-freela", "equipe-interna"] as const;
 export type Marketing = (typeof MARKETINGS)[number];
@@ -81,5 +100,5 @@ export type Decisao = (typeof DECISOES)[number];
 export const PRAZOS = ["agora", "tres-meses", "pesquisando"] as const;
 export type Prazo = (typeof PRAZOS)[number];
 
-export const INVESTIMENTOS = ["ate-1500", "1500-3000", "3000-6000", "acima-6000"] as const;
+export const INVESTIMENTOS = ["ate-1000", "1000-2500", "2500-5000", "5000-10000", "acima-10000", "nao-sei"] as const;
 export type Investimento = (typeof INVESTIMENTOS)[number];

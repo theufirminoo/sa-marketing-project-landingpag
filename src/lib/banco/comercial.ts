@@ -91,20 +91,24 @@ export async function gravarBriefing(sql: Sql, dados: Briefing, fit: Fit): Promi
     const contatoId = await salvarContato(tx as unknown as Sql, dados);
     const [linha] = await tx<{ codigo: string }[]>`
       insert into comercial.briefings
-        (contato_id, segmento, segmento_outro, faturamento, origem_clientes, origem_outro, desafios, desafio_outro,
-         frentes_indicadas, marketing, decisao, prazo, investimento, objetivo, fit, fit_pontos, fit_versao,
-         consentimento_em, utm, pagina, referrer)
+        (contato_id, segmento, segmento_outro, tempo_mercado, produto_principal, faturamento, origem_clientes,
+         origem_outro, estrategia, marketing, desafios, desafio_outro, impacto, frentes_indicadas, decisao, prazo,
+         investimento, objetivo, fit, fit_pontos, fit_versao, consentimento_em, utm, pagina, referrer)
       values (
         ${contatoId},
         ${dados.segmento},
         ${outro("segmento")},
+        ${dados.tempo},
+        ${dados.produto.trim()},
         ${dados.faturamento},
         ${dados.origem},
         ${outro("origem")},
+        ${dados.estrategia},
+        ${dados.marketing ?? null},
         ${dados.desafio},
         ${outro("desafio")},
+        ${dados.impacto.trim()},
         ${indicarFrentes(dados.desafio)},
-        ${dados.marketing},
         ${dados.decisao},
         ${dados.prazo},
         ${dados.investimento},
@@ -120,13 +124,17 @@ export async function gravarBriefing(sql: Sql, dados: Briefing, fit: Fit): Promi
       on conflict (contato_id) do update set
         segmento = excluded.segmento,
         segmento_outro = excluded.segmento_outro,
+        tempo_mercado = excluded.tempo_mercado,
+        produto_principal = excluded.produto_principal,
         faturamento = excluded.faturamento,
         origem_clientes = excluded.origem_clientes,
         origem_outro = excluded.origem_outro,
+        estrategia = excluded.estrategia,
+        marketing = excluded.marketing,
         desafios = excluded.desafios,
         desafio_outro = excluded.desafio_outro,
+        impacto = excluded.impacto,
         frentes_indicadas = excluded.frentes_indicadas,
-        marketing = excluded.marketing,
         decisao = excluded.decisao,
         prazo = excluded.prazo,
         investimento = excluded.investimento,
@@ -168,5 +176,15 @@ export async function contarClique(sql: Sql, origem: string, destino: string): P
     insert into comercial.cliques (dia, origem, destino, total)
     values ((now() at time zone 'America/Sao_Paulo')::date, ${origem}, ${destino}, 1)
     on conflict (dia, origem, destino) do update set total = comercial.cliques.total + 1
+  `;
+}
+
+/** Marca como enviados os avisos de briefing ainda pendentes deste código. */
+export async function marcarAvisoEnviado(sql: Sql, codigo: string): Promise<void> {
+  await sql`
+    update comercial.avisos a set processado_em = now()
+    from comercial.briefings b
+    where b.codigo = ${codigo} and a.contato_id = b.contato_id
+      and a.tipo = 'briefing' and a.processado_em is null
   `;
 }

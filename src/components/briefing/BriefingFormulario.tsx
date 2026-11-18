@@ -10,62 +10,59 @@ import { Progress } from "@/components/ui/progress";
 import { briefing, briefingOpcoes, comum, nomeDaFrente } from "@/content/site";
 import {
   contatoBriefingSchema,
+  ETAPAS,
+  etapasAtivas,
   indicarFrentes,
   marcouOutro,
   montarMensagemAgendar,
   montarMensagemBriefing,
-  objetivoSchema,
   outroSchema,
-  PERGUNTAS_BRIEFING,
-  PERGUNTAS_MULTIPLAS,
   respostasBriefingSchema,
   temOutro,
+  textoSchemas,
   type ContatoBriefing,
+  type Etapa,
+  type EtapaId,
   type Outros,
-  type PerguntaBriefingId,
+  type Respostas,
 } from "@/lib/briefing";
 import { lerOrigem } from "@/lib/utm";
 import { urlWhatsapp } from "@/lib/whatsapp";
 import { TelaContatoBriefing, type ContatoSalvo } from "./TelaContatoBriefing";
-import { TelaMultipla, TelaObjetivo, TelaPergunta } from "./telas";
+import { TelaMultipla, TelaPergunta, TelaTexto } from "./telas";
 
 /**
  * Briefing antes da reunião (briefing.saagencia.com.br), no visual do
- * diagnóstico: abertura com aceite obrigatório, 8 perguntas (desafios com
- * várias escolhas; "Outro" abre um campo), objetivo opcional, contato e a
- * tela final, que leva a pessoa a chamar um consultor no WhatsApp. Este
- * componente só existe nesta rota, por isso pode importar site.ts.
+ * diagnóstico: abertura com aceite obrigatório, a conversa em quatro
+ * capítulos (ETAPAS em src/lib/briefing.ts; escolhas, várias escolhas e
+ * perguntas de escrever), contato e a tela final, que leva a pessoa a chamar
+ * um consultor no WhatsApp. Este componente só existe nesta rota, por isso
+ * pode importar site.ts.
  */
-
-const TOTAL_PERGUNTAS = PERGUNTAS_BRIEFING.length;
-/** Telas: 0 abertura, 1 a 8 perguntas, 9 objetivo, 10 contato, 11 fim. */
-const TELA_OBJETIVO = TOTAL_PERGUNTAS + 1;
-const TELA_CONTATO = TOTAL_PERGUNTAS + 2;
-const TELA_FIM = TOTAL_PERGUNTAS + 3;
-const TOTAL_ETAPAS = TOTAL_PERGUNTAS + 2;
 
 const CHAVE = "sa:briefing";
 
-type Respostas = Partial<Record<PerguntaBriefingId, string | string[]>>;
+/** Tela atual: a abertura, uma etapa (pelo nome), o contato ou o fim. */
+type Tela = "abertura" | EtapaId | "contato" | "fim";
 
 type Estado = {
-  tela: number;
+  tela: Tela;
   aceite: boolean;
   respostas: Respostas;
   outros: Outros;
-  objetivo: string;
   contato?: ContatoSalvo;
   salvo?: boolean;
   /** Código do briefing gravado, para avisar o clique no WhatsApp. */
   codigo?: string;
 };
 
-const INICIAL: Estado = { tela: 0, aceite: false, respostas: {}, outros: {}, objetivo: "" };
+const INICIAL: Estado = { tela: "abertura", aceite: false, respostas: {}, outros: {} };
 
 const contatoSalvoSchema = contatoBriefingSchema.pick({ nome: true, whatsapp: true, empresa: true, instagram: true });
 const outrosSalvosSchema = z
   .object({ segmento: z.string().max(80), origem: z.string().max(80), desafio: z.string().max(80) })
   .partial();
+const TELAS = new Set<string>(["abertura", "contato", "fim", ...ETAPAS.map((e) => e.id)]);
 
 /** Lê do sessionStorage só o que for válido; cada resposta é conferida sozinha. */
 function lerEstado(): Estado {
@@ -74,17 +71,15 @@ function lerEstado(): Estado {
     if (!bruto) return INICIAL;
     const salvo = JSON.parse(bruto) as Partial<Estado>;
     const respostas: Respostas = {};
-    for (const chave of PERGUNTAS_BRIEFING) {
-      const r = respostasBriefingSchema.shape[chave].safeParse(salvo.respostas?.[chave]);
-      if (r.success) respostas[chave] = r.data as string | string[];
+    for (const etapa of ETAPAS) {
+      const r = respostasBriefingSchema.shape[etapa.id].safeParse(salvo.respostas?.[etapa.id]);
+      if (r.success && r.data !== undefined) respostas[etapa.id] = r.data as string | string[];
     }
-    const objetivo = objetivoSchema.safeParse(salvo.objetivo ?? "");
     return coerente({
-      tela: Number.isInteger(salvo.tela) ? Math.min(Math.max(Number(salvo.tela), 0), TELA_FIM) : 0,
+      tela: typeof salvo.tela === "string" && TELAS.has(salvo.tela) ? (salvo.tela as Tela) : "abertura",
       aceite: salvo.aceite === true,
       respostas,
       outros: outrosSalvosSchema.safeParse(salvo.outros ?? {}).data ?? {},
-      objetivo: objetivo.success ? objetivo.data : "",
       contato: contatoSalvoSchema.safeParse(salvo.contato).data,
       salvo: salvo.salvo === true,
       codigo: z.uuid().safeParse(salvo.codigo).data,
@@ -94,20 +89,33 @@ function lerEstado(): Estado {
   }
 }
 
-const respondida = (estado: Estado, chave: PerguntaBriefingId): boolean => {
-  const valor = estado.respostas[chave];
+const respondida = (estado: Estado, etapa: Etapa): boolean => {
+  const valor = estado.respostas[etapa.id];
+  if (etapa.tipo === "texto") return textoSchemas[etapa.id].safeParse(valor ?? "").success;
   if (!valor || (Array.isArray(valor) && valor.length === 0)) return false;
-  if (temOutro(chave) && marcouOutro(valor)) return outroSchema.safeParse(estado.outros[chave] ?? "").success;
+  if (temOutro(etapa.id) && marcouOutro(valor)) return outroSchema.safeParse(estado.outros[etapa.id] ?? "").success;
   return true;
 };
 
 /** Sem aceite, só a abertura. Nunca deixa a pessoa numa tela sem as respostas anteriores. */
 function coerente(estado: Estado): Estado {
-  if (!estado.aceite) return { ...estado, tela: 0 };
-  const faltando = PERGUNTAS_BRIEFING.findIndex((chave) => !respondida(estado, chave));
-  if (faltando >= 0 && estado.tela > faltando + 1) return { ...estado, tela: faltando + 1 };
-  if (estado.tela === TELA_FIM && !estado.contato) return { ...estado, tela: TELA_CONTATO };
+  if (!estado.aceite) return { ...estado, tela: "abertura" };
+  if (estado.tela === "abertura") return estado;
+  const ativas = etapasAtivas(estado.respostas);
+  const ordem: Tela[] = [...ativas.map((e) => e.id), "contato", "fim"];
+  // Etapa que deixou de valer (ex.: "marketing" depois de trocar a estratégia).
+  if (!ordem.includes(estado.tela)) return coerente({ ...estado, tela: ativas[0]?.id ?? "contato" });
+  const faltando = ativas.find((e) => e.tipo !== "texto" || e.obrigatoria ? !respondida(estado, e) : false);
+  if (faltando && ordem.indexOf(estado.tela) > ordem.indexOf(faltando.id)) return { ...estado, tela: faltando.id };
+  if (estado.tela === "fim" && !estado.contato) return { ...estado, tela: "contato" };
   return estado;
+}
+
+/** Próxima e anterior na ordem das etapas que valem agora. */
+function vizinha(estado: Estado, passo: 1 | -1): Tela {
+  const ordem: Tela[] = ["abertura", ...etapasAtivas(estado.respostas).map((e) => e.id), "contato", "fim"];
+  const i = ordem.indexOf(estado.tela);
+  return ordem[Math.min(Math.max(i + passo, 0), ordem.length - 1)];
 }
 
 async function enviarBriefing(corpo: Record<string, unknown>): Promise<{ salvo: boolean; codigo?: string }> {
@@ -174,9 +182,10 @@ export function BriefingFormulario() {
     window.scrollTo({ top: 0 });
   }, [estado.tela, carregado]);
 
-  const irPara = (tela: number) => setEstado((e) => coerente({ ...e, tela }));
-  const voltar = () => irPara(Math.max(estado.tela - 1, 0));
-  const responder = (chave: PerguntaBriefingId, valor: string | string[]) =>
+  const irPara = (tela: Tela) => setEstado((e) => coerente({ ...e, tela }));
+  const avancar = () => setEstado((e) => coerente({ ...e, tela: vizinha(e, 1) }));
+  const voltar = () => setEstado((e) => ({ ...e, tela: vizinha(e, -1) }));
+  const responder = (chave: EtapaId, valor: string | string[]) =>
     setEstado((e) => ({ ...e, respostas: { ...e.respostas, [chave]: valor } }));
 
   const comecar = () => {
@@ -185,13 +194,13 @@ export function BriefingFormulario() {
       aceiteRef.current?.focus();
       return;
     }
-    irPara(1);
+    avancar();
   };
 
   const concluir = async (contato: ContatoBriefing) => {
     const respostas = respostasBriefingSchema.safeParse(estado.respostas);
     if (!respostas.success) {
-      irPara(1);
+      irPara(ETAPAS[0].id);
       return;
     }
     const origem = lerOrigem();
@@ -200,19 +209,21 @@ export function BriefingFormulario() {
       ...respostas.data,
       consentimento: estado.aceite,
       outros: estado.outros,
-      objetivo: estado.objetivo,
       utm: origem.utm,
       pagina: origem.pagina,
       referrer: origem.referrer,
     });
     const { nome, whatsapp, empresa, instagram } = contato;
-    setEstado((e) => ({ ...e, contato: { nome, whatsapp, empresa, instagram }, salvo, codigo, tela: TELA_FIM }));
+    setEstado((e) => ({ ...e, contato: { nome, whatsapp, empresa, instagram }, salvo, codigo, tela: "fim" }));
   };
 
   const { tela } = estado;
-  const etapa = Math.min(tela, TOTAL_ETAPAS);
+  // Progresso: etapas que valem agora mais o contato.
+  const passos: Tela[] = [...etapasAtivas(estado.respostas).map((e) => e.id), "contato"];
+  const total = passos.length;
+  const etapa = tela === "abertura" ? 0 : tela === "fim" ? total : passos.indexOf(tela) + 1;
   const anuncio =
-    tela === 0 ? briefing.abertura.rotulo : tela === TELA_FIM ? briefing.concluido.anuncio : briefing.contador(etapa, TOTAL_ETAPAS);
+    tela === "abertura" ? briefing.abertura.rotulo : tela === "fim" ? briefing.concluido.anuncio : briefing.contador(etapa, total);
 
   const telaAbertura = () => {
     const a = briefing.abertura;
@@ -263,7 +274,29 @@ export function BriefingFormulario() {
     );
   };
 
-  const telaPergunta = (chave: PerguntaBriefingId) => {
+  const telaEtapa = (etapa: Etapa) => {
+    const bloco = briefing.blocos[etapa.bloco];
+    if (etapa.tipo === "texto") {
+      const valor = estado.respostas[etapa.id];
+      return (
+        <TelaTexto
+          key={etapa.id}
+          id={etapa.id}
+          bloco={bloco}
+          textos={briefing.textos[etapa.id]}
+          validar={textoSchemas[etapa.id]}
+          longo={etapa.id !== "produto"}
+          inicial={typeof valor === "string" ? valor : ""}
+          tituloRef={tituloRef}
+          aoVoltar={voltar}
+          aoAvancar={(texto) => {
+            responder(etapa.id, texto);
+            avancar();
+          }}
+        />
+      );
+    }
+    const chave = etapa.id;
     const pergunta = briefing.perguntas[chave];
     const outro = temOutro(chave)
       ? {
@@ -273,16 +306,17 @@ export function BriefingFormulario() {
         }
       : undefined;
     const base = {
+      bloco,
       pergunta: pergunta.pergunta,
       ajuda: "ajuda" in pergunta ? pergunta.ajuda : undefined,
       opcoes: briefingOpcoes[chave],
       outro,
       tituloRef,
-      aoAvancar: () => irPara(tela + 1),
+      aoAvancar: avancar,
       aoVoltar: voltar,
     };
-    if (PERGUNTAS_MULTIPLAS.includes(chave)) {
-      const valor = estado.respostas[chave];
+    const valor = estado.respostas[chave];
+    if (etapa.tipo === "multipla") {
       return (
         <TelaMultipla
           key={chave}
@@ -293,7 +327,6 @@ export function BriefingFormulario() {
         />
       );
     }
-    const valor = estado.respostas[chave];
     return (
       <TelaPergunta
         key={chave}
@@ -317,7 +350,6 @@ export function BriefingFormulario() {
             empresa: estado.contato.empresa,
             respostas: respostas.data,
             outros: estado.outros,
-            objetivo: estado.objetivo,
           });
     const frentes = respostas.success ? indicarFrentes(respostas.data.desafio) : [];
     return (
@@ -363,34 +395,22 @@ export function BriefingFormulario() {
   };
 
   const conteudo = () => {
-    if (tela === 0) return telaAbertura();
-    if (tela >= 1 && tela <= TOTAL_PERGUNTAS) return telaPergunta(PERGUNTAS_BRIEFING[tela - 1]);
-    if (tela === TELA_OBJETIVO) {
-      return (
-        <TelaObjetivo
-          inicial={estado.objetivo}
-          tituloRef={tituloRef}
-          aoVoltar={voltar}
-          aoAvancar={(objetivo) => {
-            setEstado((e) => ({ ...e, objetivo }));
-            irPara(TELA_CONTATO);
-          }}
-        />
-      );
-    }
-    if (tela === TELA_CONTATO) {
+    if (tela === "abertura") return telaAbertura();
+    if (tela === "contato") {
       return <TelaContatoBriefing inicial={estado.contato} tituloRef={tituloRef} aoVoltar={voltar} aoEnviar={concluir} />;
     }
-    return telaFim();
+    if (tela === "fim") return telaFim();
+    const etapa = ETAPAS.find((e) => e.id === tela);
+    return etapa ? telaEtapa(etapa) : null;
   };
 
   return (
     <div className="sa-briefing__cartao">
       <div className="sa-diag__topo">
-        <Progress value={etapa} max={TOTAL_ETAPAS} aria-label={briefing.progresso} aria-valuetext={anuncio} />
-        {tela >= 1 && tela < TELA_FIM ? (
+        <Progress value={etapa} max={total} aria-label={briefing.progresso} aria-valuetext={anuncio} />
+        {tela !== "abertura" && tela !== "fim" ? (
           <span className="rotulo sa-num text-text-muted" aria-hidden="true">
-            {briefing.contador(etapa, TOTAL_ETAPAS)}
+            {briefing.contador(etapa, total)}
           </span>
         ) : null}
       </div>

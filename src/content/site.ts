@@ -23,6 +23,8 @@ export {
 import type {
   Decisao,
   Desafio,
+  Estrategia,
+  TempoMercado,
   Faturamento,
   Fase,
   FrenteId,
@@ -700,7 +702,7 @@ export const diagnostico = {
 /* Briefing antes da reunião (briefing.saagencia.com.br)               */
 /* ------------------------------------------------------------------ */
 
-/** Opções do briefing. As faixas de investimento são provisórias (ver PENDENCIAS). */
+/** Opções do briefing, na ordem em que aparecem. */
 export const briefingOpcoes = {
   segmento: [
     { id: "servicos", rotulo: "Serviços" },
@@ -711,33 +713,49 @@ export const briefingOpcoes = {
     { id: "industria", rotulo: "Indústria" },
     { id: "outro", rotulo: "Outro ramo" },
   ] satisfies Opcao<Segmento>[],
+  tempo: [
+    { id: "menos-1", rotulo: "Menos de 1 ano" },
+    { id: "1-3", rotulo: "De 1 a 3 anos" },
+    { id: "3-5", rotulo: "De 3 a 5 anos" },
+    { id: "mais-5", rotulo: "Mais de 5 anos" },
+  ] satisfies Opcao<TempoMercado>[],
   faturamento: faturamentos,
   origem: [
     { id: "indicacao", rotulo: "Indicação" },
-    { id: "redes-sociais", rotulo: "Instagram e outras redes" },
+    { id: "redes-sociais", rotulo: "Instagram e redes sociais" },
     { id: "google", rotulo: "Google" },
-    { id: "anuncios", rotulo: "Anúncios pagos" },
-    { id: "loja-fisica", rotulo: "Loja física ou passagem" },
+    { id: "trafego-pago", rotulo: "Tráfego pago" },
+    { id: "prospeccao", rotulo: "Prospecção ativa" },
+    { id: "vendedores", rotulo: "Vendedores" },
+    { id: "loja-fisica", rotulo: "Loja física" },
     { id: "outro", rotulo: "Outro canal" },
   ] satisfies Opcao<OrigemCliente>[],
-  // Vários podem ser marcados. Cada desafio aponta para a frente que cuida
-  // dele (regra em `indicarFrentes`, src/lib/briefing.ts); "Outro" vai para a
-  // Consultoria, que investiga o caso.
-  desafio: [
-    { id: "sem-plano", rotulo: "Não tenho um plano claro para vender mais", frente: "consultoria" },
-    { id: "converter", rotulo: "Muita conversa e pouca venda fechada", frente: "consultoria" },
-    { id: "atrair-clientes", rotulo: "Atrair clientes novos todo mês", frente: "social" },
-    { id: "seguidores-nao-compram", rotulo: "Tenho seguidores, mas eles não compram", frente: "social" },
-    { id: "imagem-da-marca", rotulo: "Fotos e vídeos não mostram o nível da marca", frente: "studio" },
-    { id: "processos-manuais", rotulo: "Atendimento e vendas no manual, sem sistema", frente: "tech" },
-    { id: "outro", rotulo: "Outro desafio", frente: "consultoria" },
-  ] satisfies (Opcao<Desafio> & { frente: FrenteId })[],
+  estrategia: [
+    { id: "sim", rotulo: "Sim" },
+    { id: "nao", rotulo: "Não" },
+    { id: "nao-mas-pretendo", rotulo: "Não, mas pretendo ter" },
+  ] satisfies Opcao<Estrategia>[],
+  // Só aparece quando há estratégia ("Sim" na pergunta anterior).
   marketing: [
-    { id: "ninguem", rotulo: "Ninguém cuida" },
     { id: "eu-mesmo", rotulo: "Eu mesmo, quando dá tempo" },
     { id: "agencia-ou-freela", rotulo: "Agência ou freelancer" },
     { id: "equipe-interna", rotulo: "Uma equipe interna" },
   ] satisfies Opcao<Marketing>[],
+  // Vários podem ser marcados. Cada problema aponta para a frente que cuida
+  // dele (regra em `indicarFrentes`, src/lib/briefing.ts).
+  desafio: [
+    { id: "poucas-vendas", rotulo: "Poucas vendas", frente: "consultoria" },
+    { id: "poucos-clientes", rotulo: "Poucos clientes", frente: "social" },
+    { id: "gerar-leads", rotulo: "Dificuldade para gerar contatos interessados", frente: "social" },
+    { id: "instagram-sem-resultado", rotulo: "O Instagram não traz resultado", frente: "social" },
+    { id: "presenca-digital", rotulo: "Pouca presença digital", frente: "social" },
+    { id: "posicionamento", rotulo: "Dificuldade de posicionamento da marca", frente: "studio" },
+    { id: "trafego-sem-resultado", rotulo: "Tráfego pago sem resultado", frente: "social" },
+    { id: "site-inadequado", rotulo: "Site ou página de vendas que não converte", frente: "tech" },
+    { id: "processo-comercial", rotulo: "Problemas no processo comercial", frente: "consultoria" },
+    { id: "falta-estrategia", rotulo: "Falta de estratégia", frente: "consultoria" },
+    { id: "outro", rotulo: "Outro problema", frente: "consultoria" },
+  ] satisfies (Opcao<Desafio> & { frente: FrenteId })[],
   decisao: [
     { id: "eu", rotulo: "Eu decido" },
     { id: "com-socio", rotulo: "Decido com sócio" },
@@ -749,10 +767,12 @@ export const briefingOpcoes = {
     { id: "pesquisando", rotulo: "Ainda estou pesquisando" },
   ] satisfies Opcao<Prazo>[],
   investimento: [
-    { id: "ate-1500", rotulo: "Até R$ 1.500" },
-    { id: "1500-3000", rotulo: "De R$ 1.500 a R$ 3.000" },
-    { id: "3000-6000", rotulo: "De R$ 3.000 a R$ 6.000" },
-    { id: "acima-6000", rotulo: "Acima de R$ 6.000" },
+    { id: "ate-1000", rotulo: "Até R$ 1.000" },
+    { id: "1000-2500", rotulo: "De R$ 1.000 a R$ 2.500" },
+    { id: "2500-5000", rotulo: "De R$ 2.500 a R$ 5.000" },
+    { id: "5000-10000", rotulo: "De R$ 5.000 a R$ 10.000" },
+    { id: "acima-10000", rotulo: "Acima de R$ 10.000" },
+    { id: "nao-sei", rotulo: "Ainda não sei" },
   ] satisfies Opcao<Investimento>[],
 } as const;
 
@@ -761,7 +781,7 @@ export type PerguntaBriefing = keyof typeof briefingOpcoes;
 export const briefing = {
   metadados: {
     titulo: "Briefing | SA Marketing & Business",
-    descricao: "Oito perguntas rápidas antes da conversa com um consultor da SA.",
+    descricao: "Perguntas rápidas antes da conversa com um consultor da SA.",
   },
   progresso: "Progresso do briefing",
   contador: (etapa: number, total: number) => `${etapa} de ${total}`,
@@ -770,7 +790,7 @@ export const briefing = {
   abertura: {
     rotulo: "Antes da conversa",
     titulo: "Conte um pouco do seu negócio.",
-    texto: "São 8 perguntas rápidas e leva uns 2 minutos. Assim o consultor da SA chega na conversa já sabendo onde você está.",
+    texto: "Leva uns 3 minutos: quase tudo é de um toque. Assim o consultor da SA chega na conversa já sabendo onde você está e onde quer chegar.",
     aceite: {
       antes: "Aceito que a SA use minhas respostas e meu contato para preparar a conversa comigo, como descreve a ",
       link: "política de privacidade",
@@ -779,35 +799,59 @@ export const briefing = {
     aceiteErro: "Marque a caixa acima para começar.",
     comecar: "Começar o briefing",
   },
+  /** Capítulos da conversa: aparecem acima de cada pergunta. */
+  blocos: {
+    empresa: "Sua empresa",
+    vendas: "Como você vende",
+    problemas: "O que trava",
+    proximos: "Próximos passos",
+  },
   perguntas: {
     segmento: { pergunta: "Qual é o ramo do negócio?" },
+    tempo: { pergunta: "Há quanto tempo a empresa está no mercado?" },
     faturamento: { pergunta: "Quanto o negócio fatura por mês?" },
-    origem: { pergunta: "De onde vem a maioria dos clientes hoje?" },
+    origem: { pergunta: "Como vocês alcançam a maior parte dos clientes hoje?" },
+    estrategia: { pergunta: "Hoje, a empresa tem alguma estratégia de marketing?" },
+    marketing: { pergunta: "Quem cuida dessa estratégia hoje?" },
     desafio: {
-      pergunta: "Quais são os maiores desafios do negócio hoje?",
+      pergunta: "Quais são os principais problemas da empresa hoje?",
       ajuda: "Marque quantos quiser.",
-      erro: "Marque pelo menos um desafio para continuar.",
+      erro: "Marque pelo menos um problema para continuar.",
     },
-    marketing: { pergunta: "Quem cuida do marketing hoje?" },
     decisao: { pergunta: "Quem decide sobre contratar a SA?" },
     prazo: { pergunta: "Quando você quer começar?" },
     investimento: {
-      pergunta: "Quanto você pode investir por mês na SA?",
-      ajuda: "Só o serviço. A verba de anúncios fica à parte.",
+      pergunta: "Para resolver esses problemas e construir um comercial forte, quanto você investiria por mês?",
+      ajuda: "Valor dos serviços da SA. Mídia paga, quando houver, fica à parte.",
     },
   } satisfies Record<PerguntaBriefing, { pergunta: string; ajuda?: string; erro?: string }>,
+  /** Perguntas de escrever. */
+  textos: {
+    produto: {
+      pergunta: "Qual produto ou serviço mais vende hoje?",
+      rotulo: "Em poucas palavras.",
+      exemplo: "Ex.: limpeza de pele",
+      erro: "Escreva o produto ou serviço para continuar.",
+    },
+    impacto: {
+      pergunta: "Se esses problemas continuarem, que impacto isso pode ter na empresa?",
+      rotulo: "Uma ou duas frases bastam.",
+      exemplo: "Ex.: perder clientes para a concorrência e ter que reduzir a equipe",
+      erro: "Conte em uma frase para continuar.",
+    },
+    objetivo: {
+      pergunta: "O que você deseja ter daqui a 6 a 12 meses?",
+      rotulo: "Opcional. Uma ou duas frases bastam.",
+      exemplo: "Vender todo dia pelo Instagram e depender menos de indicação",
+      erro: "Use até 500 caracteres.",
+    },
+  },
   /** Campo que aparece quando a pessoa escolhe "Outro". */
   outro: {
     segmento: { rotulo: "Qual é o ramo?", exemplo: "Ex.: oficina mecânica" },
-    origem: { rotulo: "De onde eles vêm?", exemplo: "Ex.: feiras e eventos" },
-    desafio: { rotulo: "Qual é o desafio?", exemplo: "Ex.: precificar os serviços" },
+    origem: { rotulo: "Como eles chegam?", exemplo: "Ex.: feiras e eventos" },
+    desafio: { rotulo: "Qual é o problema?", exemplo: "Ex.: precificar os serviços" },
     erro: "Escreva em poucas palavras para continuar.",
-  },
-  objetivo: {
-    pergunta: "O que você deseja ter daqui a 6 a 12 meses?",
-    rotulo: "Opcional. Uma ou duas frases bastam.",
-    exemplo: "Vender todo dia pelo Instagram e depender menos de indicação",
-    erro: "Use até 500 caracteres.",
   },
   contato: {
     pergunta: "Quem está respondendo?",
@@ -844,15 +888,19 @@ export const briefing = {
       `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}. Respondi o briefing pelo site e quero marcar a primeira conversa.`,
     rotulos: {
       segmento: "Ramo",
+      tempo: "No mercado há",
+      produto: "Mais vende",
       faturamento: "Faturamento",
       origem: "Clientes vêm de",
-      desafio: "Desafios",
-      marketing: "Marketing",
+      estrategia: "Estratégia de marketing",
+      marketing: "Quem cuida",
+      desafio: "Problemas",
+      impacto: "Impacto",
       decisao: "Decisão",
       prazo: "Começar",
       investimento: "Investimento",
-    } satisfies Record<PerguntaBriefing, string>,
-    objetivo: "Objetivo",
+      objetivo: "Objetivo em 6 a 12 meses",
+    },
   },
 } as const;
 
@@ -908,7 +956,7 @@ export const privacidade = {
       paragrafos: [
         "No diagnóstico, o formulário pede seu nome e seu WhatsApp. Empresa e Instagram são opcionais.",
         "Junto vão as três respostas do diagnóstico, a página por onde você entrou, o site que trouxe você até aqui e os parâmetros de campanha do link, como utm_source, fbclid e gclid.",
-        "No briefing antes da reunião, além do contato, vão as respostas sobre o negócio: ramo, faturamento, de onde vêm os clientes, quem cuida do marketing, quem decide, quando quer começar, quanto pode investir e, se você escrever, o seu objetivo.",
+        "No briefing antes da reunião, além do contato, vão as respostas sobre o negócio: ramo, tempo de mercado, produto ou serviço que mais vende, faturamento, como chegam os clientes, estratégia de marketing, principais problemas e o impacto deles, quem decide, quando quer começar, quanto pode investir e, se você escrever, o seu objetivo.",
       ],
     },
     {
@@ -916,6 +964,7 @@ export const privacidade = {
       paragrafos: [
         "A SA usa esses dados para falar com você sobre o diagnóstico e para saber quais campanhas trazem visitas.",
         "As respostas ficam no banco de dados da SA, no Supabase, com servidores em São Paulo. Seu WhatsApp identifica o cadastro: se você responder de novo, a SA atualiza o que já tem em vez de criar outro. Com as respostas do briefing, a SA prepara a conversa e avalia como pode ajudar.",
+        "As respostas do briefing também seguem por e-mail para a equipe da SA (envio pelo Resend), para o consultor preparar a conversa.",
         "Quando a SA usar um sistema de atendimento (CRM), o contato e as respostas do diagnóstico também seguem para ele. Só a equipe da SA acessa esses dados. Durante a sua visita, as respostas também ficam guardadas no seu navegador, para você retomar o diagnóstico ou o briefing de onde parou. Fechar a aba apaga essa cópia.",
       ],
     },

@@ -9,43 +9,37 @@ import type { RespostasBriefing } from "./briefing";
  * Ao mudar pesos ou cortes, suba FIT_VERSAO: o banco guarda a versão de cada
  * linha e o sistema pode recalcular as antigas.
  */
-export const FIT_VERSAO = 2;
+export const FIT_VERSAO = 3;
 
-/** Os desafios não pontuam: servem para indicar a frente, não o FIT. */
-type Pontuaveis = Omit<RespostasBriefing, "desafio">;
-type Pesos = { [K in keyof Pontuaveis]?: Partial<Record<Pontuaveis[K], number>> };
-
-const PESOS: Pesos = {
-  // Porte: quem fatura mais sustenta o serviço por mais tempo.
-  faturamento: { "ate-10": 0, "10-20": 1, "20-50": 1, "50-200": 2, "acima-200": 3 },
-  // Necessidade: dono fazendo o marketing sozinho é a dor mais clara.
-  marketing: { ninguem: 2, "eu-mesmo": 3, "agencia-ou-freela": 2, "equipe-interna": 1 },
-  // Autoridade.
-  decisao: { eu: 3, "com-socio": 2, "outra-pessoa": 0 },
-  // Prazo.
-  prazo: { agora: 3, "tres-meses": 2, pesquisando: 0 },
-  // Verba.
-  investimento: { "ate-1500": 0, "1500-3000": 1, "3000-6000": 2, "acima-6000": 3 },
+const FATURAMENTO: Record<RespostasBriefing["faturamento"], number> = {
+  "ate-10": 0, "10-20": 1, "20-50": 1, "50-200": 2, "acima-200": 3,
+};
+/** Necessidade: sem estratégia ou fazendo sozinho é a dor mais clara. */
+const ESTRATEGIA: Record<"nao" | "nao-mas-pretendo", number> = { nao: 2, "nao-mas-pretendo": 3 };
+const MARKETING: Record<NonNullable<RespostasBriefing["marketing"]>, number> = {
+  ninguem: 2, "eu-mesmo": 3, "agencia-ou-freela": 2, "equipe-interna": 1,
+};
+const DECISAO: Record<RespostasBriefing["decisao"], number> = { eu: 3, "com-socio": 2, "outra-pessoa": 0 };
+const PRAZO: Record<RespostasBriefing["prazo"], number> = { agora: 3, "tres-meses": 2, pesquisando: 0 };
+const INVESTIMENTO: Record<RespostasBriefing["investimento"], number> = {
+  "ate-1000": 0, "1000-2500": 1, "2500-5000": 2, "5000-10000": 3, "acima-10000": 3, "nao-sei": 1,
 };
 
 export const FIT_MAXIMO = 15;
 
 export type Fit = { fit: "alto" | "medio" | "baixo"; pontos: number; versao: number };
 
-export function calcularFit(respostas: RespostasBriefing): Fit {
-  let pontos = 0;
-  for (const chave of Object.keys(PESOS) as (keyof Pontuaveis)[]) {
-    const tabela = PESOS[chave] as Record<string, number> | undefined;
-    pontos += tabela?.[respostas[chave]] ?? 0;
-  }
+/** Porte, necessidade, autoridade, prazo e verba: até 3 pontos cada. */
+export function calcularFit(r: RespostasBriefing): Fit {
+  const necessidade = r.estrategia === "sim" ? MARKETING[r.marketing ?? "ninguem"] : ESTRATEGIA[r.estrategia];
+  const pontos = FATURAMENTO[r.faturamento] + necessidade + DECISAO[r.decisao] + PRAZO[r.prazo] + INVESTIMENTO[r.investimento];
 
   let fit: Fit["fit"] = pontos >= 11 ? "alto" : pontos >= 6 ? "medio" : "baixo";
-
   // Sem verba e sem porte, não há o que pontuar compense.
-  const pequeno = respostas.faturamento === "ate-10" || respostas.faturamento === "10-20";
-  if (respostas.investimento === "ate-1500" && pequeno) fit = "baixo";
+  const pequeno = r.faturamento === "ate-10" || r.faturamento === "10-20";
+  if (r.investimento === "ate-1000" && pequeno) fit = "baixo";
   // Sem decisão ou sem prazo, no máximo médio: a conversa ainda não fecha.
-  if (fit === "alto" && (respostas.decisao === "outra-pessoa" || respostas.prazo === "pesquisando")) fit = "medio";
+  if (fit === "alto" && (r.decisao === "outra-pessoa" || r.prazo === "pesquisando")) fit = "medio";
 
   return { fit, pontos, versao: FIT_VERSAO };
 }

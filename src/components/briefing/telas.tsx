@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { briefing } from "@/content/site";
-import { objetivoSchema, outroSchema } from "@/lib/briefing";
+import { outroSchema } from "@/lib/briefing";
+import type { ZodType } from "zod";
 
 type Opcoes = readonly { id: string; rotulo: string }[];
 type Titulo = RefObject<HTMLHeadingElement | null>;
@@ -70,7 +71,13 @@ function Acoes({ aoVoltar, desativado }: { aoVoltar: () => void; desativado?: bo
 
 /* ------------------------------------------------------------------ */
 
+/** Capítulo da conversa, acima do título. */
+function Capitulo({ texto }: { texto?: string }) {
+  return texto ? <p className="sa-resultado__rotulo rotulo mt-0 mb-2">{texto}</p> : null;
+}
+
 type PropsPergunta = {
+  bloco?: string;
   pergunta: string;
   ajuda?: string;
   opcoes: Opcoes;
@@ -86,7 +93,7 @@ type PropsPergunta = {
  * Escolha única. Um toque responde e avança depois de 200 ms, como no
  * diagnóstico. "Outro" não avança: abre o campo para escrever.
  */
-export function TelaPergunta({ pergunta, ajuda, opcoes, valor, outro, tituloRef, aoResponder, aoAvancar, aoVoltar }: PropsPergunta) {
+export function TelaPergunta({ bloco, pergunta, ajuda, opcoes, valor, outro, tituloRef, aoResponder, aoAvancar, aoVoltar }: PropsPergunta) {
   const espera = useRef<number | undefined>(undefined);
   const campoOutro = useRef<HTMLInputElement>(null);
   const [erro, setErro] = useState<string | null>(null);
@@ -128,6 +135,7 @@ export function TelaPergunta({ pergunta, ajuda, opcoes, valor, outro, tituloRef,
   return (
     <form className="flex min-h-0 flex-1 flex-col" onSubmit={enviar} noValidate>
       <div className="sa-diag__corpo">
+        <Capitulo texto={bloco} />
         <h1 ref={tituloRef} tabIndex={-1} className="titulo-2 sa-diag__titulo">
           {pergunta}
         </h1>
@@ -156,6 +164,7 @@ export function TelaPergunta({ pergunta, ajuda, opcoes, valor, outro, tituloRef,
 /* ------------------------------------------------------------------ */
 
 type PropsMultipla = {
+  bloco?: string;
   pergunta: string;
   ajuda?: string;
   erroVazio: string;
@@ -169,7 +178,7 @@ type PropsMultipla = {
 };
 
 /** Várias escolhas: cada toque marca ou desmarca; avança no Continuar. */
-export function TelaMultipla({ pergunta, ajuda, erroVazio, opcoes, valor, outro, tituloRef, aoResponder, aoAvancar, aoVoltar }: PropsMultipla) {
+export function TelaMultipla({ bloco, pergunta, ajuda, erroVazio, opcoes, valor, outro, tituloRef, aoResponder, aoAvancar, aoVoltar }: PropsMultipla) {
   const campoOutro = useRef<HTMLInputElement>(null);
   const espera = useRef<number | undefined>(undefined);
   const [erro, setErro] = useState<string | null>(null);
@@ -206,6 +215,7 @@ export function TelaMultipla({ pergunta, ajuda, erroVazio, opcoes, valor, outro,
   return (
     <form className="flex min-h-0 flex-1 flex-col" onSubmit={enviar} noValidate>
       <div className="sa-diag__corpo">
+        <Capitulo texto={bloco} />
         <h1 ref={tituloRef} tabIndex={-1} className="titulo-2 sa-diag__titulo">
           {pergunta}
         </h1>
@@ -245,21 +255,28 @@ export function TelaMultipla({ pergunta, ajuda, erroVazio, opcoes, valor, outro,
 
 /* ------------------------------------------------------------------ */
 
-type PropsObjetivo = {
+type PropsTexto = {
+  id: string;
+  bloco?: string;
+  textos: { pergunta: string; rotulo: string; exemplo: string; erro: string };
+  validar: ZodType<string>;
+  /** Uma linha (campo) ou várias (caixa de texto). */
+  longo: boolean;
   inicial: string;
   tituloRef: Titulo;
   aoVoltar: () => void;
-  aoAvancar: (objetivo: string) => void;
+  aoAvancar: (texto: string) => void;
 };
 
-export function TelaObjetivo({ inicial, tituloRef, aoVoltar, aoAvancar }: PropsObjetivo) {
+/** Pergunta de escrever. A obrigatória só avança com texto; a opcional avança vazia. */
+export function TelaTexto({ id, bloco, textos: t, validar, longo, inicial, tituloRef, aoVoltar, aoAvancar }: PropsTexto) {
   const [texto, setTexto] = useState(inicial);
   const [erro, setErro] = useState<string | null>(null);
-  const t = briefing.objetivo;
+  const campo = `briefing-${id}`;
 
   const enviar = (evento: FormEvent) => {
     evento.preventDefault();
-    const resultado = objetivoSchema.safeParse(texto);
+    const resultado = validar.safeParse(texto);
     if (!resultado.success) {
       setErro(resultado.error.issues[0]?.message ?? t.erro);
       return;
@@ -267,31 +284,41 @@ export function TelaObjetivo({ inicial, tituloRef, aoVoltar, aoAvancar }: PropsO
     aoAvancar(resultado.data);
   };
 
+  const props = {
+    id: campo,
+    value: texto,
+    placeholder: t.exemplo,
+    "aria-describedby": erro ? `${campo}-ajuda ${campo}-erro` : `${campo}-ajuda`,
+    "aria-invalid": erro ? true : undefined,
+  } as const;
+  const mudar = (valor: string) => {
+    setTexto(valor);
+    if (erro) setErro(null);
+  };
+
   return (
     <form className="flex min-h-0 flex-1 flex-col" onSubmit={enviar} noValidate>
       <div className="sa-diag__corpo">
+        <Capitulo texto={bloco} />
         <h1 ref={tituloRef} tabIndex={-1} className="titulo-2 sa-diag__titulo">
-          <label htmlFor="briefing-objetivo">{t.pergunta}</label>
+          <label htmlFor={campo}>{t.pergunta}</label>
         </h1>
-        <p id="briefing-objetivo-ajuda" className="pequeno mt-2 text-text-muted">
+        <p id={`${campo}-ajuda`} className="pequeno mt-2 text-text-muted">
           {t.rotulo}
         </p>
-        <textarea
-          id="briefing-objetivo"
-          className="sa-input sa-input--area mt-6"
-          value={texto}
-          onChange={(e) => {
-            setTexto(e.target.value);
-            if (erro) setErro(null);
-          }}
-          rows={4}
-          maxLength={600}
-          placeholder={t.exemplo}
-          aria-describedby={erro ? "briefing-objetivo-ajuda briefing-objetivo-erro" : "briefing-objetivo-ajuda"}
-          aria-invalid={erro ? true : undefined}
-        />
+        {longo ? (
+          <textarea
+            {...props}
+            className="sa-input sa-input--area mt-6"
+            rows={4}
+            maxLength={600}
+            onChange={(e) => mudar(e.target.value)}
+          />
+        ) : (
+          <Input {...props} className="mt-6" maxLength={120} enterKeyHint="next" onChange={(e) => mudar(e.target.value)} />
+        )}
         {erro ? (
-          <p id="briefing-objetivo-erro" className="sa-erro pequeno mt-2" role="alert">
+          <p id={`${campo}-erro`} className="sa-erro pequeno mt-2" role="alert">
             {erro}
           </p>
         ) : null}
