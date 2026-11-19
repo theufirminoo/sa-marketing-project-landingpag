@@ -3081,9 +3081,9 @@
   }
 }
 
-/* Briefing: tela do presente com dois botões empilhados (Instagram e Continuar). */
+/* Briefing: tela final com WhatsApp (principal), a frase e o Instagram, empilhados. */
 @layer components {
-  .sa-briefing__acoes-presente {
+  .sa-briefing__acoes-fim {
     flex-direction: column;
     align-items: stretch;
   }

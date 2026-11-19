@@ -94,8 +94,6 @@ erDiagram
     text marketing "só se estrategia = sim"
     text_array desafios "1 a 11"
     text desafio_outro
-    timestamptz instagram_clicou_em "tocou em seguir"
-    timestamptz instagram_tela_em "saiu da tela do presente"
     text_array frentes_indicadas
     text decisao
     text prazo
@@ -153,8 +151,8 @@ briefings    (_id_, contato_id UK → contatos.id ON DELETE CASCADE, codigo UK,
               faturamento, origem_clientes, origem_outro, estrategia, marketing,
               desafios[], desafio_outro, frentes_indicadas[], decisao,
               prazo, investimento, objetivo, fit, fit_pontos, fit_versao,
-              consentimento_em, instagram_clicou_em, instagram_tela_em, utm,
-              pagina, referrer, vezes, criado_em, atualizado_em)
+              consentimento_em, utm, pagina, referrer, vezes, criado_em,
+              atualizado_em)
 
 avisos       (_id_, tipo, contato_id → contatos.id ON DELETE CASCADE, repetido,
               criado_em, processado_em)
@@ -269,12 +267,8 @@ sequenceDiagram
   S-->>S: gatilho cria aviso
   S-->>V: codigo
   V-->>N: {salvo:true, codigo}
-  N-->>P: tela do presente (frentes + seguir no Instagram)
-  P->>N: "Seguir a SA no Instagram" (opcional) e "Continuar"
-  N->>V: sendBeacon /api/briefing/instagram {codigo, clicou | continuou}
-  V->>S: instagram_clicou_em / instagram_tela_em
-  V->>S: (after) espera a saída da tela, até 2 min
-  V->>R: POST /emails, com o toque no Instagram
+  N-->>P: tela final (análise, frentes, WhatsApp, Instagram)
+  V->>R: POST /emails (depois de responder)
   R->>G: entrega (SPF/DKIM do envio)
   V->>S: avisos.processado_em = now()
   P->>N: "Chamar um consultor"

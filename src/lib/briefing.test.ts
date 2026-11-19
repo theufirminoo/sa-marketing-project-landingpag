@@ -185,12 +185,6 @@ describe("e-mail do briefing para a SA", () => {
     }
   });
 
-  it("diz se a pessoa tocou em seguir no Instagram", () => {
-    expect(email.texto).toContain("Seguir no Instagram: Não tocou em seguir");
-    const tocou = montarEmailBriefing(dados, calcularFit(dados), new Date(), new Date());
-    expect(tocou.texto).toContain("Seguir no Instagram: Tocou em seguir (confirme no Instagram)");
-  });
-
   it("escapa o que a pessoa digitou no HTML", () => {
     expect(email.html).toContain("Ana &lt;b&gt;Souza&lt;/b&gt;");
     expect(email.html).not.toContain("<b>Souza</b>");

@@ -860,23 +860,18 @@ export const briefing = {
     enviando: "Guardando suas respostas…",
   },
   /** Tela final: a pessoa chama um consultor para marcar a primeira conversa. */
-  /** Depois de gravar: o presente (seguir no Instagram), depois o agradecimento. */
-  presente: {
+  /** Tela final: a análise como presente, o consultor no WhatsApp e, por último, o Instagram. */
+  concluido: {
     anuncio: "Briefing concluído. Você ganhou uma análise estratégica",
     rotulo: "Briefing concluído",
     titulo: (nome: string) => `${nome}, você ganhou uma análise estratégica da sua empresa.`,
-    texto: "O consultor da SA prepara a análise com as suas respostas e apresenta na primeira conversa. Para liberar, é só seguir a SA no Instagram.",
+    texto: "O consultor da SA prepara a análise com as suas respostas e apresenta na primeira conversa. Chame um consultor no WhatsApp para marcar.",
     rotuloFrentes: "Pelo que você nos contou, os serviços indicados para o seu negócio são",
-    seguir: "Seguir a SA no Instagram",
-    seguido: "Instagram aberto. Depois de seguir, é só continuar.",
-    continuar: "Continuar",
-  },
-  concluido: {
-    anuncio: "Análise estratégica garantida",
-    rotulo: "Análise estratégica garantida",
-    titulo: (nome: string) => `Obrigado, ${nome}.`,
-    texto: "Suas respostas já estão com a SA e a sua análise estratégica está garantida. Último passo: chame um consultor no WhatsApp para marcar a primeira conversa. É nela que você recebe a análise.",
     whatsapp: "Chamar um consultor no WhatsApp",
+    instagram: {
+      texto: "Enquanto isso, acompanhe a SA no Instagram.",
+      botao: "Seguir a SA no Instagram",
+    },
   },
   falhou: {
     rotulo: "Falta um passo",
@@ -967,7 +962,7 @@ export const privacidade = {
       paragrafos: [
         "A SA usa esses dados para falar com você sobre o diagnóstico e para saber quais campanhas trazem visitas.",
         "As respostas ficam no banco de dados da SA, no Supabase, com servidores em São Paulo. Seu WhatsApp identifica o cadastro: se você responder de novo, a SA atualiza o que já tem em vez de criar outro. Com as respostas do briefing, a SA prepara a conversa e avalia como pode ajudar.",
-        "As respostas do briefing também seguem por e-mail para a equipe da SA (envio pelo Resend), para o consultor preparar a conversa. No fim do briefing, a SA registra se você tocou no botão para seguir a SA no Instagram.",
+        "As respostas do briefing também seguem por e-mail para a equipe da SA (envio pelo Resend), para o consultor preparar a conversa.",
         "Quando a SA usar um sistema de atendimento (CRM), o contato e as respostas do diagnóstico também seguem para ele. Só a equipe da SA acessa esses dados. Durante a sua visita, as respostas também ficam guardadas no seu navegador, para você retomar o diagnóstico ou o briefing de onde parou. Fechar a aba apaga essa cópia.",
       ],
     },

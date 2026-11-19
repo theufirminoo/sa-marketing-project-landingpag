@@ -103,30 +103,27 @@ Corte: 11 ou mais = alto, 6 a 10 = médio, até 5 = baixo. Ajustes: verba até
 R$ 1.000 com faturamento até R$ 20 mil é sempre baixo; quem não decide ou só
 pesquisa fica no máximo médio. Ao mudar pesos, subir `FIT_VERSAO`.
 
-### Telas finais (gravado)
+### Tela final
 
-1. **Presente:** "{nome}, você ganhou uma análise estratégica da sua empresa." O
-   consultor apresenta a análise na primeira conversa; "para liberar, é só seguir
-   a SA no Instagram". Mostra as frentes indicadas. Botões: **Seguir a SA no
-   Instagram** (abre o perfil em nova aba e registra o toque) e **Continuar**
-   (sempre disponível; depois do toque vira o botão principal). O site não tem
-   como saber se a pessoa seguiu: registra só o toque.
-2. **Agradecimento:** "Obrigado, {nome}." Análise garantida; último passo:
-   **Chamar um consultor no WhatsApp** (mensagem: "Oi, tudo bem? 😊 Aqui é
-   {nome}, da {empresa}. Acabei de responder o briefing no site e quero marcar a
-   primeira conversa para receber a minha análise estratégica.").
+- **Gravado:** "{nome}, você ganhou uma análise estratégica da sua empresa." O
+  consultor apresenta a análise na primeira conversa. Mostra as frentes
+  indicadas. Botões, nesta ordem: **Chamar um consultor no WhatsApp**
+  (principal; mensagem: "…quero marcar a primeira conversa para receber a minha
+  análise estratégica.") e, abaixo de "Enquanto isso, acompanhe a SA no
+  Instagram.", **Seguir a SA no Instagram** (secundário, sem registro).
+- **Não gravado:** "falta só enviar suas respostas", só com o WhatsApp levando
+  as respostas na mensagem.
 
-Não gravado: vai direto a "falta só enviar suas respostas", com o botão do
-WhatsApp levando todas as respostas na mensagem (sem a tela do presente).
+Por que o WhatsApp vem antes: no celular, os dois botões abrem o aplicativo e a
+pessoa não volta ao navegador. O que gera venda (o consultor) vem primeiro; o
+Instagram fica por último, como bônus.
 
 ### E-mail para a SA
 
 Para `contato@saagencia.com.br`, de `SA Marketing <avisos@envio.saagencia.com.br>`.
-Sai quando a pessoa deixa a tela do presente (ou 2 minutos depois de concluir),
-para já dizer se ela tocou em seguir no Instagram.
+Sai logo depois de gravar.
 Assunto: "Novo briefing: {empresa ou nome} · FIT {alto|médio|baixo}". Corpo:
-empresa, nome, WhatsApp, Instagram, FIT com pontos, frentes, se tocou em
-seguir no Instagram, data, botão
+empresa, nome, WhatsApp, Instagram, FIT com pontos, frentes, data, botão
 "Abrir conversa no WhatsApp", todas as respostas na ordem, origem (UTM).
 
 ### Status do lead

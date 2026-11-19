@@ -187,21 +187,3 @@ export async function marcarAvisoEnviado(sql: Sql, codigo: string): Promise<void
   `;
 }
 
-/** Toques na tela do presente: "clicou" (Seguir no Instagram) ou "continuou" (saiu da tela). */
-export async function registrarInstagram(sql: Sql, codigo: string, acao: "clicou" | "continuou"): Promise<boolean> {
-  const linhas =
-    acao === "clicou"
-      ? await sql`update comercial.briefings set instagram_clicou_em = coalesce(instagram_clicou_em, now())
-          where codigo = ${codigo} returning id`
-      : await sql`update comercial.briefings set instagram_tela_em = coalesce(instagram_tela_em, now())
-          where codigo = ${codigo} returning id`;
-  return linhas.length > 0;
-}
-
-/** Situação do Instagram de um briefing, para o e-mail. */
-export async function lerInstagram(sql: Sql, codigo: string): Promise<{ clicouEm: Date | null; saiu: boolean }> {
-  const [linha] = await sql<{ instagram_clicou_em: Date | null; instagram_tela_em: Date | null }[]>`
-    select instagram_clicou_em, instagram_tela_em from comercial.briefings where codigo = ${codigo}
-  `;
-  return { clicouEm: linha?.instagram_clicou_em ?? null, saiu: Boolean(linha?.instagram_tela_em) };
-}
