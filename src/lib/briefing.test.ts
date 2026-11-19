@@ -176,7 +176,7 @@ describe("e-mail do briefing para a SA", () => {
   const email = montarEmailBriefing(dados, calcularFit(dados), new Date("2026-11-18T15:00:00Z"));
 
   it("assunto com a empresa e o FIT", () => {
-    expect(email.assunto).toBe("Novo briefing: Clínica Ana · FIT alto");
+    expect(email.assunto).toBe("Briefing: Clínica Ana · FIT alto");
   });
 
   it("traz contato, FIT, frentes e todas as respostas", () => {

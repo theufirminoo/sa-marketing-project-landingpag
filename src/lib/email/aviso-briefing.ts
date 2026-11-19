@@ -25,7 +25,7 @@ export type EmailMontado = { assunto: string; html: string; texto: string };
 
 export function montarEmailBriefing(dados: Briefing, fit: Fit, agora: Date = new Date()): EmailMontado {
   const quem = dados.empresa.trim() || dados.nome.trim();
-  const assunto = `Novo briefing: ${quem} · ${FIT_ROTULO[fit.fit]}`;
+  const assunto = `Briefing: ${quem} · ${FIT_ROTULO[fit.fit]}`;
   const instagram = normalizarInstagram(dados.instagram);
   const frentes = formatarFrentes(indicarFrentes(dados.desafio));
   const quando = agora.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "short" });
@@ -47,7 +47,7 @@ export function montarEmailBriefing(dados: Briefing, fit: Fit, agora: Date = new
     `<tr><td style="padding:6px 12px 6px 0;color:#666;vertical-align:top;white-space:nowrap">${escapar(k)}</td><td style="padding:6px 0;color:#1a1a1a">${escapar(v)}</td></tr>`;
   const html = `<!doctype html><html lang="pt-BR"><body style="margin:0;padding:24px;background:#f5f5f3;font-family:Arial,sans-serif;font-size:15px;line-height:1.5">
 <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:8px;padding:24px">
-<p style="margin:0 0 4px;color:#d9531a;font-weight:bold">Novo briefing</p>
+<p style="margin:0 0 4px;color:#d9531a;font-weight:bold">Briefing</p>
 <h1 style="margin:0 0 16px;font-size:22px;color:#1a1a1a">${escapar(quem)}</h1>
 <table style="border-collapse:collapse;width:100%">${cabecalho.map(linhaHtml).join("")}</table>
 <h2 style="margin:24px 0 8px;font-size:17px;color:#1a1a1a">Respostas</h2>
