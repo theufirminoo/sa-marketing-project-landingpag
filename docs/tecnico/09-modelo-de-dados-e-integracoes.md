@@ -267,14 +267,11 @@ sequenceDiagram
   S-->>S: gatilho cria aviso
   S-->>V: codigo
   V-->>N: {salvo:true, codigo}
-  N-->>P: tela final (análise, frentes, WhatsApp, Instagram)
+  N-->>P: tela final (análise, frentes, "pode voltar para o WhatsApp")
   V->>R: POST /emails (depois de responder)
   R->>G: entrega (SPF/DKIM do envio)
   V->>S: avisos.processado_em = now()
-  P->>N: "Chamar um consultor"
-  N->>V: sendBeacon /api/briefing/whatsapp {codigo}
-  V->>S: status = abriu-whatsapp
-  N->>W: abre a conversa com a mensagem pronta
+  P->>W: volta para a conversa com o consultor
 ```
 
 ### Diagnóstico, passo a passo

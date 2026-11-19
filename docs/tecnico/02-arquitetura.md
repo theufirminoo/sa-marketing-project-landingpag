@@ -13,7 +13,6 @@ flowchart TB
     PX[src/proxy.ts<br/>subdomínio → página]
     API1[/api/lead/]
     API2[/api/briefing/]
-    API3[/api/briefing/whatsapp/]
     API4[/ir/:destino/]
     API5[/api/manter-banco/]
     API6[/api/eventos/]
@@ -29,7 +28,6 @@ flowchart TB
   P1 --> API1 --> DB
   P2 --> API2 --> DB
   API2 -->|depois de responder| RS --> WS
-  P2 --> API3 --> DB
   P3 --> API4 --> DB
   API4 -->|302| P1
   API4 -->|302| WA
@@ -84,9 +82,8 @@ adicionar o domínio no projeto da Vercel e o CNAME no Registro.br (ver 06).
    devolve um `codigo` (uuid).
 3. Depois de responder, `after()` monta e envia o e-mail para a SA (Resend) e,
    se aceito, marca `comercial.avisos.processado_em`.
-4. A tela final mostra as frentes indicadas e o botão "Chamar um consultor no
-   WhatsApp"; o clique chama `POST /api/briefing/whatsapp` com o `codigo` e o
-   contato passa a `abriu-whatsapp`.
+4. A tela final mostra a análise como presente, as frentes e "Pronto. Pode
+   voltar para a conversa no WhatsApp.", sem botões.
 5. Sem banco (falha ou sem `DATABASE_URL`): a tela pede o envio pelo WhatsApp
    com as respostas escritas na mensagem.
 

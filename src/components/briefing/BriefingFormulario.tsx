@@ -7,7 +7,7 @@ import { z } from "zod";
 import { IconeWhatsapp } from "@/components/diagnostico/TelaResultado";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { briefing, briefingOpcoes, comum, nomeDaFrente, site } from "@/content/site";
+import { briefing, briefingOpcoes, comum, nomeDaFrente } from "@/content/site";
 import {
   contatoBriefingSchema,
   ETAPAS,
@@ -28,7 +28,6 @@ import {
 } from "@/lib/briefing";
 import { lerOrigem } from "@/lib/utm";
 import { urlWhatsapp } from "@/lib/whatsapp";
-import { IconeInstagram } from "./IconeInstagram";
 import { TelaContatoBriefing, type ContatoSalvo } from "./TelaContatoBriefing";
 import { TelaMultipla, TelaPergunta, TelaTexto } from "./telas";
 
@@ -53,7 +52,7 @@ type Estado = {
   outros: Outros;
   contato?: ContatoSalvo;
   salvo?: boolean;
-  /** Código do briefing gravado, para avisar o clique no WhatsApp. */
+  /** Código do briefing gravado. */
   codigo?: string;
 };
 
@@ -134,18 +133,6 @@ async function enviarBriefing(corpo: Record<string, unknown>): Promise<{ salvo: 
     return { salvo: false };
   }
 }
-
-/** Avisa o servidor de um toque (WhatsApp, Instagram) sem esperar resposta: a aba nova já abriu. */
-function avisar(rota: string, corpo: Record<string, string>) {
-  const json = JSON.stringify(corpo);
-  try {
-    if (navigator.sendBeacon?.(rota, new Blob([json], { type: "application/json" }))) return;
-  } catch {
-    // Sem sendBeacon, tenta o fetch abaixo.
-  }
-  void fetch(rota, { method: "POST", headers: { "Content-Type": "application/json" }, body: json, keepalive: true }).catch(() => {});
-}
-const avisarWhatsappAberto = (codigo?: string) => codigo && avisar("/api/briefing/whatsapp", { codigo });
 
 export function BriefingFormulario() {
   const [estado, setEstado] = useState<Estado>(INICIAL);
@@ -344,70 +331,72 @@ export function BriefingFormulario() {
   };
 
   /**
-   * Fim. Gravado: a análise como presente, as frentes, o consultor no WhatsApp
-   * (o principal, porque é ali que a venda anda) e, por último, o Instagram.
-   * Sem gravar: só o WhatsApp, levando as respostas na mensagem.
+   * Fim. Gravado: a análise como presente, as frentes e o aviso para voltar à
+   * conversa, sem botões (a pessoa recebeu o link do consultor no WhatsApp e o
+   * e-mail já saiu). Sem gravar: o WhatsApp levando as respostas na mensagem.
    */
   const telaFim = () => {
     if (!estado.contato) return null;
     const respostas = respostasBriefingSchema.safeParse(estado.respostas);
     const primeiroNome = estado.contato.nome.trim().split(/\s+/)[0];
     const c = briefing.concluido;
-    const textos = estado.salvo ? c : briefing.falhou;
-    const mensagem =
-      estado.salvo || !respostas.success
-        ? montarMensagemAgendar(estado.contato)
-        : montarMensagemBriefing({
-            nome: estado.contato.nome,
-            empresa: estado.contato.empresa,
-            respostas: respostas.data,
-            outros: estado.outros,
-          });
-    const frentes = estado.salvo && respostas.success ? indicarFrentes(respostas.data.desafio) : [];
-    return (
-      <div className="flex min-h-0 flex-1 flex-col">
-        <div className="sa-diag__corpo">
-          {estado.salvo ? (
+    if (estado.salvo) {
+      const frentes = respostas.success ? indicarFrentes(respostas.data.desafio) : [];
+      return (
+        <div className="flex min-h-0 flex-1 flex-col">
+          <div className="sa-diag__corpo">
             <span className="sa-resultado__selo" aria-hidden="true">
               <GiftIcon size={22} strokeWidth={2.25} />
             </span>
-          ) : null}
-          <p className="sa-resultado__rotulo rotulo">{textos.rotulo}</p>
-          <h1 ref={tituloRef} tabIndex={-1} className="titulo-2 sa-diag__titulo mt-2">
-            {textos.titulo(primeiroNome)}
-          </h1>
-          <p className="corpo mt-4 text-text-muted">{textos.texto}</p>
-          {frentes.length > 0 ? (
-            <>
-              <p className="sa-resultado__rotulo rotulo">{c.rotuloFrentes}</p>
-              <ul className="sa-resultado__frentes">
-                {frentes.map((f) => (
-                  <li key={f}>{nomeDaFrente(f)}</li>
-                ))}
-              </ul>
-            </>
-          ) : null}
-        </div>
-        <div className="sa-diag__acoes sa-briefing__acoes-fim">
-          <Button asChild largura="bloco">
-            <a href={urlWhatsapp(mensagem)} target="_blank" rel="noopener" onClick={() => avisarWhatsappAberto(estado.codigo)}>
+            <p className="sa-resultado__rotulo rotulo">{c.rotulo}</p>
+            <h1 ref={tituloRef} tabIndex={-1} className="titulo-2 sa-diag__titulo mt-2">
+              {c.titulo(primeiroNome)}
+            </h1>
+            <p className="corpo mt-4 text-text-muted">{c.texto}</p>
+            {frentes.length > 0 ? (
+              <>
+                <p className="sa-resultado__rotulo rotulo">{c.rotuloFrentes}</p>
+                <ul className="sa-resultado__frentes">
+                  {frentes.map((f) => (
+                    <li key={f}>{nomeDaFrente(f)}</li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+            <p className="sa-diag__resultado corpo mt-8 flex items-center gap-3">
               <IconeWhatsapp />
-              {textos.whatsapp}
+              <span>{c.voltar}</span>
+            </p>
+          </div>
+        </div>
+      );
+    }
+    const f = briefing.falhou;
+    const mensagem = respostas.success
+      ? montarMensagemBriefing({
+          nome: estado.contato.nome,
+          empresa: estado.contato.empresa,
+          respostas: respostas.data,
+          outros: estado.outros,
+        })
+      : montarMensagemAgendar(estado.contato);
+    return (
+      <div className="flex min-h-0 flex-1 flex-col">
+        <div className="sa-diag__corpo">
+          <p className="sa-resultado__rotulo rotulo mt-0">{f.rotulo}</p>
+          <h1 ref={tituloRef} tabIndex={-1} className="titulo-2 sa-diag__titulo mt-2">
+            {f.titulo(primeiroNome)}
+          </h1>
+          <p className="corpo mt-4 text-text-muted">{f.texto}</p>
+        </div>
+        <div className="sa-diag__acoes sa-briefing__acao-final">
+          <Button asChild largura="bloco">
+            <a href={urlWhatsapp(mensagem)} target="_blank" rel="noopener">
+              <IconeWhatsapp />
+              {f.whatsapp}
               <span className="sr-only"> {comum.novaAba}</span>
             </a>
           </Button>
-          {estado.salvo ? (
-            <>
-              <p className="pequeno text-text-muted text-center">{c.instagram.texto}</p>
-              <Button asChild largura="bloco" variant="secundario">
-                <a href={site.instagram.url} target="_blank" rel="noopener">
-                  <IconeInstagram />
-                  {c.instagram.botao}
-                  <span className="sr-only"> {comum.novaAba}</span>
-                </a>
-              </Button>
-            </>
-          ) : null}
         </div>
       </div>
     );

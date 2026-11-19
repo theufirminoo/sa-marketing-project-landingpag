@@ -13,7 +13,6 @@ src/
     ir/[destino]/route.ts    clique da bio: conta e redireciona
     api/lead/route.ts        diagnóstico
     api/briefing/route.ts    briefing (grava, FIT, e-mail)
-    api/briefing/whatsapp/route.ts   clique no WhatsApp do fim do briefing
     api/manter-banco/route.ts        cron: mantém o Supabase acordado
     api/eventos/route.ts     métricas próprias (só com aceite)
     globals.css              tokens + componentes (@layer components)
@@ -57,11 +56,6 @@ vercel.json                  região gru1 e cron
 - Corpo (`briefingSchema`): contato (`nome` completo, `whatsapp`, `empresa`, `instagram`, `site` isca), `consentimento: true`, `segmento`, `tempo`, `produto`, `faturamento`, `origem`, `estrategia`, `marketing` (só com estratégia "sim"), `desafio[]`, `decisao`, `prazo`, `investimento`, `objetivo`, `outros{segmento, origem, desafio}`, `utm`, `pagina`, `referrer`.
 - Respostas: `200 {ok:true, salvo:true, codigo}` gravado; `200 {ok:true, salvo:false}` sem banco ou falha (a tela pede o WhatsApp); `400` validação; `429` (5/min).
 - Grava antes de responder (transação, `statement_timeout` 4 s; corrida de 6 s na rota). Depois (`after`): e-mail (Resend, 8 s) e `avisos.processado_em`.
-
-### `POST /api/briefing/whatsapp`
-
-- Corpo: `{ codigo: uuid }`. Enviado por `sendBeacon` no clique final.
-- `204` registrado; `404` código desconhecido; `400`; `429` (10/min). Atualiza `whatsapp_aberto_em` e move o status para `abriu-whatsapp` (só de `novo`/`pendente-conversa`).
 
 ### `GET /ir/:destino?de=bio`
 

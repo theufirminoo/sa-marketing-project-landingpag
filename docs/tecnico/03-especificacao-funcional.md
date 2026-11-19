@@ -105,19 +105,15 @@ pesquisa fica no máximo médio. Ao mudar pesos, subir `FIT_VERSAO`.
 
 ### Tela final
 
-- **Gravado:** "{nome}, você ganhou uma análise estratégica da sua empresa." O
-  texto: "Um consultor da SA vai preparar essa análise com as suas respostas e
-  apresentá-la na primeira conversa com você." Mostra as frentes
-  indicadas. Botões, nesta ordem: **Chamar um consultor no WhatsApp**
-  (principal; mensagem: "…quero marcar a primeira conversa para receber a minha
-  análise estratégica.") e, abaixo de "Enquanto isso, acompanhe a SA no
-  Instagram.", **Seguir a SA no Instagram** (secundário, sem registro).
-- **Não gravado:** "falta só enviar suas respostas", só com o WhatsApp levando
-  as respostas na mensagem.
-
-Por que o WhatsApp vem antes: no celular, os dois botões abrem o aplicativo e a
-pessoa não volta ao navegador. O que gera venda (o consultor) vem primeiro; o
-Instagram fica por último, como bônus.
+- **Gravado:** "{nome}, você ganhou uma análise estratégica da sua empresa." e
+  "Um consultor da SA vai preparar essa análise com as suas respostas e
+  apresentá-la na primeira conversa com você.", as frentes indicadas e o aviso
+  "Pronto. Pode voltar para a conversa no WhatsApp." **Sem botões:** a pessoa
+  recebeu o link do consultor no WhatsApp e volta para a mesma conversa; o
+  e-mail para a SA já saiu ao concluir. O Instagram fica para a conversa (o
+  consultor pede para seguir e entrega a análise).
+- **Não gravado:** "falta só enviar suas respostas" e o botão **Enviar as
+  respostas no WhatsApp**, com todas as respostas escritas na mensagem.
 
 ### E-mail para a SA
 
@@ -133,7 +129,7 @@ empresa, nome, WhatsApp, Instagram, FIT com pontos, frentes, data, botão
 |---|---|---|
 | `novo` | site | Só fez o diagnóstico |
 | `pendente-conversa` | site | Concluiu o briefing |
-| `abriu-whatsapp` | site | Tocou em "Chamar um consultor" (não garante que enviou) |
+| `abriu-whatsapp` | equipe | (o site não marca mais: a tela final não tem botão) |
 | `em-atendimento` | equipe | Consultor já está conversando |
 | `reuniao-marcada` | equipe | Agenda inicial marcada |
 | `proposta`, `cliente`, `perdido` | equipe | Andamento comercial |

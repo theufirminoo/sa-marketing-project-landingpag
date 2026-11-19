@@ -858,24 +858,20 @@ export const briefing = {
     enviando: "Guardando suas respostas…",
   },
   /** Tela final: a pessoa chama um consultor para marcar a primeira conversa. */
-  /** Tela final: a análise como presente, o consultor no WhatsApp e, por último, o Instagram. */
+  /** Tela final: a análise como presente e a volta para a conversa. Sem botões: a pessoa veio do WhatsApp. */
   concluido: {
     anuncio: "Briefing concluído. Você ganhou uma análise estratégica",
     rotulo: "Briefing concluído",
     titulo: (nome: string) => `${nome}, você ganhou uma análise estratégica da sua empresa.`,
     texto: "Um consultor da SA vai preparar essa análise com as suas respostas e apresentá-la na primeira conversa com você.",
     rotuloFrentes: "Pelo que você nos contou, os serviços indicados para o seu negócio são",
-    whatsapp: "Chamar um consultor no WhatsApp",
-    instagram: {
-      texto: "Enquanto isso, acompanhe a SA no Instagram.",
-      botao: "Seguir a SA no Instagram",
-    },
+    voltar: "Pronto. Pode voltar para a conversa no WhatsApp.",
   },
   falhou: {
     rotulo: "Falta um passo",
     titulo: (nome: string) => `${nome}, falta só enviar suas respostas.`,
-    texto: "Elas não chegaram ao sistema da SA. Chame um consultor no WhatsApp: as respostas já vão escritas na mensagem.",
-    whatsapp: "Chamar um consultor no WhatsApp",
+    texto: "Elas não chegaram ao sistema da SA. Mande pelo WhatsApp, na conversa com o consultor: as respostas já vão escritas na mensagem.",
+    whatsapp: "Enviar as respostas no WhatsApp",
   },
   /** Mensagens do WhatsApp. São da pessoa para a SA, por isso levam emoji. */
   mensagem: {

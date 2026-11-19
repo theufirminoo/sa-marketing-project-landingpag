@@ -79,8 +79,8 @@ export async function gravarDiagnostico(sql: Sql, lead: Lead): Promise<void> {
 }
 
 /**
- * Grava o briefing e devolve o código que a tela final usa para avisar o
- * clique no WhatsApp. O contato passa de "novo" para "pendente-conversa"
+ * Grava o briefing e devolve o código do briefing (usado para marcar o aviso
+ * por e-mail). O contato passa de "novo" para "pendente-conversa"
  * (se já estiver adiante no funil, fica onde está).
  */
 export async function gravarBriefing(sql: Sql, dados: Briefing, fit: Fit): Promise<string> {
@@ -150,22 +150,6 @@ export async function gravarBriefing(sql: Sql, dados: Briefing, fit: Fit): Promi
     await tx`update comercial.contatos set status = 'pendente-conversa' where id = ${contatoId} and status = 'novo'`;
     return linha.codigo;
   });
-}
-
-/**
- * Registra que a pessoa tocou em "Chamar um consultor no WhatsApp". Move
- * para "abriu-whatsapp" só quem ainda não foi atendido. Devolve se achou o código.
- */
-export async function registrarWhatsappAberto(sql: Sql, codigo: string): Promise<boolean> {
-  const linhas = await sql`
-    update comercial.contatos c set
-      whatsapp_aberto_em = now(),
-      status = case when c.status in ('novo', 'pendente-conversa') then 'abriu-whatsapp' else c.status end
-    from comercial.briefings b
-    where b.codigo = ${codigo} and b.contato_id = c.id
-    returning c.id
-  `;
-  return linhas.length > 0;
 }
 
 /** Soma 1 aos cliques do dia (horário de Brasília) para essa origem e destino. */
