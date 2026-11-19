@@ -830,21 +830,19 @@ export const briefing = {
     produto: {
       pergunta: "Qual produto ou serviço mais vende hoje?",
       rotulo: "Em poucas palavras.",
-      exemplo: "Ex.: limpeza de pele",
       erro: "Escreva o produto ou serviço para continuar.",
     },
     objetivo: {
-      pergunta: "O que você deseja ter daqui a 6 a 12 meses?",
+      pergunta: "Como você deseja estar nos próximos 6 meses a 1 ano?",
       rotulo: "Opcional. Uma ou duas frases bastam.",
-      exemplo: "Vender todo dia pelo Instagram e depender menos de indicação",
       erro: "Use até 500 caracteres.",
     },
   },
   /** Campo que aparece quando a pessoa escolhe "Outro". */
   outro: {
-    segmento: { rotulo: "Qual é o ramo?", exemplo: "Ex.: oficina mecânica" },
-    origem: { rotulo: "Como eles chegam?", exemplo: "Ex.: feiras e eventos" },
-    desafio: { rotulo: "Qual é o problema?", exemplo: "Ex.: precificar os serviços" },
+    segmento: { rotulo: "Qual é o ramo?" },
+    origem: { rotulo: "Como eles chegam?" },
+    desafio: { rotulo: "Qual é o problema?" },
     erro: "Escreva em poucas palavras para continuar.",
   },
   contato: {
@@ -854,7 +852,7 @@ export const briefing = {
       erro: "Informe nome e sobrenome, como Ana Souza.",
     },
     empresa: { rotulo: "Empresa (opcional)" },
-    instagram: { rotulo: "Instagram da empresa (opcional)", exemplo: "@suaempresa" },
+    instagram: { rotulo: "Instagram da empresa (opcional)" },
     lembrete: "Você aceitou o uso destes dados no início do briefing. Veja a ",
     concluir: "Concluir o briefing",
     enviando: "Guardando suas respostas…",
@@ -897,7 +895,7 @@ export const briefing = {
       decisao: "Decisão",
       prazo: "Começar",
       investimento: "Investimento",
-      objetivo: "Objetivo em 6 a 12 meses",
+      objetivo: "Como deseja estar em 6 meses a 1 ano",
     },
   },
 } as const;

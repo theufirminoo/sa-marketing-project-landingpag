@@ -112,7 +112,6 @@ export function TelaContatoBriefing({ inicial, tituloRef, aoVoltar, aoEnviar }: 
                       type="tel"
                       inputMode="numeric"
                       autoComplete="tel-national"
-                      placeholder={campos.whatsapp.exemplo}
                       enterKeyHint="next"
                     />
                   </FormControl>
@@ -152,7 +151,6 @@ export function TelaContatoBriefing({ inicial, tituloRef, aoVoltar, aoEnviar }: 
                       autoComplete="off"
                       autoCapitalize="none"
                       spellCheck={false}
-                      placeholder={t.instagram.exemplo}
                       enterKeyHint="send"
                     />
                   </FormControl>

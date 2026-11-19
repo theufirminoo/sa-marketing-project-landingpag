@@ -155,7 +155,7 @@ describe("montarMensagemBriefing", () => {
       "• Decisão: Eu decido",
       "• Começar: Ainda este mês",
       "• Investimento: De R$ 2.500 a R$ 5.000",
-      "• Objetivo em 6 a 12 meses: Agenda cheia",
+      "• Como deseja estar em 6 meses a 1 ano: Agenda cheia",
     ]);
   });
 
@@ -167,7 +167,7 @@ describe("montarMensagemBriefing", () => {
     });
     expect(m).toContain("• Ramo: Oficina mecânica");
     expect(m).toContain("• Problemas: Precificar");
-    expect(m).not.toContain("Objetivo");
+    expect(m).not.toContain("Como deseja estar");
   });
 });
 

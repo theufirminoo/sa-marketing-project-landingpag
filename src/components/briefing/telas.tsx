@@ -15,7 +15,7 @@ type Opcoes = readonly { id: string; rotulo: string }[];
 type Titulo = RefObject<HTMLHeadingElement | null>;
 
 /** Campo para escrever quando a escolha é "outro". */
-export type CampoOutroProps = { rotulo: string; exemplo: string; valor: string; aoMudar: (texto: string) => void };
+export type CampoOutroProps = { rotulo: string; valor: string; aoMudar: (texto: string) => void };
 
 function CampoOutro({
   outro,
@@ -42,7 +42,6 @@ function CampoOutro({
           if (erro) aoLimparErro();
         }}
         maxLength={80}
-        placeholder={outro.exemplo}
         enterKeyHint="next"
         aria-invalid={erro ? true : undefined}
         aria-describedby={erro ? "briefing-outro-erro" : undefined}
@@ -258,7 +257,7 @@ export function TelaMultipla({ bloco, pergunta, ajuda, erroVazio, opcoes, valor,
 type PropsTexto = {
   id: string;
   bloco?: string;
-  textos: { pergunta: string; rotulo: string; exemplo: string; erro: string };
+  textos: { pergunta: string; rotulo: string; erro: string };
   validar: ZodType<string>;
   /** Uma linha (campo) ou várias (caixa de texto). */
   longo: boolean;
@@ -287,7 +286,6 @@ export function TelaTexto({ id, bloco, textos: t, validar, longo, inicial, titul
   const props = {
     id: campo,
     value: texto,
-    placeholder: t.exemplo,
     "aria-describedby": erro ? `${campo}-ajuda ${campo}-erro` : `${campo}-ajuda`,
     "aria-invalid": erro ? true : undefined,
   } as const;

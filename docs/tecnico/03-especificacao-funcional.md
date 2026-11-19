@@ -63,7 +63,7 @@ começar."). O servidor também recusa sem o aceite.
 | Próximos passos | 8 | Quem decide sobre contratar a SA? | Única | Eu decido, Decido com sócio, Outra pessoa decide |
 | | 9 | Quando você quer começar? | Única | Ainda este mês, Nos próximos 3 meses, Ainda estou pesquisando |
 | | 10 | Para resolver esses problemas e construir um comercial forte, quanto você investiria por mês? | Única | Até R$ 1.000, 1.000 a 2.500, 2.500 a 5.000, 5.000 a 10.000, Acima de 10.000, Ainda não sei. Ajuda: mídia paga fica à parte |
-| | 11 | O que você deseja ter daqui a 6 a 12 meses? | Texto opcional | até 500 caracteres |
+| | 11 | Como você deseja estar nos próximos 6 meses a 1 ano? | Texto opcional | até 500 caracteres |
 | Contato | | Quem está respondendo? | Formulário | Nome completo (nome e sobrenome), WhatsApp, empresa e Instagram opcionais |
 
 **Comportamento:** escolha única avança sozinha em 200 ms; "Outro" abre um
