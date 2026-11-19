@@ -7,7 +7,7 @@ import { z } from "zod";
 import { IconeWhatsapp } from "@/components/diagnostico/TelaResultado";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { briefing, briefingOpcoes, comum, nomeDaFrente } from "@/content/site";
+import { briefing, briefingOpcoes, comum, nomeDaFrente, site } from "@/content/site";
 import {
   contatoBriefingSchema,
   ETAPAS,
@@ -28,6 +28,7 @@ import {
 } from "@/lib/briefing";
 import { lerOrigem } from "@/lib/utm";
 import { urlWhatsapp } from "@/lib/whatsapp";
+import { IconeInstagram } from "./IconeInstagram";
 import { TelaContatoBriefing, type ContatoSalvo } from "./TelaContatoBriefing";
 import { TelaMultipla, TelaPergunta, TelaTexto } from "./telas";
 
@@ -331,9 +332,10 @@ export function BriefingFormulario() {
   };
 
   /**
-   * Fim. Gravado: a análise como presente, as frentes e o aviso para voltar à
-   * conversa, sem botões (a pessoa recebeu o link do consultor no WhatsApp e o
-   * e-mail já saiu). Sem gravar: o WhatsApp levando as respostas na mensagem.
+   * Fim. Gravado: a análise como presente, as frentes, o pedido para seguir a
+   * SA no Instagram (libera o presente; sem registro do toque) e o aviso para
+   * voltar à conversa no WhatsApp (de onde a pessoa veio; o e-mail já saiu).
+   * Sem gravar: o WhatsApp levando as respostas na mensagem.
    */
   const telaFim = () => {
     if (!estado.contato) return null;
@@ -363,6 +365,14 @@ export function BriefingFormulario() {
                 </ul>
               </>
             ) : null}
+            <p className="corpo mt-8 font-medium">{c.instagram.texto}</p>
+            <Button asChild largura="bloco" className="mt-4">
+              <a href={site.instagram.url} target="_blank" rel="noopener">
+                <IconeInstagram />
+                {c.instagram.botao}
+                <span className="sr-only"> {comum.novaAba}</span>
+              </a>
+            </Button>
             <p className="sa-diag__resultado corpo mt-8 flex items-center gap-3">
               <IconeWhatsapp />
               <span>{c.voltar}</span>

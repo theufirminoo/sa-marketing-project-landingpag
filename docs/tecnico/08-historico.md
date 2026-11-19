@@ -4,6 +4,7 @@ Resumo por data. O detalhe de cada mudança está no `git log` (mensagens em
 português, sem marcas de IA). Ao mudar algo, acrescente uma linha aqui.
 
 ## 19/11/2026
+- Tela final: volta o botão "Seguir a SA no Instagram", com "Para liberar o seu presente, siga a SA no Instagram." (sem rastreio), antes do aviso de voltar ao WhatsApp.
 - E-mail: assunto e título "Briefing" (antes "Novo briefing").
 - E-mail do briefing sem o botão "Abrir conversa no WhatsApp" e sem a frase do Supabase no rodapé.
 - Tela final sem botões: "você ganhou uma análise estratégica", frentes e "Pronto. Pode voltar para a conversa no WhatsApp." (a pessoa já está no WhatsApp com o consultor). Saem os botões do WhatsApp e do Instagram e a rota `/api/briefing/whatsapp`; o Instagram fica para a conversa.

@@ -858,13 +858,17 @@ export const briefing = {
     enviando: "Guardando suas respostas…",
   },
   /** Tela final: a pessoa chama um consultor para marcar a primeira conversa. */
-  /** Tela final: a análise como presente e a volta para a conversa. Sem botões: a pessoa veio do WhatsApp. */
+  /** Tela final: a análise como presente, liberada ao seguir a SA no Instagram, e a volta para a conversa. */
   concluido: {
     anuncio: "Briefing concluído. Você ganhou uma análise estratégica",
     rotulo: "Briefing concluído",
     titulo: (nome: string) => `${nome}, você ganhou uma análise estratégica da sua empresa.`,
     texto: "Um consultor da SA vai preparar essa análise com as suas respostas e apresentá-la na primeira conversa com você.",
     rotuloFrentes: "Pelo que você nos contou, os serviços indicados para o seu negócio são",
+    instagram: {
+      texto: "Para liberar o seu presente, siga a SA no Instagram.",
+      botao: "Seguir a SA no Instagram",
+    },
     voltar: "Pronto. Pode voltar para a conversa no WhatsApp.",
   },
   falhou: {

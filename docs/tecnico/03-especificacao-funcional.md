@@ -107,11 +107,12 @@ pesquisa fica no máximo médio. Ao mudar pesos, subir `FIT_VERSAO`.
 
 - **Gravado:** "{nome}, você ganhou uma análise estratégica da sua empresa." e
   "Um consultor da SA vai preparar essa análise com as suas respostas e
-  apresentá-la na primeira conversa com você.", as frentes indicadas e o aviso
-  "Pronto. Pode voltar para a conversa no WhatsApp." **Sem botões:** a pessoa
-  recebeu o link do consultor no WhatsApp e volta para a mesma conversa; o
-  e-mail para a SA já saiu ao concluir. O Instagram fica para a conversa (o
-  consultor pede para seguir e entrega a análise).
+  apresentá-la na primeira conversa com você.", as frentes indicadas, "Para
+  liberar o seu presente, siga a SA no Instagram." com o botão **Seguir a SA no
+  Instagram** (abre o perfil; sem registro do toque; o consultor confere e
+  marca `segue_instagram`) e, por último, o aviso "Pronto. Pode voltar para a
+  conversa no WhatsApp." (a pessoa veio do WhatsApp; o e-mail já saiu ao
+  concluir). Sem botão de WhatsApp.
 - **Não gravado:** "falta só enviar suas respostas" e o botão **Enviar as
   respostas no WhatsApp**, com todas as respostas escritas na mensagem.
 
