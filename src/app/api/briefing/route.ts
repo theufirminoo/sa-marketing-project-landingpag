@@ -1,6 +1,6 @@
 import { after, type NextRequest } from "next/server";
 
-import { gravarBriefing, marcarAvisoEnviado } from "@/lib/banco/comercial";
+import { gravarBriefing, lerInstagram, marcarAvisoEnviado } from "@/lib/banco/comercial";
 import { bancoComercial } from "@/lib/banco/conexao";
 import { briefingSchema } from "@/lib/briefing";
 import { montarEmailBriefing, enviarEmail } from "@/lib/email/aviso-briefing";
@@ -16,6 +16,12 @@ import { criarLimite, ipDe } from "@/lib/limite";
  */
 
 const passouDoLimite = criarLimite(5);
+/** O e-mail espera a pessoa sair da tela do presente (até 2 min) para contar o toque no Instagram. */
+const ESPERA_INSTAGRAM_MS = 120_000;
+const INTERVALO_MS = 5_000;
+
+// Tempo da função: a resposta sai na hora; o e-mail pode esperar até 2 min depois.
+export const maxDuration = 180;
 const TEMPO_LIMITE_MS = 6_000;
 
 export async function POST(request: NextRequest) {
@@ -54,9 +60,16 @@ export async function POST(request: NextRequest) {
     });
     const fit = calcularFit(resultado.data);
     const codigo = await Promise.race([gravarBriefing(sql, resultado.data, fit), esgotou]);
-    // Depois de responder: e-mail para a SA e, se aceito, a fila marcada como enviada.
+    // Depois de responder: espera a pessoa passar pela tela do presente (ou
+    // 2 min), manda o e-mail para a SA com o toque no Instagram e marca a fila.
     after(async () => {
-      const enviado = await enviarEmail(montarEmailBriefing(resultado.data, fit));
+      let instagram = { clicouEm: null as Date | null, saiu: false };
+      for (let esperado = 0; esperado < ESPERA_INSTAGRAM_MS; esperado += INTERVALO_MS) {
+        instagram = await lerInstagram(sql, codigo).catch(() => instagram);
+        if (instagram.saiu) break;
+        await new Promise((fim) => setTimeout(fim, INTERVALO_MS));
+      }
+      const enviado = await enviarEmail(montarEmailBriefing(resultado.data, fit, new Date(), instagram.clicouEm));
       if (enviado) await marcarAvisoEnviado(sql, codigo).catch(() => {});
     });
     return Response.json({ ok: true, salvo: true, codigo });

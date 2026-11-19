@@ -833,12 +833,6 @@ export const briefing = {
       exemplo: "Ex.: limpeza de pele",
       erro: "Escreva o produto ou serviço para continuar.",
     },
-    impacto: {
-      pergunta: "Se esses problemas continuarem, que impacto isso pode ter na empresa?",
-      rotulo: "Uma ou duas frases bastam.",
-      exemplo: "Ex.: perder clientes para a concorrência e ter que reduzir a equipe",
-      erro: "Conte em uma frase para continuar.",
-    },
     objetivo: {
       pergunta: "O que você deseja ter daqui a 6 a 12 meses?",
       rotulo: "Opcional. Uma ou duas frases bastam.",
@@ -866,12 +860,22 @@ export const briefing = {
     enviando: "Guardando suas respostas…",
   },
   /** Tela final: a pessoa chama um consultor para marcar a primeira conversa. */
-  concluido: {
-    anuncio: "Briefing concluído",
+  /** Depois de gravar: o presente (seguir no Instagram), depois o agradecimento. */
+  presente: {
+    anuncio: "Briefing concluído. Você ganhou uma análise estratégica",
     rotulo: "Briefing concluído",
-    titulo: (nome: string) => `Tudo pronto, ${nome}.`,
-    texto: "Suas respostas já estão com a SA. Último passo: chame um consultor no WhatsApp e marque a primeira conversa. Ele já começa sabendo do seu negócio.",
+    titulo: (nome: string) => `${nome}, você ganhou uma análise estratégica da sua empresa.`,
+    texto: "O consultor da SA prepara a análise com as suas respostas e apresenta na primeira conversa. Para liberar, é só seguir a SA no Instagram.",
     rotuloFrentes: "Pelo que você nos contou, os serviços indicados para o seu negócio são",
+    seguir: "Seguir a SA no Instagram",
+    seguido: "Instagram aberto. Depois de seguir, é só continuar.",
+    continuar: "Continuar",
+  },
+  concluido: {
+    anuncio: "Análise estratégica garantida",
+    rotulo: "Análise estratégica garantida",
+    titulo: (nome: string) => `Obrigado, ${nome}.`,
+    texto: "Suas respostas já estão com a SA e a sua análise estratégica está garantida. Último passo: chame um consultor no WhatsApp para marcar a primeira conversa. É nela que você recebe a análise.",
     whatsapp: "Chamar um consultor no WhatsApp",
   },
   falhou: {
@@ -883,7 +887,7 @@ export const briefing = {
   /** Mensagens do WhatsApp. São da pessoa para a SA, por isso levam emoji. */
   mensagem: {
     agendar: (nome: string, empresaNome?: string) =>
-      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}.\nAcabei de responder o briefing no site e quero marcar a primeira conversa com um consultor da SA.`,
+      `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}.\nAcabei de responder o briefing no site e quero marcar a primeira conversa para receber a minha análise estratégica.`,
     abertura: (nome: string, empresaNome?: string) =>
       `Oi, tudo bem? 😊 Aqui é ${nome}${empresaNome ? `, da ${empresaNome}` : ""}. Respondi o briefing pelo site e quero marcar a primeira conversa.`,
     rotulos: {
@@ -895,7 +899,6 @@ export const briefing = {
       estrategia: "Estratégia de marketing",
       marketing: "Quem cuida",
       desafio: "Problemas",
-      impacto: "Impacto",
       decisao: "Decisão",
       prazo: "Começar",
       investimento: "Investimento",
@@ -956,7 +959,7 @@ export const privacidade = {
       paragrafos: [
         "No diagnóstico, o formulário pede seu nome e seu WhatsApp. Empresa e Instagram são opcionais.",
         "Junto vão as três respostas do diagnóstico, a página por onde você entrou, o site que trouxe você até aqui e os parâmetros de campanha do link, como utm_source, fbclid e gclid.",
-        "No briefing antes da reunião, além do contato, vão as respostas sobre o negócio: ramo, tempo de mercado, produto ou serviço que mais vende, faturamento, como chegam os clientes, estratégia de marketing, principais problemas e o impacto deles, quem decide, quando quer começar, quanto pode investir e, se você escrever, o seu objetivo.",
+        "No briefing antes da reunião, além do contato, vão as respostas sobre o negócio: ramo, tempo de mercado, produto ou serviço que mais vende, faturamento, como chegam os clientes, estratégia de marketing, principais problemas, quem decide, quando quer começar, quanto pode investir e, se você escrever, o seu objetivo.",
       ],
     },
     {
@@ -964,7 +967,7 @@ export const privacidade = {
       paragrafos: [
         "A SA usa esses dados para falar com você sobre o diagnóstico e para saber quais campanhas trazem visitas.",
         "As respostas ficam no banco de dados da SA, no Supabase, com servidores em São Paulo. Seu WhatsApp identifica o cadastro: se você responder de novo, a SA atualiza o que já tem em vez de criar outro. Com as respostas do briefing, a SA prepara a conversa e avalia como pode ajudar.",
-        "As respostas do briefing também seguem por e-mail para a equipe da SA (envio pelo Resend), para o consultor preparar a conversa.",
+        "As respostas do briefing também seguem por e-mail para a equipe da SA (envio pelo Resend), para o consultor preparar a conversa. No fim do briefing, a SA registra se você tocou no botão para seguir a SA no Instagram.",
         "Quando a SA usar um sistema de atendimento (CRM), o contato e as respostas do diagnóstico também seguem para ele. Só a equipe da SA acessa esses dados. Durante a sua visita, as respostas também ficam guardadas no seu navegador, para você retomar o diagnóstico ou o briefing de onde parou. Fechar a aba apaga essa cópia.",
       ],
     },

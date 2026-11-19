@@ -20,7 +20,6 @@ const respostas: RespostasBriefing = {
   origem: "indicacao",
   estrategia: "nao-mas-pretendo",
   desafio: ["processo-comercial"],
-  impacto: "Perder clientes para a concorrência",
   decisao: "eu",
   prazo: "agora",
   investimento: "2500-5000",
@@ -69,12 +68,9 @@ describe("briefingSchema", () => {
     expect(briefingSchema.safeParse({ ...corpo, faturamento: "nao-informado" }).success).toBe(false);
   });
 
-  it("produto e impacto são obrigatórios; objetivo é opcional", () => {
+  it("produto é obrigatório; objetivo é opcional", () => {
     expect(briefingSchema.safeParse({ ...corpo, produto: " " }).error?.issues[0].message).toBe(
       "Escreva o produto ou serviço para continuar.",
-    );
-    expect(briefingSchema.safeParse({ ...corpo, impacto: "" }).error?.issues[0].message).toBe(
-      "Conte em uma frase para continuar.",
     );
     expect(briefingSchema.safeParse({ ...corpo, objetivo: "a".repeat(501) }).error?.issues[0].message).toBe(
       "Use até 500 caracteres.",
@@ -156,7 +152,6 @@ describe("montarMensagemBriefing", () => {
       "• Clientes vêm de: Indicação",
       "• Estratégia de marketing: Não, mas pretendo ter",
       "• Problemas: Problemas no processo comercial",
-      "• Impacto: Perder clientes para a concorrência",
       "• Decisão: Eu decido",
       "• Começar: Ainda este mês",
       "• Investimento: De R$ 2.500 a R$ 5.000",
@@ -190,6 +185,12 @@ describe("e-mail do briefing para a SA", () => {
     }
   });
 
+  it("diz se a pessoa tocou em seguir no Instagram", () => {
+    expect(email.texto).toContain("Seguir no Instagram: Não tocou em seguir");
+    const tocou = montarEmailBriefing(dados, calcularFit(dados), new Date(), new Date());
+    expect(tocou.texto).toContain("Seguir no Instagram: Tocou em seguir (confirme no Instagram)");
+  });
+
   it("escapa o que a pessoa digitou no HTML", () => {
     expect(email.html).toContain("Ana &lt;b&gt;Souza&lt;/b&gt;");
     expect(email.html).not.toContain("<b>Souza</b>");
@@ -212,7 +213,7 @@ describe("indicarFrentes", () => {
 describe("montarMensagemAgendar", () => {
   it("pede a primeira conversa com um consultor", () => {
     expect(montarMensagemAgendar({ nome: "Ana Souza", empresa: "Clínica Ana" })).toBe(
-      "Oi, tudo bem? 😊 Aqui é Ana Souza, da Clínica Ana.\nAcabei de responder o briefing no site e quero marcar a primeira conversa com um consultor da SA.",
+      "Oi, tudo bem? 😊 Aqui é Ana Souza, da Clínica Ana.\nAcabei de responder o briefing no site e quero marcar a primeira conversa para receber a minha análise estratégica.",
     );
   });
 });

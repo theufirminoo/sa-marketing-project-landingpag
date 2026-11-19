@@ -3080,3 +3080,11 @@
     opacity: 0.8;
   }
 }
+
+/* Briefing: tela do presente com dois botões empilhados (Instagram e Continuar). */
+@layer components {
+  .sa-briefing__acoes-presente {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, GiftIcon } from "lucide-react";
 import { z } from "zod";
 
 import { IconeWhatsapp } from "@/components/diagnostico/TelaResultado";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { briefing, briefingOpcoes, comum, nomeDaFrente } from "@/content/site";
+import { briefing, briefingOpcoes, comum, nomeDaFrente, site } from "@/content/site";
 import {
   contatoBriefingSchema,
   ETAPAS,
@@ -28,6 +28,7 @@ import {
 } from "@/lib/briefing";
 import { lerOrigem } from "@/lib/utm";
 import { urlWhatsapp } from "@/lib/whatsapp";
+import { IconeInstagram } from "./IconeInstagram";
 import { TelaContatoBriefing, type ContatoSalvo } from "./TelaContatoBriefing";
 import { TelaMultipla, TelaPergunta, TelaTexto } from "./telas";
 
@@ -42,8 +43,8 @@ import { TelaMultipla, TelaPergunta, TelaTexto } from "./telas";
 
 const CHAVE = "sa:briefing";
 
-/** Tela atual: a abertura, uma etapa (pelo nome), o contato ou o fim. */
-type Tela = "abertura" | EtapaId | "contato" | "fim";
+/** Tela atual: a abertura, uma etapa (pelo nome), o contato, o presente (Instagram) ou o fim. */
+type Tela = "abertura" | EtapaId | "contato" | "presente" | "fim";
 
 type Estado = {
   tela: Tela;
@@ -52,8 +53,10 @@ type Estado = {
   outros: Outros;
   contato?: ContatoSalvo;
   salvo?: boolean;
-  /** Código do briefing gravado, para avisar o clique no WhatsApp. */
+  /** Código do briefing gravado, para avisar os toques no Instagram e no WhatsApp. */
   codigo?: string;
+  /** Tocou em "Seguir a SA no Instagram" na tela do presente. */
+  instagram?: boolean;
 };
 
 const INICIAL: Estado = { tela: "abertura", aceite: false, respostas: {}, outros: {} };
@@ -62,7 +65,7 @@ const contatoSalvoSchema = contatoBriefingSchema.pick({ nome: true, whatsapp: tr
 const outrosSalvosSchema = z
   .object({ segmento: z.string().max(80), origem: z.string().max(80), desafio: z.string().max(80) })
   .partial();
-const TELAS = new Set<string>(["abertura", "contato", "fim", ...ETAPAS.map((e) => e.id)]);
+const TELAS = new Set<string>(["abertura", "contato", "presente", "fim", ...ETAPAS.map((e) => e.id)]);
 
 /** Lê do sessionStorage só o que for válido; cada resposta é conferida sozinha. */
 function lerEstado(): Estado {
@@ -83,6 +86,7 @@ function lerEstado(): Estado {
       contato: contatoSalvoSchema.safeParse(salvo.contato).data,
       salvo: salvo.salvo === true,
       codigo: z.uuid().safeParse(salvo.codigo).data,
+      instagram: salvo.instagram === true,
     });
   } catch {
     return INICIAL;
@@ -102,18 +106,20 @@ function coerente(estado: Estado): Estado {
   if (!estado.aceite) return { ...estado, tela: "abertura" };
   if (estado.tela === "abertura") return estado;
   const ativas = etapasAtivas(estado.respostas);
-  const ordem: Tela[] = [...ativas.map((e) => e.id), "contato", "fim"];
+  const ordem: Tela[] = [...ativas.map((e) => e.id), "contato", "presente", "fim"];
   // Etapa que deixou de valer (ex.: "marketing" depois de trocar a estratégia).
   if (!ordem.includes(estado.tela)) return coerente({ ...estado, tela: ativas[0]?.id ?? "contato" });
   const faltando = ativas.find((e) => e.tipo !== "texto" || e.obrigatoria ? !respondida(estado, e) : false);
   if (faltando && ordem.indexOf(estado.tela) > ordem.indexOf(faltando.id)) return { ...estado, tela: faltando.id };
-  if (estado.tela === "fim" && !estado.contato) return { ...estado, tela: "contato" };
+  if ((estado.tela === "presente" || estado.tela === "fim") && !estado.contato) return { ...estado, tela: "contato" };
+  // O presente só existe com o briefing gravado (há código para registrar o toque).
+  if (estado.tela === "presente" && !estado.salvo) return { ...estado, tela: "fim" };
   return estado;
 }
 
 /** Próxima e anterior na ordem das etapas que valem agora. */
 function vizinha(estado: Estado, passo: 1 | -1): Tela {
-  const ordem: Tela[] = ["abertura", ...etapasAtivas(estado.respostas).map((e) => e.id), "contato", "fim"];
+  const ordem: Tela[] = ["abertura", ...etapasAtivas(estado.respostas).map((e) => e.id), "contato", "presente", "fim"];
   const i = ordem.indexOf(estado.tela);
   return ordem[Math.min(Math.max(i + passo, 0), ordem.length - 1)];
 }
@@ -134,17 +140,19 @@ async function enviarBriefing(corpo: Record<string, unknown>): Promise<{ salvo: 
   }
 }
 
-/** Avisa que a pessoa abriu o WhatsApp. Sem esperar resposta: a aba nova já abriu. */
-function avisarWhatsappAberto(codigo: string | undefined) {
-  if (!codigo) return;
-  const corpo = JSON.stringify({ codigo });
+/** Avisa o servidor de um toque (WhatsApp, Instagram) sem esperar resposta: a aba nova já abriu. */
+function avisar(rota: string, corpo: Record<string, string>) {
+  const json = JSON.stringify(corpo);
   try {
-    if (navigator.sendBeacon?.("/api/briefing/whatsapp", new Blob([corpo], { type: "application/json" }))) return;
+    if (navigator.sendBeacon?.(rota, new Blob([json], { type: "application/json" }))) return;
   } catch {
     // Sem sendBeacon, tenta o fetch abaixo.
   }
-  void fetch("/api/briefing/whatsapp", { method: "POST", headers: { "Content-Type": "application/json" }, body: corpo, keepalive: true }).catch(() => {});
+  void fetch(rota, { method: "POST", headers: { "Content-Type": "application/json" }, body: json, keepalive: true }).catch(() => {});
 }
+const avisarWhatsappAberto = (codigo?: string) => codigo && avisar("/api/briefing/whatsapp", { codigo });
+const avisarInstagram = (codigo: string | undefined, acao: "clicou" | "continuou") =>
+  codigo && avisar("/api/briefing/instagram", { codigo, acao });
 
 export function BriefingFormulario() {
   const [estado, setEstado] = useState<Estado>(INICIAL);
@@ -214,16 +222,24 @@ export function BriefingFormulario() {
       referrer: origem.referrer,
     });
     const { nome, whatsapp, empresa, instagram } = contato;
-    setEstado((e) => ({ ...e, contato: { nome, whatsapp, empresa, instagram }, salvo, codigo, tela: "fim" }));
+    // Gravado: vai para o presente (Instagram); sem gravar, direto ao fim (WhatsApp com as respostas).
+    setEstado((e) => ({ ...e, contato: { nome, whatsapp, empresa, instagram }, salvo, codigo, tela: salvo ? "presente" : "fim" }));
   };
 
   const { tela } = estado;
   // Progresso: etapas que valem agora mais o contato.
   const passos: Tela[] = [...etapasAtivas(estado.respostas).map((e) => e.id), "contato"];
   const total = passos.length;
-  const etapa = tela === "abertura" ? 0 : tela === "fim" ? total : passos.indexOf(tela) + 1;
+  const final = tela === "presente" || tela === "fim";
+  const etapa = tela === "abertura" ? 0 : final ? total : passos.indexOf(tela) + 1;
   const anuncio =
-    tela === "abertura" ? briefing.abertura.rotulo : tela === "fim" ? briefing.concluido.anuncio : briefing.contador(etapa, total);
+    tela === "abertura"
+      ? briefing.abertura.rotulo
+      : tela === "presente"
+        ? briefing.presente.anuncio
+        : tela === "fim"
+          ? briefing.concluido.anuncio
+          : briefing.contador(etapa, total);
 
   const telaAbertura = () => {
     const a = briefing.abertura;
@@ -337,6 +353,69 @@ export function BriefingFormulario() {
     );
   };
 
+  /** Depois de gravar: o presente. Seguir no Instagram é opcional; "Continuar" sempre avança. */
+  const telaPresente = () => {
+    if (!estado.contato) return null;
+    const p = briefing.presente;
+    const respostas = respostasBriefingSchema.safeParse(estado.respostas);
+    const frentes = respostas.success ? indicarFrentes(respostas.data.desafio) : [];
+    const primeiroNome = estado.contato.nome.trim().split(/\s+/)[0];
+    const continuar = () => {
+      avisarInstagram(estado.codigo, "continuou");
+      irPara("fim");
+    };
+    return (
+      <div className="flex min-h-0 flex-1 flex-col">
+        <div className="sa-diag__corpo">
+          <span className="sa-resultado__selo" aria-hidden="true">
+            <GiftIcon size={22} strokeWidth={2.25} />
+          </span>
+          <p className="sa-resultado__rotulo rotulo">{p.rotulo}</p>
+          <h1 ref={tituloRef} tabIndex={-1} className="titulo-2 sa-diag__titulo mt-2">
+            {p.titulo(primeiroNome)}
+          </h1>
+          <p className="corpo mt-4 text-text-muted">{p.texto}</p>
+          {frentes.length > 0 ? (
+            <>
+              <p className="sa-resultado__rotulo rotulo">{p.rotuloFrentes}</p>
+              <ul className="sa-resultado__frentes">
+                {frentes.map((f) => (
+                  <li key={f}>{nomeDaFrente(f)}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          {estado.instagram ? (
+            <p className="pequeno mt-6 text-text-muted" role="status">
+              {p.seguido}
+            </p>
+          ) : null}
+        </div>
+        <div className="sa-diag__acoes sa-briefing__acoes-presente">
+          <Button asChild largura="bloco" variant={estado.instagram ? "secundario" : undefined}>
+            <a
+              href={site.instagram.url}
+              target="_blank"
+              rel="noopener"
+              onClick={() => {
+                avisarInstagram(estado.codigo, "clicou");
+                setEstado((e) => ({ ...e, instagram: true }));
+              }}
+            >
+              <IconeInstagram />
+              {p.seguir}
+              <span className="sr-only"> {comum.novaAba}</span>
+            </a>
+          </Button>
+          <Button largura="bloco" variant={estado.instagram ? undefined : "secundario"} onClick={continuar}>
+            {p.continuar}
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
+  /** Fim: agradecimento e o consultor no WhatsApp (ou o envio das respostas, se não gravou). */
   const telaFim = () => {
     if (!estado.contato) return null;
     const respostas = respostasBriefingSchema.safeParse(estado.respostas);
@@ -351,7 +430,6 @@ export function BriefingFormulario() {
             respostas: respostas.data,
             outros: estado.outros,
           });
-    const frentes = respostas.success ? indicarFrentes(respostas.data.desafio) : [];
     return (
       <div className="flex min-h-0 flex-1 flex-col">
         <div className="sa-diag__corpo">
@@ -365,16 +443,6 @@ export function BriefingFormulario() {
             {textos.titulo(primeiroNome)}
           </h1>
           <p className="corpo mt-4 text-text-muted">{textos.texto}</p>
-          {frentes.length > 0 ? (
-            <>
-              <p className="sa-resultado__rotulo rotulo">{briefing.concluido.rotuloFrentes}</p>
-              <ul className="sa-resultado__frentes">
-                {frentes.map((f) => (
-                  <li key={f}>{nomeDaFrente(f)}</li>
-                ))}
-              </ul>
-            </>
-          ) : null}
         </div>
         <div className="sa-diag__acoes sa-briefing__acao-final">
           <Button asChild largura="bloco">
@@ -399,6 +467,7 @@ export function BriefingFormulario() {
     if (tela === "contato") {
       return <TelaContatoBriefing inicial={estado.contato} tituloRef={tituloRef} aoVoltar={voltar} aoEnviar={concluir} />;
     }
+    if (tela === "presente") return telaPresente();
     if (tela === "fim") return telaFim();
     const etapa = ETAPAS.find((e) => e.id === tela);
     return etapa ? telaEtapa(etapa) : null;
@@ -408,7 +477,7 @@ export function BriefingFormulario() {
     <div className="sa-briefing__cartao">
       <div className="sa-diag__topo">
         <Progress value={etapa} max={total} aria-label={briefing.progresso} aria-valuetext={anuncio} />
-        {tela !== "abertura" && tela !== "fim" ? (
+        {tela !== "abertura" && !final ? (
           <span className="rotulo sa-num text-text-muted" aria-hidden="true">
             {briefing.contador(etapa, total)}
           </span>

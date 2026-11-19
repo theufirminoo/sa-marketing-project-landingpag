@@ -54,9 +54,14 @@ vercel.json                  região gru1 e cron
 
 ### `POST /api/briefing`
 
-- Corpo (`briefingSchema`): contato (`nome` completo, `whatsapp`, `empresa`, `instagram`, `site` isca), `consentimento: true`, `segmento`, `tempo`, `produto`, `faturamento`, `origem`, `estrategia`, `marketing` (só com estratégia "sim"), `desafio[]`, `impacto`, `decisao`, `prazo`, `investimento`, `objetivo`, `outros{segmento, origem, desafio}`, `utm`, `pagina`, `referrer`.
+- Corpo (`briefingSchema`): contato (`nome` completo, `whatsapp`, `empresa`, `instagram`, `site` isca), `consentimento: true`, `segmento`, `tempo`, `produto`, `faturamento`, `origem`, `estrategia`, `marketing` (só com estratégia "sim"), `desafio[]`, `decisao`, `prazo`, `investimento`, `objetivo`, `outros{segmento, origem, desafio}`, `utm`, `pagina`, `referrer`.
 - Respostas: `200 {ok:true, salvo:true, codigo}` gravado; `200 {ok:true, salvo:false}` sem banco ou falha (a tela pede o WhatsApp); `400` validação; `429` (5/min).
-- Grava antes de responder (transação, `statement_timeout` 4 s; corrida de 6 s na rota). Depois: e-mail (Resend, 8 s) e `avisos.processado_em`.
+- Grava antes de responder (transação, `statement_timeout` 4 s; corrida de 6 s na rota). Depois (`after`, `maxDuration` 180 s): espera a pessoa sair da tela do presente (até 2 min, consultando a cada 5 s), manda o e-mail (Resend, 8 s) com o toque no Instagram e marca `avisos.processado_em`.
+
+### `POST /api/briefing/instagram`
+
+- Corpo: `{ codigo: uuid, acao: "clicou" | "continuou" }`, por `sendBeacon`.
+- `clicou` grava `instagram_clicou_em`; `continuou` grava `instagram_tela_em` (o e-mail espera por ele). `204`, `404`, `400`, `429` (10/min).
 
 ### `POST /api/briefing/whatsapp`
 

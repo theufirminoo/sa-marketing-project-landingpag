@@ -44,7 +44,6 @@ export const ETAPAS: readonly Etapa[] = [
   { id: "estrategia", tipo: "unica", bloco: "vendas" },
   { id: "marketing", tipo: "unica", bloco: "vendas" },
   { id: "desafio", tipo: "multipla", bloco: "problemas" },
-  { id: "impacto", tipo: "texto", bloco: "problemas", obrigatoria: true },
   { id: "decisao", tipo: "unica", bloco: "proximos" },
   { id: "prazo", tipo: "unica", bloco: "proximos" },
   { id: "investimento", tipo: "unica", bloco: "proximos" },
@@ -79,7 +78,6 @@ export const outroSchema = z.string().trim().min(2, briefing.outro.erro).max(80,
 /** Validação de cada pergunta de escrever. */
 export const textoSchemas = {
   produto: z.string().trim().min(2, briefing.textos.produto.erro).max(120, briefing.textos.produto.erro),
-  impacto: z.string().trim().min(3, briefing.textos.impacto.erro).max(500, briefing.textos.impacto.erro),
   objetivo: z.string().trim().max(500, briefing.textos.objetivo.erro),
 } satisfies Record<PerguntaTexto, z.ZodType<string>>;
 
@@ -97,7 +95,6 @@ export const respostasBriefingSchema = z.object({
     .min(1, briefing.perguntas.desafio.erro)
     .max(DESAFIOS.length)
     .transform((lista) => DESAFIOS.filter((d) => lista.includes(d))),
-  impacto: textoSchemas.impacto,
   decisao: z.enum(DECISOES),
   prazo: z.enum(PRAZOS),
   investimento: z.enum(INVESTIMENTOS),

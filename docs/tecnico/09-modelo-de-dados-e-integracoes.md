@@ -59,6 +59,7 @@ erDiagram
     timestamptz whatsapp_aberto_em
     uuid responsavel_id "futuro: Supabase Auth"
     text observacoes
+    bool segue_instagram "a equipe marca"
     jsonb primeira_origem "utm, pagina, referrer"
     timestamptz criado_em
     timestamptz atualizado_em "gatilho"
@@ -93,7 +94,8 @@ erDiagram
     text marketing "só se estrategia = sim"
     text_array desafios "1 a 11"
     text desafio_outro
-    text impacto "até 500"
+    timestamptz instagram_clicou_em "tocou em seguir"
+    timestamptz instagram_tela_em "saiu da tela do presente"
     text_array frentes_indicadas
     text decisao
     text prazo
@@ -138,7 +140,8 @@ Notação: **sublinhado = chave primária**, `→` = chave estrangeira,
 
 ```
 contatos     (_id_, whatsapp UK, nome, empresa, instagram, status, status_em,
-              whatsapp_aberto_em, responsavel_id, observacoes, primeira_origem,
+              whatsapp_aberto_em, responsavel_id, observacoes, segue_instagram,
+              primeira_origem,
               criado_em, atualizado_em)
 
 diagnosticos (_id_, contato_id UK → contatos.id ON DELETE CASCADE, trava, fase,
@@ -148,10 +151,10 @@ diagnosticos (_id_, contato_id UK → contatos.id ON DELETE CASCADE, trava, fase
 briefings    (_id_, contato_id UK → contatos.id ON DELETE CASCADE, codigo UK,
               segmento, segmento_outro, tempo_mercado, produto_principal,
               faturamento, origem_clientes, origem_outro, estrategia, marketing,
-              desafios[], desafio_outro, impacto, frentes_indicadas[], decisao,
+              desafios[], desafio_outro, frentes_indicadas[], decisao,
               prazo, investimento, objetivo, fit, fit_pontos, fit_versao,
-              consentimento_em, utm, pagina, referrer, vezes, criado_em,
-              atualizado_em)
+              consentimento_em, instagram_clicou_em, instagram_tela_em, utm,
+              pagina, referrer, vezes, criado_em, atualizado_em)
 
 avisos       (_id_, tipo, contato_id → contatos.id ON DELETE CASCADE, repetido,
               criado_em, processado_em)
@@ -266,8 +269,12 @@ sequenceDiagram
   S-->>S: gatilho cria aviso
   S-->>V: codigo
   V-->>N: {salvo:true, codigo}
-  N-->>P: tela final com frentes
-  V->>R: POST /emails (depois de responder)
+  N-->>P: tela do presente (frentes + seguir no Instagram)
+  P->>N: "Seguir a SA no Instagram" (opcional) e "Continuar"
+  N->>V: sendBeacon /api/briefing/instagram {codigo, clicou | continuou}
+  V->>S: instagram_clicou_em / instagram_tela_em
+  V->>S: (after) espera a saída da tela, até 2 min
+  V->>R: POST /emails, com o toque no Instagram
   R->>G: entrega (SPF/DKIM do envio)
   V->>S: avisos.processado_em = now()
   P->>N: "Chamar um consultor"

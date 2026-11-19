@@ -54,9 +54,9 @@ erDiagram
 
 | Tabela | Uma linha por | Colunas principais |
 |---|---|---|
-| `contatos` | WhatsApp (único) | `whatsapp`, `nome`, `empresa`, `instagram`, `status`, `status_em`, `whatsapp_aberto_em`, `responsavel_id`, `observacoes`, `primeira_origem` (UTM, página e referrer da primeira vez), `criado_em`, `atualizado_em` |
+| `contatos` | WhatsApp (único) | `whatsapp`, `nome`, `empresa`, `instagram`, `status`, `status_em`, `whatsapp_aberto_em`, `responsavel_id`, `observacoes`, `segue_instagram` (a equipe marca), `primeira_origem` (UTM, página e referrer da primeira vez), `criado_em`, `atualizado_em` |
 | `diagnosticos` | contato | `trava`, `fase`, `faturamento`, `frente_de_interesse`, `frentes_recomendadas[]`, `utm`, `pagina`, `referrer`, `vezes` |
-| `briefings` | contato | `segmento` (+`segmento_outro`), `tempo_mercado`, `produto_principal`, `faturamento`, `origem_clientes` (+`origem_outro`), `estrategia`, `marketing` (só com estratégia), `desafios[]` (+`desafio_outro`), `impacto`, `frentes_indicadas[]`, `decisao`, `prazo`, `investimento`, `objetivo`, `fit`, `fit_pontos`, `fit_versao`, `consentimento_em`, `codigo`, `utm`, `pagina`, `referrer`, `vezes` |
+| `briefings` | contato | `segmento` (+`segmento_outro`), `tempo_mercado`, `produto_principal`, `faturamento`, `origem_clientes` (+`origem_outro`), `estrategia`, `marketing` (só com estratégia), `desafios[]` (+`desafio_outro`), `frentes_indicadas[]`, `instagram_clicou_em`, `instagram_tela_em`, `decisao`, `prazo`, `investimento`, `objetivo`, `fit`, `fit_pontos`, `fit_versao`, `consentimento_em`, `codigo`, `utm`, `pagina`, `referrer`, `vezes` |
 | `avisos` | envio novo (fila) | `tipo` (diagnostico/briefing), `contato_id`, `repetido`, `processado_em` (preenchido quando o e-mail sai) |
 | `cliques` | dia + origem + destino | `total` (cliques da bio; nada sobre quem clicou) |
 | `manutencao` | (uma só) | `ultimo_sinal`, `sinais` (cron que mantém o banco acordado) |
@@ -102,6 +102,7 @@ usuário `sa_site.yzarinssfqttxiqmkveo` (senha só na Vercel).
 | `20261111210000_status_e_desafios.sql` | Status do funil, `status_em`, vários desafios, frentes, aceite, `codigo`, `leads_esfriando` |
 | `20261113120000_cliques.sql` | Cliques da bio e `cliques_30_dias` |
 | `20261118120000_briefing_v3.sql` | Tempo de mercado, produto, estratégia, impacto, novas listas; `sa_site` marca avisos |
+| `20261119120000_instagram_sem_impacto.sql` | Sai a coluna `impacto`; entram `instagram_clicou_em`, `instagram_tela_em` e `contatos.segue_instagram`; visão `leads` com `clicou_seguir_instagram` |
 
 Para mudar o banco: criar uma migração nova (nunca editar as aplicadas),
 testar num Postgres local aplicando todas em ordem (duas vezes, para provar

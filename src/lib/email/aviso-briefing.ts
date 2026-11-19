@@ -23,7 +23,13 @@ const FIT_ROTULO = { alto: "FIT alto", medio: "FIT médio", baixo: "FIT baixo" }
 
 export type EmailMontado = { assunto: string; html: string; texto: string };
 
-export function montarEmailBriefing(dados: Briefing, fit: Fit, agora: Date = new Date()): EmailMontado {
+export function montarEmailBriefing(
+  dados: Briefing,
+  fit: Fit,
+  agora: Date = new Date(),
+  /** Quando tocou em "Seguir a SA no Instagram" no fim; nulo = não tocou. */
+  instagramClicouEm: Date | null = null,
+): EmailMontado {
   const quem = dados.empresa.trim() || dados.nome.trim();
   const assunto = `Novo briefing: ${quem} · ${FIT_ROTULO[fit.fit]}`;
   const whatsapp = whatsappInternacional(dados.whatsapp);
@@ -39,6 +45,7 @@ export function montarEmailBriefing(dados: Briefing, fit: Fit, agora: Date = new
     ...(instagram ? [["Instagram", instagram] as [string, string]] : []),
     ["FIT", `${FIT_ROTULO[fit.fit]} (${fit.pontos} de 15 pontos)`],
     ["Frentes indicadas", frentes],
+    ["Seguir no Instagram", instagramClicouEm ? "Tocou em seguir (confirme no Instagram)" : "Não tocou em seguir"],
     ["Recebido em", quando],
   ];
   const respostas = linhasDoBriefing(dados, dados.outros).map(([id, valor]) => [rotulos[id], valor] as [string, string]);

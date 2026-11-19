@@ -92,7 +92,7 @@ export async function gravarBriefing(sql: Sql, dados: Briefing, fit: Fit): Promi
     const [linha] = await tx<{ codigo: string }[]>`
       insert into comercial.briefings
         (contato_id, segmento, segmento_outro, tempo_mercado, produto_principal, faturamento, origem_clientes,
-         origem_outro, estrategia, marketing, desafios, desafio_outro, impacto, frentes_indicadas, decisao, prazo,
+         origem_outro, estrategia, marketing, desafios, desafio_outro, frentes_indicadas, decisao, prazo,
          investimento, objetivo, fit, fit_pontos, fit_versao, consentimento_em, utm, pagina, referrer)
       values (
         ${contatoId},
@@ -107,7 +107,6 @@ export async function gravarBriefing(sql: Sql, dados: Briefing, fit: Fit): Promi
         ${dados.marketing ?? null},
         ${dados.desafio},
         ${outro("desafio")},
-        ${dados.impacto.trim()},
         ${indicarFrentes(dados.desafio)},
         ${dados.decisao},
         ${dados.prazo},
@@ -133,7 +132,6 @@ export async function gravarBriefing(sql: Sql, dados: Briefing, fit: Fit): Promi
         marketing = excluded.marketing,
         desafios = excluded.desafios,
         desafio_outro = excluded.desafio_outro,
-        impacto = excluded.impacto,
         frentes_indicadas = excluded.frentes_indicadas,
         decisao = excluded.decisao,
         prazo = excluded.prazo,
@@ -187,4 +185,23 @@ export async function marcarAvisoEnviado(sql: Sql, codigo: string): Promise<void
     where b.codigo = ${codigo} and a.contato_id = b.contato_id
       and a.tipo = 'briefing' and a.processado_em is null
   `;
+}
+
+/** Toques na tela do presente: "clicou" (Seguir no Instagram) ou "continuou" (saiu da tela). */
+export async function registrarInstagram(sql: Sql, codigo: string, acao: "clicou" | "continuou"): Promise<boolean> {
+  const linhas =
+    acao === "clicou"
+      ? await sql`update comercial.briefings set instagram_clicou_em = coalesce(instagram_clicou_em, now())
+          where codigo = ${codigo} returning id`
+      : await sql`update comercial.briefings set instagram_tela_em = coalesce(instagram_tela_em, now())
+          where codigo = ${codigo} returning id`;
+  return linhas.length > 0;
+}
+
+/** Situação do Instagram de um briefing, para o e-mail. */
+export async function lerInstagram(sql: Sql, codigo: string): Promise<{ clicouEm: Date | null; saiu: boolean }> {
+  const [linha] = await sql<{ instagram_clicou_em: Date | null; instagram_tela_em: Date | null }[]>`
+    select instagram_clicou_em, instagram_tela_em from comercial.briefings where codigo = ${codigo}
+  `;
+  return { clicouEm: linha?.instagram_clicou_em ?? null, saiu: Boolean(linha?.instagram_tela_em) };
 }

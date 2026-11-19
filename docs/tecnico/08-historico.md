@@ -3,6 +3,9 @@
 Resumo por data. O detalhe de cada mudança está no `git log` (mensagens em
 português, sem marcas de IA). Ao mudar algo, acrescente uma linha aqui.
 
+## 19/11/2026
+- Briefing: sai a pergunta do impacto (código e coluna). Entram duas telas finais: o **presente** (análise estratégica; botão "Seguir a SA no Instagram" com o toque registrado, e "Continuar") e o **agradecimento** com o WhatsApp do consultor. O e-mail espera a saída da tela do presente (até 2 min) e diz se a pessoa tocou em seguir. Migração `instagram_sem_impacto`; `contatos.segue_instagram` para a equipe marcar.
+
 ## 18/11/2026
 - **Briefing v3:** conversa em quatro capítulos; perguntas novas (tempo de mercado, produto que mais vende, estratégia de marketing com "quem cuida" condicional, impacto dos problemas); novas listas de canais, problemas e investimento (com "Ainda não sei"); etapas guardadas pelo nome; FIT versão 3. Migração `briefing_v3`.
 - **E-mail do briefing ligado:** Resend com `envio.saagencia.com.br` (São Paulo), chave só de envio na Vercel, teste entregue em `contato@`. DMARC criado. Tentativa de passar o DNS para a Vercel não foi possível (o DNS segue no Registro.br). `docs/DNS.md`.

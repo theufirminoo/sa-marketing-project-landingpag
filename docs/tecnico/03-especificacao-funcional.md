@@ -60,11 +60,10 @@ começar."). O servidor também recusa sem o aceite.
 | | 6 | Hoje, a empresa tem alguma estratégia de marketing? | Única | Sim, Não, Não mas pretendo ter |
 | | 6b | Quem cuida dessa estratégia hoje? | Única, **só se "Sim"** | Eu mesmo quando dá tempo, Agência ou freelancer, Equipe interna |
 | O que trava | 7 | Quais são os principais problemas da empresa hoje? | Várias + "Outro" | 11 opções (abaixo), pelo menos 1 |
-| | 8 | Se esses problemas continuarem, que impacto isso pode ter na empresa? | Texto obrigatório | 3 a 500 caracteres |
-| Próximos passos | 9 | Quem decide sobre contratar a SA? | Única | Eu decido, Decido com sócio, Outra pessoa decide |
-| | 10 | Quando você quer começar? | Única | Ainda este mês, Nos próximos 3 meses, Ainda estou pesquisando |
-| | 11 | Para resolver esses problemas e construir um comercial forte, quanto você investiria por mês? | Única | Até R$ 1.000, 1.000 a 2.500, 2.500 a 5.000, 5.000 a 10.000, Acima de 10.000, Ainda não sei. Ajuda: mídia paga fica à parte |
-| | 12 | O que você deseja ter daqui a 6 a 12 meses? | Texto opcional | até 500 caracteres |
+| Próximos passos | 8 | Quem decide sobre contratar a SA? | Única | Eu decido, Decido com sócio, Outra pessoa decide |
+| | 9 | Quando você quer começar? | Única | Ainda este mês, Nos próximos 3 meses, Ainda estou pesquisando |
+| | 10 | Para resolver esses problemas e construir um comercial forte, quanto você investiria por mês? | Única | Até R$ 1.000, 1.000 a 2.500, 2.500 a 5.000, 5.000 a 10.000, Acima de 10.000, Ainda não sei. Ajuda: mídia paga fica à parte |
+| | 11 | O que você deseja ter daqui a 6 a 12 meses? | Texto opcional | até 500 caracteres |
 | Contato | | Quem está respondendo? | Formulário | Nome completo (nome e sobrenome), WhatsApp, empresa e Instagram opcionais |
 
 **Comportamento:** escolha única avança sozinha em 200 ms; "Outro" abre um
@@ -104,21 +103,30 @@ Corte: 11 ou mais = alto, 6 a 10 = médio, até 5 = baixo. Ajustes: verba até
 R$ 1.000 com faturamento até R$ 20 mil é sempre baixo; quem não decide ou só
 pesquisa fica no máximo médio. Ao mudar pesos, subir `FIT_VERSAO`.
 
-### Tela final
+### Telas finais (gravado)
 
-- Gravado: selo, "Tudo pronto, {nome}.", "Suas respostas já estão com a SA.
-  Último passo: chame um consultor no WhatsApp e marque a primeira conversa.",
-  as frentes indicadas e o botão **Chamar um consultor no WhatsApp** (mensagem:
-  "Oi, tudo bem? 😊 Aqui é {nome}, da {empresa}. Acabei de responder o briefing
-  no site e quero marcar a primeira conversa com um consultor da SA.").
-- Não gravado: "falta só enviar suas respostas" e o mesmo botão, com todas as
-  respostas escritas na mensagem.
+1. **Presente:** "{nome}, você ganhou uma análise estratégica da sua empresa." O
+   consultor apresenta a análise na primeira conversa; "para liberar, é só seguir
+   a SA no Instagram". Mostra as frentes indicadas. Botões: **Seguir a SA no
+   Instagram** (abre o perfil em nova aba e registra o toque) e **Continuar**
+   (sempre disponível; depois do toque vira o botão principal). O site não tem
+   como saber se a pessoa seguiu: registra só o toque.
+2. **Agradecimento:** "Obrigado, {nome}." Análise garantida; último passo:
+   **Chamar um consultor no WhatsApp** (mensagem: "Oi, tudo bem? 😊 Aqui é
+   {nome}, da {empresa}. Acabei de responder o briefing no site e quero marcar a
+   primeira conversa para receber a minha análise estratégica.").
+
+Não gravado: vai direto a "falta só enviar suas respostas", com o botão do
+WhatsApp levando todas as respostas na mensagem (sem a tela do presente).
 
 ### E-mail para a SA
 
 Para `contato@saagencia.com.br`, de `SA Marketing <avisos@envio.saagencia.com.br>`.
+Sai quando a pessoa deixa a tela do presente (ou 2 minutos depois de concluir),
+para já dizer se ela tocou em seguir no Instagram.
 Assunto: "Novo briefing: {empresa ou nome} · FIT {alto|médio|baixo}". Corpo:
-empresa, nome, WhatsApp, Instagram, FIT com pontos, frentes, data, botão
+empresa, nome, WhatsApp, Instagram, FIT com pontos, frentes, se tocou em
+seguir no Instagram, data, botão
 "Abrir conversa no WhatsApp", todas as respostas na ordem, origem (UTM).
 
 ### Status do lead
