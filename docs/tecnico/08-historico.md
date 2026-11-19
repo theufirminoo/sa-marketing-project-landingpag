@@ -4,6 +4,7 @@ Resumo por data. O detalhe de cada mudança está no `git log` (mensagens em
 português, sem marcas de IA). Ao mudar algo, acrescente uma linha aqui.
 
 ## 19/11/2026
+- Tela final sem botões: "você ganhou uma análise estratégica", frentes e "Pronto. Pode voltar para a conversa no WhatsApp." (a pessoa já está no WhatsApp com o consultor). Saem os botões do WhatsApp e do Instagram e a rota `/api/briefing/whatsapp`; o Instagram fica para a conversa.
 - Pergunta do objetivo: "Como você deseja estar nos próximos 6 meses a 1 ano?". Sem textos de exemplo dentro das caixas de texto do briefing (placeholders).
 - Tela final única: análise estratégica como presente, frentes, **WhatsApp primeiro** e o Instagram por último, sem rastreio (no celular, o Instagram abre o aplicativo e a pessoa não voltava para o WhatsApp). O e-mail volta a sair logo depois de gravar. Migração `sem_rastreio_instagram`.
 - Briefing: sai a pergunta do impacto (código e coluna). Entram duas telas finais: o **presente** (análise estratégica; botão "Seguir a SA no Instagram" com o toque registrado, e "Continuar") e o **agradecimento** com o WhatsApp do consultor. O e-mail espera a saída da tela do presente (até 2 min) e diz se a pessoa tocou em seguir. Migração `instagram_sem_impacto`; `contatos.segue_instagram` para a equipe marcar.
