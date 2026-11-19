@@ -863,7 +863,7 @@ export const briefing = {
     anuncio: "Briefing concluído. Você ganhou uma análise estratégica",
     rotulo: "Briefing concluído",
     titulo: (nome: string) => `${nome}, você ganhou uma análise estratégica da sua empresa.`,
-    texto: "O consultor da SA prepara a análise com as suas respostas e apresenta na primeira conversa. Chame um consultor no WhatsApp para marcar.",
+    texto: "Um consultor da SA vai preparar essa análise com as suas respostas e apresentá-la na primeira conversa com você.",
     rotuloFrentes: "Pelo que você nos contou, os serviços indicados para o seu negócio são",
     whatsapp: "Chamar um consultor no WhatsApp",
     instagram: {

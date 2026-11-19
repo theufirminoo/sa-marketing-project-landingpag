@@ -106,7 +106,8 @@ pesquisa fica no máximo médio. Ao mudar pesos, subir `FIT_VERSAO`.
 ### Tela final
 
 - **Gravado:** "{nome}, você ganhou uma análise estratégica da sua empresa." O
-  consultor apresenta a análise na primeira conversa. Mostra as frentes
+  texto: "Um consultor da SA vai preparar essa análise com as suas respostas e
+  apresentá-la na primeira conversa com você." Mostra as frentes
   indicadas. Botões, nesta ordem: **Chamar um consultor no WhatsApp**
   (principal; mensagem: "…quero marcar a primeira conversa para receber a minha
   análise estratégica.") e, abaixo de "Enquanto isso, acompanhe a SA no
