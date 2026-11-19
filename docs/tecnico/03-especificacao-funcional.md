@@ -120,8 +120,8 @@ pesquisa fica no máximo médio. Ao mudar pesos, subir `FIT_VERSAO`.
 Para `contato@saagencia.com.br`, de `SA Marketing <avisos@envio.saagencia.com.br>`.
 Sai logo depois de gravar.
 Assunto: "Novo briefing: {empresa ou nome} · FIT {alto|médio|baixo}". Corpo:
-empresa, nome, WhatsApp, Instagram, FIT com pontos, frentes, data, botão
-"Abrir conversa no WhatsApp", todas as respostas na ordem, origem (UTM).
+empresa, nome, WhatsApp, Instagram, FIT com pontos, frentes, data, todas as
+respostas na ordem e origem (UTM). Sem botões nem links.
 
 ### Status do lead
 

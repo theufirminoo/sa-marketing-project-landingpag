@@ -4,6 +4,7 @@ Resumo por data. O detalhe de cada mudança está no `git log` (mensagens em
 português, sem marcas de IA). Ao mudar algo, acrescente uma linha aqui.
 
 ## 19/11/2026
+- E-mail do briefing sem o botão "Abrir conversa no WhatsApp" e sem a frase do Supabase no rodapé.
 - Tela final sem botões: "você ganhou uma análise estratégica", frentes e "Pronto. Pode voltar para a conversa no WhatsApp." (a pessoa já está no WhatsApp com o consultor). Saem os botões do WhatsApp e do Instagram e a rota `/api/briefing/whatsapp`; o Instagram fica para a conversa.
 - Pergunta do objetivo: "Como você deseja estar nos próximos 6 meses a 1 ano?". Sem textos de exemplo dentro das caixas de texto do briefing (placeholders).
 - Tela final única: análise estratégica como presente, frentes, **WhatsApp primeiro** e o Instagram por último, sem rastreio (no celular, o Instagram abre o aplicativo e a pessoa não voltava para o WhatsApp). O e-mail volta a sair logo depois de gravar. Migração `sem_rastreio_instagram`.

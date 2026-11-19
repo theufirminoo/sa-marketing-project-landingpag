@@ -180,9 +180,15 @@ describe("e-mail do briefing para a SA", () => {
   });
 
   it("traz contato, FIT, frentes e todas as respostas", () => {
-    for (const trecho of ["Clínica Ana", "(11) 98765-4321", "13 de 15 pontos", "SA Consultoria", "Limpeza de pele", "Agenda cheia", "https://wa.me/5511987654321"]) {
+    for (const trecho of ["Clínica Ana", "(11) 98765-4321", "13 de 15 pontos", "SA Consultoria", "Limpeza de pele", "Agenda cheia"]) {
       expect(email.texto).toContain(trecho);
     }
+  });
+
+  it("sem botão de WhatsApp nem rodapé do Supabase", () => {
+    expect(email.html).not.toContain("wa.me");
+    expect(email.html).not.toContain("Supabase");
+    expect(email.texto).not.toContain("wa.me");
   });
 
   it("escapa o que a pessoa digitou no HTML", () => {

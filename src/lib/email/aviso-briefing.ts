@@ -3,7 +3,7 @@ import { linhasDoBriefing, indicarFrentes, type Briefing } from "@/lib/briefing"
 import type { Fit } from "@/lib/fit";
 import { normalizarInstagram } from "@/lib/lead";
 import { formatarFrentes } from "@/lib/recomendacao";
-import { mascararWhatsapp, whatsappInternacional } from "@/lib/whatsapp";
+import { mascararWhatsapp } from "@/lib/whatsapp";
 
 /**
  * E-mail para a SA a cada briefing gravado: quem é, o FIT (só interno) e o
@@ -26,7 +26,6 @@ export type EmailMontado = { assunto: string; html: string; texto: string };
 export function montarEmailBriefing(dados: Briefing, fit: Fit, agora: Date = new Date()): EmailMontado {
   const quem = dados.empresa.trim() || dados.nome.trim();
   const assunto = `Novo briefing: ${quem} · ${FIT_ROTULO[fit.fit]}`;
-  const whatsapp = whatsappInternacional(dados.whatsapp);
   const instagram = normalizarInstagram(dados.instagram);
   const frentes = formatarFrentes(indicarFrentes(dados.desafio));
   const quando = agora.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "short" });
@@ -51,18 +50,15 @@ export function montarEmailBriefing(dados: Briefing, fit: Fit, agora: Date = new
 <p style="margin:0 0 4px;color:#d9531a;font-weight:bold">Novo briefing</p>
 <h1 style="margin:0 0 16px;font-size:22px;color:#1a1a1a">${escapar(quem)}</h1>
 <table style="border-collapse:collapse;width:100%">${cabecalho.map(linhaHtml).join("")}</table>
-<p style="margin:20px 0"><a href="https://wa.me/${whatsapp}" style="display:inline-block;background:#ff751f;color:#1a1a1a;padding:12px 20px;border-radius:4px;text-decoration:none;font-weight:bold">Abrir conversa no WhatsApp</a></p>
 <h2 style="margin:24px 0 8px;font-size:17px;color:#1a1a1a">Respostas</h2>
 <table style="border-collapse:collapse;width:100%">${respostas.map(linhaHtml).join("")}</table>
 ${origem ? `<p style="margin:20px 0 0;color:#666;font-size:13px">Origem: ${escapar(origem)}</p>` : ""}
-<p style="margin:8px 0 0;color:#666;font-size:13px">Também está no Supabase: esquema comercial, visão leads.</p>
 </div></body></html>`;
 
   const texto = [
     assunto,
     "",
     ...cabecalho.map(([k, v]) => `${k}: ${v}`),
-    `Conversar: https://wa.me/${whatsapp}`,
     "",
     "Respostas",
     ...respostas.map(([k, v]) => `${k}: ${v}`),
